@@ -1,19 +1,21 @@
-import { useState } from "react";
-export const Formulario = () => { 
 
-    const [id, setId] = useState("");
-    const [dni, setDNI] = useState("");
-    const [nombre, setNombre] = useState("");
-    const [telefono, setTelefono] = useState("");
-    const [mail, setMail] = useState("");
-    const [direccion, setDireccion] = useState("");
-    const [CP, setCP] = useState("");
-    const [localidad, setLocalidad] = useState("");
-
-    const[contacto, setContaco] = useState({id, dni, nombre, telefono, mail, direccion, CP, localidad})
-
+export const Formulario = ({setContactoNuevo}) => { 
+    
     return(
-        <form action="" method="">
+        <form action="" method="" onSubmit={e=>{
+            e.preventDefault();
+            setContactoNuevo({
+                id: e.target.id.value, 
+                dni: e.target.dni.value, 
+                nombre: e.target.nombre.value,
+                telefono: e.target.telefono.value,
+                mail: e.target.mail.value,
+                direccion: e.target.direccion.value,
+                cp: e.target.cp.value,
+                localidad: e.target.localidad.value
+            })
+        }}>
+                    
             <label>ID: <input type="text" id="id" name="id"/></label><br></br>
             <label>DNI: <input type="text" id="dni" name="dni"/></label><br></br>
             <label>Nombre: <input type="text" id="nombre" name="nombre"/></label><br></br>
@@ -22,7 +24,7 @@ export const Formulario = () => {
             <label>Direccion: <input type="text" id="direccion" name="direccion"/></label><br></br>
             <label>CP: <input type="text" id="cp" name="cp"/></label><br></br>
             <label>Localidad: <input type="text" id="localidad" name="localidad"/></label><br></br>
-            <button onClick={() => a}>Enviar</button>
+            <button>Enviar</button>
         </form>
     )
 }
