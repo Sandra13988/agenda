@@ -1,6 +1,6 @@
 export const Detalle = (contacto) => { 
     
-
+    
     function detallar(contacto){
         <table>
             <tr>
