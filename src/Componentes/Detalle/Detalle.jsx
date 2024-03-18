@@ -1,17 +1,32 @@
-export const Detalle = (contacto) => { 
+export const Detalle = ({ contactoSeleccionadoDetalle }) => { 
     
-
-    function detallar(contacto){
+return(
+    <div>
+        <h2>Detalles</h2>
         <table>
-            <tr>
-                <td>{contacto.id}</td>
-                <td>{contacto.dni}</td>
-                <td>{contacto.nombre}</td>
-                <td>{contacto.telefono}</td>
-                <td>{contacto.mail}</td>
-                <td>{contacto.cp}</td>
-                <td>{contacto.localidad}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>DNI</th>
+                    <th>NOMBRE</th>
+                    <th>TELEFONO</th>
+                    <th>MAIL</th>
+                    <th>CP</th>
+                    <th>LOCALIDAD</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{contactoSeleccionadoDetalle.id}</td>
+                    <td>{contactoSeleccionadoDetalle.dni}</td>
+                    <td>{contactoSeleccionadoDetalle.nombre}</td>
+                    <td>{contactoSeleccionadoDetalle.telefono}</td>
+                    <td>{contactoSeleccionadoDetalle.mail}</td>
+                    <td>{contactoSeleccionadoDetalle.cp}</td>
+                    <td>{contactoSeleccionadoDetalle.localidad}</td>
+                </tr>
+            </tbody>
         </table>
-    }
+    </div>
+)
 }
