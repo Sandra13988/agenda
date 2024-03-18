@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 
 export const Formulario = ({contactos, setContacto}) => { 
-    
+        
     return(
         <div>
             <h2>Insertar contacto</h2>

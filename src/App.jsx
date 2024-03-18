@@ -8,16 +8,52 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-   const [contactos, setContactos] = useState([{ id: 0, dni: "48557240P", nombre: "Sandra", telefono: "722192843", mail: "sandra@gmail.com", direccion: "La Cruz 26B", cp: "03158", localidad: "Catral" },
-   { id: 1, dni: "48555550S", nombre: "Daniel", telefono: "722192666", mail: "daniel@gmail.com", direccion: "La Purisima 16", cp: "03158", localidad: "Catral" },
-   { id: 2, dni: "48222250R", nombre: "Jose", telefono: "722192666", mail: "jose@gmail.com", direccion: "La Purisima 16", cp: "03360", localidad: "Callosa" }])
 
+  const defaultContactos = [
+    { id: 0, 
+      dni: "48557240P", 
+      nombre: "Sandra", 
+      telefono: "722192843", 
+      mail: "sandra@gmail.com", 
+      direccion: "La Cruz 26B", 
+      cp: "03158", 
+      localidad: "Catral"
+     },
+    { id: 1, 
+      dni: "48555550S", 
+      nombre: "Daniel", 
+      telefono: "722192666", 
+      mail: "daniel@gmail.com", 
+      direccion: "La Purisima 16", 
+      cp: "03158", 
+      localidad: "Catral" 
+    },
+
+    { id: 2, 
+      dni: "48222250R", 
+      nombre: "Jose", 
+      telefono: "722192666", 
+      mail: "jose@gmail.com", 
+      direccion: "La Purisima 16", 
+      cp: "03360", 
+      localidad: "Callosa" 
+    }
+  ];
   
+  const [contactos, setContactos] = useState(defaultContactos);
   const [contactoSeleccionadoDetalle, setContactoSeleccionadoDetalle] = useState(0)
   const [contactoSeleccionadoModificar, setContactoSeleccionadoModificar] = useState(0)
   const [datosModificados, setDatosModificados] = useState({})
+  
+
+  const contactoId = (contactos, id)=>{ //funcion que le das los contactos, el id y te devuelve el objeto
+      return contacto[id]
+  }
 
 
+  const actualizarDatos = () =>{ // Una funcion que recoja contacto antiguo, los datos nuevos y los actualice
+
+  }
  
   useEffect( () => {
     cambiarDatos(contactos, datosModificados)
@@ -40,10 +76,24 @@ function App() {
   
   return (
     <>
-      <Formulario contactos={contactos} setContacto={setContactos}/><br></br>
-      <Listado contactos={contactos} setContactoSeleccionadoListar={setContactoSeleccionadoDetalle} setContactoSeleccionadoModificar={setContactoSeleccionadoModificar}/><br></br>
-      <Detalle contactoSeleccionadoDetalle={contactos[contactoSeleccionadoDetalle]}/>
-      <Modificar contactoSeleccionadoModificar={contactos[contactoSeleccionadoModificar]} setDatosModificados={setDatosModificados}/>
+      <Formulario
+        contactos={contactos}
+        setContacto={setContactos}
+      /><br></br>
+      <Listado
+        contactos={contactos}
+        setContactoSeleccionadoListar={setContactoSeleccionadoDetalle}
+        setContactoSeleccionadoModificar={setContactoSeleccionadoModificar}
+      /><br></br>
+
+      <Detalle contactoSeleccionadoDetalle={contactos[contactoSeleccionadoDetalle]} />
+      <br></br>
+
+      <Modificar 
+        contactoSeleccionadoModificar={contactos[contactoSeleccionadoModificar]} 
+        setDatosModificados={setDatosModificados}
+      />
+
     </>
   )
 }
