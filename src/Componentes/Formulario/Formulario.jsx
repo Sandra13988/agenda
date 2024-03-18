@@ -1,10 +1,10 @@
 
-export const Formulario = ({setContactoNuevo}) => { 
+export const Formulario = ({contactos, setContacto}) => { 
     
     return(
         <form action="" method="" onSubmit={e=>{
             e.preventDefault();
-            setContactoNuevo({
+            const nuevoContacto = {
                 id: e.target.id.value, 
                 dni: e.target.dni.value, 
                 nombre: e.target.nombre.value,
@@ -13,7 +13,8 @@ export const Formulario = ({setContactoNuevo}) => {
                 direccion: e.target.direccion.value,
                 cp: e.target.cp.value,
                 localidad: e.target.localidad.value
-            })
+            }
+            setContacto([...contactos, nuevoContacto])
         }}>
                     
             <label>ID: <input type="text" id="id" name="id"/></label><br></br>
