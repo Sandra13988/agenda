@@ -1,25 +1,29 @@
 import { useState, useEffect } from "react"
 
-export const Modificar = ({ contactoSeleccionadoModificar, setDatosModificados}) => { 
-    const [idNuevo, setIdNuevo] = useState(contactoSeleccionadoModificar.id)
-    const [dniNuevo, setDniiNuevo] = useState(contactoSeleccionadoModificar.dni)
-    const [nombreNuevo, setNombreNuevo] = useState(contactoSeleccionadoModificar.nombre)
-    const [telefonoNuevo, setTelefonoNuevo] = useState(contactoSeleccionadoModificar.telefono)
-    const [mailNuevo, setMailNuevo] = useState(contactoSeleccionadoModificar.mail)
-    const [direccionNueva, setDireccionNueva] = useState(contactoSeleccionadoModificar.direccion)
-    const [cpNuevo, setCpNuevo] = useState(contactoSeleccionadoModificar.cp)
-    const [localidadNueva, setLocalidadNueva] = useState(contactoSeleccionadoModificar.localidad)
+export const Modificar = ({ elementoSeleccionado, modificarDatos}) => { 
+    const [idNuevo, setIdNuevo] = useState("")
+    const [dniNuevo, setDniiNuevo] = useState("")
+    const [nombreNuevo, setNombreNuevo] = useState("")
+    const [telefonoNuevo, setTelefonoNuevo] = useState("")
+    const [mailNuevo, setMailNuevo] = useState("")
+    const [direccionNueva, setDireccionNueva] = useState("")
+    const [cpNuevo, setCpNuevo] = useState("")
+    const [localidadNueva, setLocalidadNueva] = useState("")
 
-    useEffect(() => {
-        setIdNuevo(contactoSeleccionadoModificar.id);
-        setDniiNuevo(contactoSeleccionadoModificar.dni);
-        setNombreNuevo(contactoSeleccionadoModificar.nombre);
-        setTelefonoNuevo(contactoSeleccionadoModificar.telefono);
-        setMailNuevo(contactoSeleccionadoModificar.mail);
-        setDireccionNueva(contactoSeleccionadoModificar.direccion);
-        setCpNuevo(contactoSeleccionadoModificar.cp);
-        setLocalidadNueva(contactoSeleccionadoModificar.localidad);
-    }, [contactoSeleccionadoModificar]);
+    console.log("antes del useEfect")
+    useEffect(() => { console.log("usseEfect")
+    console.log(elementoSeleccionado)
+        setIdNuevo(elementoSeleccionado.id);
+        setDniiNuevo(elementoSeleccionado.dni);
+        setNombreNuevo(elementoSeleccionado.nombre);
+        setTelefonoNuevo(elementoSeleccionado.telefono);
+        setMailNuevo(elementoSeleccionado.mail);
+        setDireccionNueva(elementoSeleccionado.direccion);
+        setCpNuevo(elementoSeleccionado.cp);
+        setLocalidadNueva(elementoSeleccionado.localidad);
+    }, [elementoSeleccionado]);
+    console.log("despues del useEEfect")
+    console.log(elementoSeleccionado)
     
     return(
 
@@ -28,9 +32,10 @@ export const Modificar = ({ contactoSeleccionadoModificar, setDatosModificados})
             <h2>Modificar contacto</h2>
             <form action="" onSubmit={e=>{
                 e.preventDefault();
-                
-                setDatosModificados({id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva})
+                const datosModificados = {id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva}
+                modificarDatos(datosModificados)
             }}> 
+            <p>{dniNuevo}</p>
                 <label >ID: <input type="text" name="idNuevo" id="idNuevo" onChange={e =>{setIdNuevo(e.target.value)}} value={idNuevo}/></label><br></br>
                 <label >DNI: <input type="text" name="dniNuevo" id="dniNuevo" onChange={e =>{setDniiNuevo(e.target.value)}} value={dniNuevo}/></label><br></br>
                 <label >NOMBRE: <input type="text" name="nombreNuevo" id="nombreNuevo" onChange={e =>{setNombreNuevo(e.target.value)}} value={nombreNuevo}/></label><br></br>

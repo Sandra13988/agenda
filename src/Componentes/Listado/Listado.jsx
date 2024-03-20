@@ -1,5 +1,8 @@
 
-export const Listado = ({ contactos, setContactos, setContactoSeleccionadoListar, setContactoSeleccionadoModificar}) => {
+export const Listado = ({ contactos, borrarDato, setElementoSeleccionado}) => {
+
+    
+
     
 
     return (
@@ -21,12 +24,13 @@ export const Listado = ({ contactos, setContactos, setContactoSeleccionadoListar
                     {contactos.map(contacto => {
                         return(
                         <tr key={contacto.id}>
+                            
                             <td>{contacto.nombre}</td>
                             <td>{contacto.telefono}</td>
                             <td>{contacto.mail}</td>
-                            <td><button onClick={() => setContactoSeleccionadoListar(contacto.id)}>VER DETALLES</button></td>
-                            <td><button onClick={() => setContactoSeleccionadoModificar(contacto.id)}>MODIFICAR</button></td>
-                            <td><button onClick={() => setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto.id))}>BORRAR</button></td>
+                            <td><button onClick={() => setElementoSeleccionado(contacto)}>VER DETALLES</button></td>
+                            <td><button onClick={() => setElementoSeleccionado(contacto)}>MODIFICAR</button></td>
+                            <td><button onClick={() => borrarDato(contacto.id)}>BORRAR</button></td>
                         </tr>
                         )
                     })}

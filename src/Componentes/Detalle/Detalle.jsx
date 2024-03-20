@@ -1,7 +1,8 @@
-export const Detalle = ({ contactoSeleccionadoDetalle }) => { 
-    const comprobarExistencia = () =>{
-        
-    }
+import { useEffect } from "react";
+
+export const Detalle = ({ elementoSeleccionado }) => { 
+
+    
     
 return(
     <div>
@@ -20,17 +21,16 @@ return(
             </thead>
             <tbody>
                 <tr>
-                    
-                    <td>{contactoSeleccionadoDetalle.id}</td>
-                    <td>{contactoSeleccionadoDetalle.dni}</td>
-                    <td>{contactoSeleccionadoDetalle.nombre}</td>
-                    <td>{contactoSeleccionadoDetalle.telefono}</td>
-                    <td>{contactoSeleccionadoDetalle.mail}</td>
-                    <td>{contactoSeleccionadoDetalle.cp}</td>
-                    <td>{contactoSeleccionadoDetalle.localidad}</td>
+                    <td>{elementoSeleccionado.id}</td>
+                    <td>{elementoSeleccionado.dni}</td>
+                    <td>{elementoSeleccionado.nombre}</td>
+                    <td>{elementoSeleccionado.telefono}</td>
+                    <td>{elementoSeleccionado.mail}</td>
+                    <td>{elementoSeleccionado.cp}</td>
+                    <td>{elementoSeleccionado.localidad}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 )
-}
+    }

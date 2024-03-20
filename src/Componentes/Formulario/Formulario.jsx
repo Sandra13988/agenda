@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const Formulario = ({contactos, setContacto}) => { 
+export const Formulario = ({agregarDatos}) => { 
         
     return(
         <div>
@@ -17,7 +17,8 @@ export const Formulario = ({contactos, setContacto}) => {
                     cp: e.target.cp.value,
                     localidad: e.target.localidad.value
                 }
-                setContacto([...contactos, nuevoContacto])
+                agregarDatos(nuevoContacto)
+               // setContacto([...contactos, nuevoContacto])
             }}>
                         
                 <label>ID: <input type="text" id="id" name="id"/></label><br></br>

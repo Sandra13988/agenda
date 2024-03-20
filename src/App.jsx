@@ -41,24 +41,56 @@ function App() {
   ];
   
   const [contactos, setContactos] = useState(defaultContactos);
-  const [contactoSeleccionadoDetalle, setContactoSeleccionadoDetalle] = useState(0)
-  const [contactoSeleccionadoModificar, setContactoSeleccionadoModificar] = useState(0)
-  const [datosModificados, setDatosModificados] = useState({})
-  
+ 
+  const [elementoSeleccionado, setElementoSeleccionado] = useState({})
+ 
+ 
 
-  const contactoId = (contactos, id)=>{ //funcion que le das los contactos, el id y te devuelve el objeto
-      return 
+  const condicionComponentes = () =>{
+    if(numeroElementos>0){
+      return (
+        <>
+      <Listado
+        numeroContactos = {numeroElementos}
+        contactos={contactos}
+        borrarDato={borrarDato}
+        setElementoSeleccionado={setElementoSeleccionado}
+      />
+      <br></br>
+        <div>
+          {JSON.stringify(contactos, null, 2)}
+        </div>
+ 
+      <Detalle
+        elementoSeleccionado={elementoSeleccionado} 
+        numeroElementos={numeroElementos}
+      />
+      <br></br>
+      <Modificar 
+        modificarDatos={modificarDatos}
+        elementoSeleccionado={elementoSeleccionado} 
+        
+      />
+      </>
+      )
+    }else{
+      return console.log("No hay elementos")
+    }
+  }
+ 
+  const numeroElementos = contactos.length;
+ 
+  // useEffect( () => {
+  //   cambiarDatos(contactos, datosModificados)
+  // }, [datosModificados])
+
+
+  const agregarDatos = (nuevoContacto) => {
+    setContactos([...contactos, nuevoContacto])
   }
 
- 
-  
- 
-  useEffect( () => {
-    cambiarDatos(contactos, datosModificados)
-  }, [datosModificados])
-
-  const cambiarDatos = (contactos, datosModificados) =>{ // Una funcion que recoja contacto antiguo, los datos nuevos y los actualice
-    const contactosPrueba = [...contactos];
+  const modificarDatos = (datosModificados) =>{ // Una funcion que recoja contactos, los datos nuevos y los actualice
+    const contactosPrueba = [...contactos];      
     contactosPrueba.map(contacto => {
 
       if(contacto.id === datosModificados.id){
@@ -74,28 +106,22 @@ function App() {
     })
   }
 
+  const borrarDato = (id) =>{
+    setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== id))
+    setElementoSeleccionado({})
+}
+
+
+
 
 
   return (
     <>
       <Formulario
         contactos={contactos}
-        setContacto={setContactos}
+        agregarDatos={agregarDatos}
       /><br></br>
-      <Listado
-        contactos={contactos}
-        setContactos={setContactos}
-        setContactoSeleccionadoListar={setContactoSeleccionadoDetalle}
-        setContactoSeleccionadoModificar={setContactoSeleccionadoModificar}
-      /><br></br>
-
-      <Detalle contactoSeleccionadoDetalle={contactos[contactoSeleccionadoDetalle]} />
-      <br></br>
-
-      <Modificar 
-        contactoSeleccionadoModificar={contactos[contactoSeleccionadoModificar]} 
-        setDatosModificados={setDatosModificados}
-      />
+      {condicionComponentes(numeroElementos)}
 
     </>
   )
