@@ -1,4 +1,7 @@
 export const Detalle = ({ contactoSeleccionadoDetalle }) => { 
+    const comprobarExistencia = () =>{
+        
+    }
     
 return(
     <div>
@@ -17,6 +20,7 @@ return(
             </thead>
             <tbody>
                 <tr>
+                    
                     <td>{contactoSeleccionadoDetalle.id}</td>
                     <td>{contactoSeleccionadoDetalle.dni}</td>
                     <td>{contactoSeleccionadoDetalle.nombre}</td>

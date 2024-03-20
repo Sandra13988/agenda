@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export const Modificar = ({ contactoSeleccionadoModificar, setDatosModificados}) => { 
     const [idNuevo, setIdNuevo] = useState(contactoSeleccionadoModificar.id)
@@ -9,6 +9,17 @@ export const Modificar = ({ contactoSeleccionadoModificar, setDatosModificados})
     const [direccionNueva, setDireccionNueva] = useState(contactoSeleccionadoModificar.direccion)
     const [cpNuevo, setCpNuevo] = useState(contactoSeleccionadoModificar.cp)
     const [localidadNueva, setLocalidadNueva] = useState(contactoSeleccionadoModificar.localidad)
+
+    useEffect(() => {
+        setIdNuevo(contactoSeleccionadoModificar.id);
+        setDniiNuevo(contactoSeleccionadoModificar.dni);
+        setNombreNuevo(contactoSeleccionadoModificar.nombre);
+        setTelefonoNuevo(contactoSeleccionadoModificar.telefono);
+        setMailNuevo(contactoSeleccionadoModificar.mail);
+        setDireccionNueva(contactoSeleccionadoModificar.direccion);
+        setCpNuevo(contactoSeleccionadoModificar.cp);
+        setLocalidadNueva(contactoSeleccionadoModificar.localidad);
+    }, [contactoSeleccionadoModificar]);
     
     return(
 
@@ -17,17 +28,8 @@ export const Modificar = ({ contactoSeleccionadoModificar, setDatosModificados})
             <h2>Modificar contacto</h2>
             <form action="" onSubmit={e=>{
                 e.preventDefault();
-                const datosNuevos = {
-                    id: e.target.idNuevo.value, 
-                    dni: e.target.dniNuevo.value, 
-                    nombre: e.target.nombreNuevo.value,
-                    telefono: e.target.telefonoNuevo.value,
-                    mail: e.target.mailNuevo.value,
-                    direccion: e.target.direccionNueva.value,
-                    cp: e.target.cpNuevo.value,
-                    localidad: e.target.localidadNueva.value
-                }
-                setDatosModificados(datosNuevos)
+                
+                setDatosModificados({id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva})
             }}> 
                 <label >ID: <input type="text" name="idNuevo" id="idNuevo" onChange={e =>{setIdNuevo(e.target.value)}} value={idNuevo}/></label><br></br>
                 <label >DNI: <input type="text" name="dniNuevo" id="dniNuevo" onChange={e =>{setDniiNuevo(e.target.value)}} value={dniNuevo}/></label><br></br>

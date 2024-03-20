@@ -1,5 +1,5 @@
 
-export const Listado = ({ contactos, setContactoSeleccionadoListar, setContactoSeleccionadoModificar}) => {
+export const Listado = ({ contactos, setContactos, setContactoSeleccionadoListar, setContactoSeleccionadoModificar}) => {
     
 
     return (
@@ -26,7 +26,7 @@ export const Listado = ({ contactos, setContactoSeleccionadoListar, setContactoS
                             <td>{contacto.mail}</td>
                             <td><button onClick={() => setContactoSeleccionadoListar(contacto.id)}>VER DETALLES</button></td>
                             <td><button onClick={() => setContactoSeleccionadoModificar(contacto.id)}>MODIFICAR</button></td>
-                            <td><button onClick={() => setContactoSeleccionadoBorrar(contacto.id)}>BORRAR</button></td>
+                            <td><button onClick={() => setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto.id))}>BORRAR</button></td>
                         </tr>
                         )
                     })}

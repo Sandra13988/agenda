@@ -47,20 +47,20 @@ function App() {
   
 
   const contactoId = (contactos, id)=>{ //funcion que le das los contactos, el id y te devuelve el objeto
-      return contacto[id]
+      return 
   }
 
-
-  const actualizarDatos = () =>{ // Una funcion que recoja contacto antiguo, los datos nuevos y los actualice
-
-  }
+ 
+  
  
   useEffect( () => {
     cambiarDatos(contactos, datosModificados)
   }, [datosModificados])
 
-  const cambiarDatos = (contactos, datosModificados) =>{
-    contactos.map(contacto => {
+  const cambiarDatos = (contactos, datosModificados) =>{ // Una funcion que recoja contacto antiguo, los datos nuevos y los actualice
+    const contactosPrueba = [...contactos];
+    contactosPrueba.map(contacto => {
+
       if(contacto.id === datosModificados.id){
         contacto.dni = datosModificados.dni;
         contacto.nombre = datosModificados.nombre;
@@ -70,10 +70,12 @@ function App() {
         contacto.cp = datosModificados.cp;
         contacto.localidad = datosModificados.localidad;
       }
+      setContactos(contactosPrueba)
     })
   }
 
-  
+
+
   return (
     <>
       <Formulario
@@ -82,6 +84,7 @@ function App() {
       /><br></br>
       <Listado
         contactos={contactos}
+        setContactos={setContactos}
         setContactoSeleccionadoListar={setContactoSeleccionadoDetalle}
         setContactoSeleccionadoModificar={setContactoSeleccionadoModificar}
       /><br></br>
