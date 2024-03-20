@@ -1,9 +1,6 @@
 
-export const Listado = ({ contactos, borrarDato, setElementoSeleccionado}) => {
+export const Listado = ({ contactos, onDelete, onUpdate, onView}) => {
 
-    
-
-    
 
     return (
         <div>
@@ -28,9 +25,9 @@ export const Listado = ({ contactos, borrarDato, setElementoSeleccionado}) => {
                             <td>{contacto.nombre}</td>
                             <td>{contacto.telefono}</td>
                             <td>{contacto.mail}</td>
-                            <td><button onClick={() => setElementoSeleccionado(contacto)}>VER DETALLES</button></td>
-                            <td><button onClick={() => setElementoSeleccionado(contacto)}>MODIFICAR</button></td>
-                            <td><button onClick={() => borrarDato(contacto.id)}>BORRAR</button></td>
+                            <td><button onClick={() => onView(contacto.id)}>VER DETALLES</button></td>
+                            <td><button onClick={() => onUpdate(contacto.id)}>MODIFICAR</button></td>
+                            <td><button onClick={() => onDelete(contacto.id)}>BORRAR</button></td>
                         </tr>
                         )
                     })}

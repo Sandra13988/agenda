@@ -41,8 +41,8 @@ function App() {
   ];
   
   const [contactos, setContactos] = useState(defaultContactos);
- 
-  const [elementoSeleccionado, setElementoSeleccionado] = useState({})
+  const [contactoDetalle, setContactoDetalle] = useState({})
+  const [contactoModiciar, setContactoModificar] = useState({})
  
  
 
@@ -50,27 +50,34 @@ function App() {
     if(numeroElementos>0){
       return (
         <>
-      <Listado
-        numeroContactos = {numeroElementos}
-        contactos={contactos}
-        borrarDato={borrarDato}
-        setElementoSeleccionado={setElementoSeleccionado}
-      />
-      <br></br>
-        <div>
+      <div>
+        <Listado
+          numeroContactos = {numeroElementos}
+          contactos={contactos}
+          onDelete={borrarContacto}
+          onUpdate={modificarContacto}
+          onView={verContacto}
+          
+        />
+      </div>
+      
+
+        {/* <div>
           {JSON.stringify(contactos, null, 2)}
-        </div>
- 
-      <Detalle
-        elementoSeleccionado={elementoSeleccionado} 
-        numeroElementos={numeroElementos}
-      />
-      <br></br>
-      <Modificar 
-        modificarDatos={modificarDatos}
-        elementoSeleccionado={elementoSeleccionado} 
-        
-      />
+        </div> */}
+      <div>
+        <Detalle
+          dato={contactoDetalle} 
+          numeroElementos={numeroElementos}
+        />
+      </div>
+      
+      <div>
+        <Modificar 
+          modificarDatos={modificarDatos}
+          elementoSeleccionado={elementoSeleccionado} 
+        />
+      </div>
       </>
       )
     }else{
@@ -84,12 +91,27 @@ function App() {
   //   cambiarDatos(contactos, datosModificados)
   // }, [datosModificados])
 
+  const getContacto = (id) =>{ //Funcion que devuelve el contacto por id
+    contactos.map(contacto =>{
+      if(contacto.id === id){
+        return contacto
+      }
+    })
+
+    
+  }
+
+  const verContacto = (id) =>{
+
+    setContactoDetalle(getContacto(id)) //Añadir contacto seleccionado por el ID
+  }
 
   const agregarDatos = (nuevoContacto) => {
     setContactos([...contactos, nuevoContacto])
   }
 
-  const modificarDatos = (datosModificados) =>{ // Una funcion que recoja contactos, los datos nuevos y los actualice
+  const modificarDatos = (contacto, datosModificados) =>{ 
+    
     const contactosPrueba = [...contactos];      
     contactosPrueba.map(contacto => {
 
@@ -106,22 +128,25 @@ function App() {
     })
   }
 
-  const borrarDato = (id) =>{
+  const borrarContacto = (id) =>{
     setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== id))
     setElementoSeleccionado({})
 }
 
 
 
-
-
   return (
     <>
-      <Formulario
-        contactos={contactos}
-        agregarDatos={agregarDatos}
-      /><br></br>
-      {condicionComponentes(numeroElementos)}
+      <div id="contenedor">
+        <div>
+          <Formulario
+            contactos={contactos}
+            agregarDatos={agregarDatos}
+          />
+        </div>
+
+        {condicionComponentes(numeroElementos)}
+      </div>
 
     </>
   )
