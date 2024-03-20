@@ -41,49 +41,10 @@ function App() {
   ];
   
   const [contactos, setContactos] = useState(defaultContactos);
-  const [contactoDetalle, setContactoDetalle] = useState({})
-  const [contactoModiciar, setContactoModificar] = useState({})
- 
- 
-
-  const condicionComponentes = () =>{
-    if(numeroElementos>0){
-      return (
-        <>
-      <div>
-        <Listado
-          numeroContactos = {numeroElementos}
-          contactos={contactos}
-          onDelete={borrarContacto}
-          onUpdate={modificarContacto}
-          onView={verContacto}
-          
-        />
-      </div>
+  const [elementoSeleccionado, setElementoSeleccionado] = useState({})
+  const [contactoModificar, setContactoModificar] = useState({})
+  const [contactoVer, setContactoVer] = useState({})
       
-
-        {/* <div>
-          {JSON.stringify(contactos, null, 2)}
-        </div> */}
-      <div>
-        <Detalle
-          dato={contactoDetalle} 
-          numeroElementos={numeroElementos}
-        />
-      </div>
-      
-      <div>
-        <Modificar 
-          modificarDatos={modificarDatos}
-          elementoSeleccionado={elementoSeleccionado} 
-        />
-      </div>
-      </>
-      )
-    }else{
-      return console.log("No hay elementos")
-    }
-  }
  
   const numeroElementos = contactos.length;
  
@@ -91,19 +52,16 @@ function App() {
   //   cambiarDatos(contactos, datosModificados)
   // }, [datosModificados])
 
-  const getContacto = (id) =>{ //Funcion que devuelve el contacto por id
+  const getContacto = (id) =>{
     contactos.map(contacto =>{
       if(contacto.id === id){
         return contacto
       }
     })
-
-    
   }
 
-  const verContacto = (id) =>{
+  const verDatos = () =>{
 
-    setContactoDetalle(getContacto(id)) //Añadir contacto seleccionado por el ID
   }
 
   const agregarDatos = (nuevoContacto) => {
@@ -111,7 +69,7 @@ function App() {
   }
 
   const modificarDatos = (contacto, datosModificados) =>{ 
-    
+
     const contactosPrueba = [...contactos];      
     contactosPrueba.map(contacto => {
 
@@ -128,7 +86,7 @@ function App() {
     })
   }
 
-  const borrarContacto = (id) =>{
+  const borrarDato = (id) =>{
     setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== id))
     setElementoSeleccionado({})
 }
@@ -138,15 +96,38 @@ function App() {
   return (
     <>
       <div id="contenedor">
-        <div>
-          <Formulario
-            contactos={contactos}
-            agregarDatos={agregarDatos}
-          />
-        </div>
-
-        {condicionComponentes(numeroElementos)}
+      <div>
+        <Formulario
+          contactos={contactos}
+          agregarDatos={agregarDatos}
+        />
       </div>
+      <div>
+        {contactos && <Listado
+          numeroContactos = {numeroElementos}
+          contactos={contactos}
+          onDelete={borrarDato}
+          onUpdate={onUpdate}
+          onView={onView}
+          getContacto={getContacto}
+          
+        />}
+      </div>
+      <div>
+        {contactos && <Modificar 
+          modificarDatos={modificarDatos}
+          elementoSeleccionado={elementoSeleccionado} 
+        />}
+      </div>
+     
+      <div>
+        {contactos && <Detalle
+          elementoSeleccionado={elementoSeleccionado} 
+          numeroElementos={numeroElementos}
+        />}
+      </div>
+      </div>
+      
 
     </>
   )

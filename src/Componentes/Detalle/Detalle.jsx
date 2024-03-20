@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export const Detalle = ({ dato }) => { 
+export const Detalle = ({ elementoSeleccionado }) => { 
 
     
     
@@ -21,13 +21,13 @@ return(
             </thead>
             <tbody>
                 <tr>
-                    <td>{dato.id}</td>
-                    <td>{dato.dni}</td>
-                    <td>{dato.nombre}</td>
-                    <td>{dato.telefono}</td>
-                    <td>{dato.mail}</td>
-                    <td>{dato.cp}</td>
-                    <td>{dato.localidad}</td>
+                    <td>{elementoSeleccionado.id}</td>
+                    <td>{elementoSeleccionado.dni}</td>
+                    <td>{elementoSeleccionado.nombre}</td>
+                    <td>{elementoSeleccionado.telefono}</td>
+                    <td>{elementoSeleccionado.mail}</td>
+                    <td>{elementoSeleccionado.cp}</td>
+                    <td>{elementoSeleccionado.localidad}</td>
                 </tr>
             </tbody>
         </table>

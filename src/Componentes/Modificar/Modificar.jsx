@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-export const Modificar = ({ elementoSeleccionado, modificarDatos}) => { 
+export const Modificar = ({ elementoSeleccionado, setDatosModificados}) => { 
     const [idNuevo, setIdNuevo] = useState("")
     const [dniNuevo, setDniiNuevo] = useState("")
     const [nombreNuevo, setNombreNuevo] = useState("")
@@ -23,7 +23,6 @@ export const Modificar = ({ elementoSeleccionado, modificarDatos}) => {
         setLocalidadNueva(elementoSeleccionado.localidad);
     }, [elementoSeleccionado]);
     console.log("despues del useEEfect")
-    console.log(elementoSeleccionado)
     
     return(
 
@@ -32,8 +31,8 @@ export const Modificar = ({ elementoSeleccionado, modificarDatos}) => {
             <h2>Modificar contacto</h2>
             <form action="" onSubmit={e=>{
                 e.preventDefault();
-                const datosModificados = {id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva}
-                modificarDatos(datosModificados)
+                
+                setDatosModificados({id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva})
             }}> 
             <p>{dniNuevo}</p>
                 <label >ID: <input type="text" name="idNuevo" id="idNuevo" onChange={e =>{setIdNuevo(e.target.value)}} value={idNuevo}/></label><br></br>
