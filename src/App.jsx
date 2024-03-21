@@ -1,154 +1,150 @@
-import { useEffect, useState } from 'react'
-import { Formulario } from './Componentes/Formulario/Formulario'
-import { Listado } from './Componentes/Listado/Listado'
-import { Detalle } from './Componentes/Detalle/Detalle'
-import { Modificar } from './Componentes/Modificar/Modificar'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useState} from 'react'
+import {Listado} from './Componentes/Listado/Listado'
+import {Detalle} from './Componentes/Detalle/Detalle'
+import {Modificar} from './Componentes/Modificar/Modificar'
 import './App.css'
+import {Crear} from "./Componentes/Crear/Crear.jsx";
 
 function App() {
 
   const defaultContactos = [
-    { id: 0, 
-      dni: "48557240P", 
-      nombre: "Sandra", 
-      telefono: "722192843", 
-      mail: "sandra@gmail.com", 
-      direccion: "La Cruz 26B", 
-      cp: "03158", 
+    { id: 0,
+      dni: "48557240P",
+      nombre: "Sandra",
+      telefono: "722192843",
+      mail: "sandra@gmail.com",
+      direccion: "La Cruz 26B",
+      cp: "03158",
       localidad: "Catral"
      },
-    { id: 1, 
-      dni: "48555550S", 
-      nombre: "Daniel", 
-      telefono: "722192666", 
-      mail: "daniel@gmail.com", 
-      direccion: "La Purisima 16", 
-      cp: "03158", 
-      localidad: "Catral" 
+    { id: 1,
+      dni: "48555550S",
+      nombre: "Daniel",
+      telefono: "722192666",
+      mail: "daniel@gmail.com",
+      direccion: "La Purisima 16",
+      cp: "03158",
+      localidad: "Catral"
     },
 
-    { id: 2, 
-      dni: "48222250R", 
-      nombre: "Jose", 
-      telefono: "722192666", 
-      mail: "jose@gmail.com", 
-      direccion: "La Purisima 16", 
-      cp: "03360", 
-      localidad: "Callosa" 
+    { id: 2,
+      dni: "48222250R",
+      nombre: "Jose",
+      telefono: "722192666",
+      mail: "jose@gmail.com",
+      direccion: "La Purisima 16",
+      cp: "03360",
+      localidad: "Callosa"
     }
   ];
-  
+
   const [contactos, setContactos] = useState(defaultContactos);
   const [contactoDetalle, setContactoDetalle] = useState({})
-  const [contactoModiciar, setContactoModificar] = useState({})
- 
- 
+  const [contactoModificar, setContactoModificar] = useState({})
 
-  const condicionComponentes = () =>{
-    if(numeroElementos>0){
-      return (
-        <>
-      <div>
-        <Listado
-          numeroContactos = {numeroElementos}
-          contactos={contactos}
-          onDelete={borrarContacto}
-          onUpdate={modificarContacto}
-          onView={verContacto}
-          
-        />
-      </div>
-      
 
-        {/* <div>
-          {JSON.stringify(contactos, null, 2)}
-        </div> */}
-      <div>
-        <Detalle
-          dato={contactoDetalle} 
-          numeroElementos={numeroElementos}
-        />
-      </div>
-      
-      <div>
-        <Modificar 
-          modificarDatos={modificarDatos}
-          elementoSeleccionado={elementoSeleccionado} 
-        />
-      </div>
-      </>
-      )
-    }else{
-      return console.log("No hay elementos")
-    }
-  }
- 
-  const numeroElementos = contactos.length;
- 
-  // useEffect( () => {
-  //   cambiarDatos(contactos, datosModificados)
-  // }, [datosModificados])
-
-  const getContacto = (id) =>{ //Funcion que devuelve el contacto por id
-    contactos.map(contacto =>{
-      if(contacto.id === id){
+  const getContacto = (id) => { //Funcion que devuelve el contacto por id
+    return contactos.find(contacto => {
+      if (contacto.id === id) {
         return contacto
       }
     })
-
-    
   }
 
-  const verContacto = (id) =>{
+  const handleUpdate = (id) => {
 
-    setContactoDetalle(getContacto(id)) //Añadir contacto seleccionado por el ID
-  }
-
-  const agregarDatos = (nuevoContacto) => {
-    setContactos([...contactos, nuevoContacto])
-  }
-
-  const modificarDatos = (contacto, datosModificados) =>{ 
-    
-    const contactosPrueba = [...contactos];      
-    contactosPrueba.map(contacto => {
-
-      if(contacto.id === datosModificados.id){
-        contacto.dni = datosModificados.dni;
-        contacto.nombre = datosModificados.nombre;
-        contacto.telefono = datosModificados.telefono;
-        contacto.mail = datosModificados.mail;
-        contacto.direccion = datosModificados.direccion;
-        contacto.cp = datosModificados.cp;
-        contacto.localidad = datosModificados.localidad;
+    if (contactoDetalle && contactoDetalle.id === id){
+      if (confirm('Estas visualizando un contacto. Si modificas, perderás el contacto que estás visualizando. ¿Quieres continuar?')) {
+        setContactoDetalle({})
       }
-      setContactos(contactosPrueba)
-    })
+      else
+        return;
+    }
+
+      const contacto  = getContacto(id);
+
+      if (contacto !== undefined)
+        setContactoModificar(contacto)
+
   }
 
-  const borrarContacto = (id) =>{
-    setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== id))
-    setElementoSeleccionado({})
-}
+  const onUpdate = (contacto) => {
+    if (contacto.id !== undefined) {
+      const contactosModificados = contactos.map(contactoTemp => {
+        if (contacto.id === contactoTemp.id )
+          return contacto;
+
+        return contactoTemp;
+      })
+
+      setContactos(contactosModificados)
+    }
+
+  }
+
+  const handleDelete = (id) => {
+    if (confirm('¿Realmente deseas borrar el elemento?')){
+      if (contactoDetalle.id === id)
+        setContactoDetalle({})
+
+      if (contactoModificar.id === id)
+        setContactoModificar({})
+
+      setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== id))
+    }
+  }
+
+  const onCreate = (contacto) => {
+    if (contacto.dni !== undefined){
+      // todo: esto no estaría del todo bien porque si borras muchos y vuelves a crear, alguno va a coincidir.
+      // Para hacerlo bien tendrías que tener una función que con un while vaya comprobando de forma incremental que número no está cogido. Puedes coger length como referencia.
+      contacto.id = contactos.length;
+      setContactos([...contactos, contacto]);
+    }
+  }
+
+  const handleView = (id) => {
+    const contacto  = getContacto(id);
+
+    if (contactoModificar && contactoModificar.id === id){
+      if (confirm('Estas modificando este contacto. Para visualizarlo, perderás los cambios que hayas realizado. ¿Quieres continuar?')) {
+        setContactoModificar({})
+      }
+      else
+        return;
+    }
+
+    if (contacto.id !== undefined)
+      setContactoDetalle(contacto)
+  }
 
 
 
   return (
-    <>
       <div id="contenedor">
-        <div>
-          <Formulario
+
+          <Listado
             contactos={contactos}
-            agregarDatos={agregarDatos}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
+            onView={handleView}
+
           />
-        </div>
 
-        {condicionComponentes(numeroElementos)}
+        <Crear
+            onCreate={onCreate}
+          />
+
+        <Detalle
+          dato={contactoDetalle}
+        />
+
+        <Modificar
+          onUpdate={onUpdate}
+          data={contactoModificar}
+        />
+
       </div>
-
-    </>
   )
 }
 

@@ -1,36 +1,59 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
+import {CustomInput} from "./CustomInput.jsx";
 
-export const Formulario = ({agregarDatos}) => { 
-        
+export const Formulario = ({ data, onSubmit, buttonLabel }) => {
+
+    const [formContacto, setFormContacto] = useState({
+        id: '',
+        nombre: '',
+        dni: '',
+        telefono: '',
+        mail: '',
+        direccion: '',
+        cp: '',
+        localidad: ''
+    });
+
+    const formRef = useRef()
+
+    useEffect(() => {
+        if (data !== undefined){
+            setFormContacto({
+                id: data.id,
+                nombre: data.nombre,
+                dni: data.dni,
+                telefono: data.telefono,
+                mail: data.mail,
+                direccion: data.direccion,
+                cp: data.cp,
+                localidad: data.localidad
+            })
+
+            formRef.current.reset()
+        }
+
+    }, [data]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormContacto({ ...formContacto, [name]: value });
+    }
+
     return(
-        <div>
-            <h2>Insertar contacto</h2>
-            <form action="" method="" onSubmit={e=>{
-                e.preventDefault();
-                const nuevoContacto = {
-                    id: e.target.id.value, 
-                    dni: e.target.dni.value, 
-                    nombre: e.target.nombre.value,
-                    telefono: e.target.telefono.value,
-                    mail: e.target.mail.value,
-                    direccion: e.target.direccion.value,
-                    cp: e.target.cp.value,
-                    localidad: e.target.localidad.value
-                }
-                agregarDatos(nuevoContacto)
-               // setContacto([...contactos, nuevoContacto])
-            }}>
-                        
-                <label>ID: <input type="text" id="id" name="id"/></label><br></br>
-                <label>DNI: <input type="text" id="dni" name="dni"/></label><br></br>
-                <label>Nombre: <input type="text" id="nombre" name="nombre"/></label><br></br>
-                <label>Telefono: <input type="text" id="telefono" name="telefono"/></label><br></br>
-                <label>E-mail: <input type="text" id="mail" name="mail"/></label><br></br>
-                <label>Direccion: <input type="text" id="direccion" name="direccion"/></label><br></br>
-                <label>CP: <input type="text" id="cp" name="cp"/></label><br></br>
-                <label>Localidad: <input type="text" id="localidad" name="localidad"/></label><br></br>
-                <button>Enviar</button>
-            </form>
-        </div>
+      <form action="" ref={formRef} onSubmit={e => {
+          e.preventDefault();
+          onSubmit(formContacto)
+      }}>
+
+
+          <CustomInput label="DNI" name="dni" value={formContacto.dni} onchange={handleChange} />
+          <CustomInput label="NOMBRE" name="nombre" value={formContacto.nombre} onchange={handleChange} />
+          <CustomInput label="TELEFONO" name="telefono" value={formContacto.telefono} onchange={handleChange} />
+          <CustomInput label="E-MAIL" name="mail" value={formContacto.mail} onchange={handleChange} />
+          <CustomInput label="DIRECCION" name="direccion" value={formContacto.direccion} onchange={handleChange} />
+          <CustomInput label="CP" name="cp" value={formContacto.cp} onchange={handleChange} />
+          <CustomInput label="LOCALIDAD" name="localidad" value={formContacto.localidad}  onchange={handleChange} />
+          <button>{buttonLabel}</button>
+      </form>
     )
 }
