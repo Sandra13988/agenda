@@ -19,19 +19,7 @@ export const Detalle = ({ contactoVer }) => {
                 </table>
             </div>
         )
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>DNI</th>
-                    <th>NOMBRE</th>
-                    <th>TELEFONO</th>
-                    <th>MAIL</th>
-                    <th>CP</th>
-                    <th>LOCALIDAD</th>
-                </tr>
-            </thead> 
-            </table>
+       
     }
     
 return(

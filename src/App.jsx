@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Agregar } from './Componentes/Formulario/Agregar'
+import { Agregar } from './Componentes/Agregar/Agregar'
 import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
@@ -42,8 +42,6 @@ function App() {
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
       
- 
-  const numeroElementos = contactos.length;
  
   // useEffect( () => {
   //   cambiarDatos(contactos, datosModificados)
