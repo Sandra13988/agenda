@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react'
-import { Formulario } from './Componentes/Formulario/Formulario'
+import { useState } from 'react'
+import { Agregar } from './Componentes/Formulario/Agregar'
 import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
@@ -109,7 +107,7 @@ const onDelete = (contacto) =>{
   </pre> */}
       <div id="contenedor">
         <div>
-          <Formulario
+          <Agregar
             contactos={contactos}
             agregarDatos={agregarDatos}
           />

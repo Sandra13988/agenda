@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const Formulario = ({agregarDatos, resetInput}) => { 
+export const Agregar = ({agregarDatos, resetInput}) => { 
         
     return(
         <div>
