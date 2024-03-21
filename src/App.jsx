@@ -41,7 +41,6 @@ function App() {
   ];
   
   const [contactos, setContactos] = useState(defaultContactos);
-  const [elementoSeleccionado, setElementoSeleccionado] = useState({})
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
       
@@ -52,28 +51,22 @@ function App() {
   //   cambiarDatos(contactos, datosModificados)
   // }, [datosModificados])
 
-  const getContacto = (id) =>{
-    contactos.map(contacto =>{
-      if(contacto.id === id){
-        return contacto
-      }
-    })
+  const getContacto = (idRecibido) =>{
+    return contactos.find(contacto => contacto.id === idRecibido)
   }
 
-  const verDatos = () =>{
-
-  }
-
+  
+  
   const agregarDatos = (nuevoContacto) => {
     setContactos([...contactos, nuevoContacto])
   }
 
-  const modificarDatos = (contacto, datosModificados) =>{ 
+  const modificarDatos = (contactoModificar, datosModificados) =>{ 
 
     const contactosPrueba = [...contactos];      
     contactosPrueba.map(contacto => {
 
-      if(contacto.id === datosModificados.id){
+      if(contacto.id === datosModificados.id && contacto.id === contactoModificar.id){
         contacto.dni = datosModificados.dni;
         contacto.nombre = datosModificados.nombre;
         contacto.telefono = datosModificados.telefono;
@@ -86,46 +79,62 @@ function App() {
     })
   }
 
-  const borrarDato = (id) =>{
-    setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== id))
-    setElementoSeleccionado({})
+ 
+
+const onUpdate = (contacto) =>{
+  setContactoModificar(getContacto(contacto))
 }
 
+const onView = (contacto) => {
+  setContactoVer(getContacto(contacto))
+}
+
+const onDelete = (contacto) =>{
+   
+    setContactoVer({})
+    setContactoModificar({})
+    //resetInput();
+    setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
+
+}
+  // const resetInput = () =>{
+  //   Array.from(document.querySelectorAll("input")).forEach(input => (input.value=""));
+  // }
 
 
   return (
     <>
+    {/* <pre>
+    <p>{JSON.stringify(getContacto(2), null, 2)}</p>
+  </pre> */}
       <div id="contenedor">
-      <div>
-        <Formulario
-          contactos={contactos}
-          agregarDatos={agregarDatos}
-        />
-      </div>
-      <div>
-        {contactos && <Listado
-          numeroContactos = {numeroElementos}
-          contactos={contactos}
-          onDelete={borrarDato}
-          onUpdate={onUpdate}
-          onView={onView}
-          getContacto={getContacto}
-          
-        />}
-      </div>
-      <div>
-        {contactos && <Modificar 
-          modificarDatos={modificarDatos}
-          elementoSeleccionado={elementoSeleccionado} 
-        />}
-      </div>
-     
-      <div>
-        {contactos && <Detalle
-          elementoSeleccionado={elementoSeleccionado} 
-          numeroElementos={numeroElementos}
-        />}
-      </div>
+        <div>
+          <Formulario
+            contactos={contactos}
+            agregarDatos={agregarDatos}
+          />
+        </div>
+        <div>
+          {contactos && <Listado
+            contactos={contactos}
+            onUpdate={onUpdate} //Boton para pasar los datos del contacto al formulario 
+            onView={onView} //Boton para visualizar el contacto en la lista de detalles
+            onDelete={onDelete}// Boton para borrar un contacto
+          />}
+        </div>
+        <div>
+          {contactos && <Modificar 
+          contactoModificar={contactoModificar}
+          modificarDatos={modificarDatos} //Boton que ejecuta la modificacion
+            
+          />}
+        </div>
+      
+        <div>
+          {contactos && <Detalle
+            contactoVer={contactoVer} 
+          />}
+        </div>
       </div>
       
 

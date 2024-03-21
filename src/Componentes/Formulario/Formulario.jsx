@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const Formulario = ({agregarDatos}) => { 
+export const Formulario = ({agregarDatos, resetInput}) => { 
         
     return(
         <div>
@@ -18,6 +18,7 @@ export const Formulario = ({agregarDatos}) => {
                     localidad: e.target.localidad.value
                 }
                 agregarDatos(nuevoContacto)
+                e.target.reset();
                // setContacto([...contactos, nuevoContacto])
             }}>
                         

@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
-export const Modificar = ({ elementoSeleccionado, setDatosModificados}) => { 
+export const Modificar = ({ contactoModificar, modificarDatos }) => { 
     const [idNuevo, setIdNuevo] = useState("")
     const [dniNuevo, setDniiNuevo] = useState("")
     const [nombreNuevo, setNombreNuevo] = useState("")
@@ -10,31 +10,34 @@ export const Modificar = ({ elementoSeleccionado, setDatosModificados}) => {
     const [cpNuevo, setCpNuevo] = useState("")
     const [localidadNueva, setLocalidadNueva] = useState("")
 
-    console.log("antes del useEfect")
-    useEffect(() => { console.log("usseEfect")
-    console.log(elementoSeleccionado)
-        setIdNuevo(elementoSeleccionado.id);
-        setDniiNuevo(elementoSeleccionado.dni);
-        setNombreNuevo(elementoSeleccionado.nombre);
-        setTelefonoNuevo(elementoSeleccionado.telefono);
-        setMailNuevo(elementoSeleccionado.mail);
-        setDireccionNueva(elementoSeleccionado.direccion);
-        setCpNuevo(elementoSeleccionado.cp);
-        setLocalidadNueva(elementoSeleccionado.localidad);
-    }, [elementoSeleccionado]);
-    console.log("despues del useEEfect")
+    useEffect(() => { 
+
+        setIdNuevo(contactoModificar.id ?? '');
+        setDniiNuevo(contactoModificar.dni ?? '');
+        setNombreNuevo(contactoModificar.nombre ?? '');
+        setTelefonoNuevo(contactoModificar.telefono ?? '');
+        setMailNuevo(contactoModificar.mail ?? '');
+        setDireccionNueva(contactoModificar.direccion ?? '');
+        setCpNuevo(contactoModificar.cp ?? '');
+        setLocalidadNueva(contactoModificar.localidad ?? '');
+    }, [contactoModificar]);
+ 
+    console.log(contactoModificar)
     
     return(
 
        
         <div>
             <h2>Modificar contacto</h2>
-            <form action="" onSubmit={e=>{
+            <form  action="" onSubmit={e=>{
                 e.preventDefault();
                 
-                setDatosModificados({id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva})
+                
+                const datosNuevos = {id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva}
+                
+                modificarDatos(contactoModificar, datosNuevos)
+                
             }}> 
-            <p>{dniNuevo}</p>
                 <label >ID: <input type="text" name="idNuevo" id="idNuevo" onChange={e =>{setIdNuevo(e.target.value)}} value={idNuevo}/></label><br></br>
                 <label >DNI: <input type="text" name="dniNuevo" id="dniNuevo" onChange={e =>{setDniiNuevo(e.target.value)}} value={dniNuevo}/></label><br></br>
                 <label >NOMBRE: <input type="text" name="nombreNuevo" id="nombreNuevo" onChange={e =>{setNombreNuevo(e.target.value)}} value={nombreNuevo}/></label><br></br>
@@ -46,5 +49,6 @@ export const Modificar = ({ elementoSeleccionado, setDatosModificados}) => {
                 <button>Enviar cambios</button>
             </form>
         </div>
+        
     )
 }

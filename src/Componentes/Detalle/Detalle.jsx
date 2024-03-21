@@ -1,8 +1,26 @@
 import { useEffect } from "react";
 
-export const Detalle = ({ elementoSeleccionado }) => { 
-
-    
+export const Detalle = ({ contactoVer }) => { 
+    if (!contactoVer) {
+        return (
+        <div>
+        <h2>Detalles</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>DNI</th>
+                        <th>NOMBRE</th>
+                        <th>TELEFONO</th>
+                        <th>MAIL</th>
+                        <th>CP</th>
+                        <th>LOCALIDAD</th>
+                    </tr>
+                </thead> 
+            </table>
+        </div>
+        )
+    }
     
 return(
     <div>
@@ -21,13 +39,13 @@ return(
             </thead>
             <tbody>
                 <tr>
-                    <td>{elementoSeleccionado.id}</td>
-                    <td>{elementoSeleccionado.dni}</td>
-                    <td>{elementoSeleccionado.nombre}</td>
-                    <td>{elementoSeleccionado.telefono}</td>
-                    <td>{elementoSeleccionado.mail}</td>
-                    <td>{elementoSeleccionado.cp}</td>
-                    <td>{elementoSeleccionado.localidad}</td>
+                    <td>{contactoVer.id}</td>
+                    <td>{contactoVer.dni}</td>
+                    <td>{contactoVer.nombre}</td>
+                    <td>{contactoVer.telefono}</td>
+                    <td>{contactoVer.mail}</td>
+                    <td>{contactoVer.cp}</td>
+                    <td>{contactoVer.localidad}</td>
                 </tr>
             </tbody>
         </table>
