@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const Agregar = ({agregarDatos, resetInput}) => { 
+export const Agregar = ({agregarDatos}) => { 
         
     return(
         <div>

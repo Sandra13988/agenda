@@ -1,9 +1,11 @@
+
 import { useState } from 'react'
 import { Agregar } from './Componentes/Agregar/Agregar'
 import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
 import './App.css'
+import { Formulario } from './Componentes/Formulario/Formulario'
 
 function App() {
 
@@ -41,6 +43,9 @@ function App() {
   const [contactos, setContactos] = useState(defaultContactos);
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
+  const elementos = ["ID", "DNI", "NOMBRE", "TELEFONO", "E-MAIL", "DIRECCION", "CP", "LOCALIDAD"]
+  const boton = "Enviar"
+  const titulo = "Formulario provisional"
       
  
   // useEffect( () => {
@@ -104,7 +109,7 @@ const onDelete = (contacto) =>{
     <p>{JSON.stringify(getContacto(2), null, 2)}</p>
   </pre> */}
       <div id="contenedor">
-        <div>
+        {/* <div>
           <Agregar
             contactos={contactos}
             agregarDatos={agregarDatos}
@@ -131,8 +136,18 @@ const onDelete = (contacto) =>{
             contactoVer={contactoVer} 
           />}
         </div>
+ */}
+
+        <div>
+          {<Formulario
+            elementos={elementos} 
+            titulo = {titulo}
+            boton = {boton}
+          />}
+        </div>
       </div>
       
+
 
     </>
   )

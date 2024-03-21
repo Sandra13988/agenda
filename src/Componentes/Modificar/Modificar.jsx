@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 
 export const Modificar = ({ contactoModificar, modificarDatos }) => { 
     const [idNuevo, setIdNuevo] = useState("")
