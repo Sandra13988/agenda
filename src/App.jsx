@@ -94,11 +94,18 @@ function App() {
     }
   }
 
+  const getNewId = () => {
+    const ids = contactos.map(item => item.id);
+    let newId = contactos.length;
+    while (ids.includes(newId)) {
+      newId++;
+    }
+    return newId;
+  };
+
   const onCreate = (contacto) => {
     if (contacto.dni !== undefined){
-      // todo: esto no estaría del todo bien porque si borras muchos y vuelves a crear, alguno va a coincidir.
-      // Para hacerlo bien tendrías que tener una función que con un while vaya comprobando de forma incremental que número no está cogido. Puedes coger length como referencia.
-      contacto.id = contactos.length;
+      contacto.id = getNewId()
       setContactos([...contactos, contacto]);
     }
   }
@@ -122,7 +129,6 @@ function App() {
 
   return (
       <div id="contenedor">
-
           <Listado
             contactos={contactos}
             onDelete={handleDelete}
