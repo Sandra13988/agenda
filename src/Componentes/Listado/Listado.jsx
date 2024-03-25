@@ -1,6 +1,5 @@
 
-export const Listado = ({ contactos, onUpdate, onView, onDelete}) => {
-
+export const Listado = ({ contactos, onUpdate, onView, onDelete, handleClick}) => {
 
     return (
         <div>
@@ -24,8 +23,8 @@ export const Listado = ({ contactos, onUpdate, onView, onDelete}) => {
                             <td>{contacto.nombre}</td>
                             <td>{contacto.telefono}</td>
                             <td>{contacto.email}</td>
-                            <td><button onClick={() => onView(contacto.id)}>VER DETALLES</button></td>
-                            <td><button onClick={() => onUpdate(contacto.id)}>MODIFICAR</button></td>
+                            <td><button onClick={() => onView(contacto.id)} >VER DETALLES</button></td>
+                            <td><button onClick={() => onUpdate(contacto.id)}> MODIFICAR</button></td>
                             <td><button onClick={() => onDelete(contacto.id)}>BORRAR</button></td>
                         </tr>
                         )

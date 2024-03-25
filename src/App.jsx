@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Agregar } from './Componentes/Agregar/Agregar'
 import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
@@ -47,10 +47,9 @@ function App() {
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoBorrar, setContactoBorrar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
+  
 
   const elementos = [{ name: "id" }, { name: "dni" }, { name: "nombre" }, { name: "telefono" }, { name: "email" }, { name: "cp" }, { name: "localidad" }]
-
-
 
   // useEffect( () => {
   //   cambiarDatos(contactos, datosModificados)
@@ -104,9 +103,6 @@ function App() {
     setContactoVer(getContacto(contacto))
   }
 
-
-
-
   const onDelete = (contacto) => {
     if (contacto === contactoVer.id && confirm("Está a punto de borrar un contacto que tiene en detalle, desea continuar?")) {
       setContactoVer({})
@@ -114,9 +110,12 @@ function App() {
       //resetInput();
       setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
     }
-
-
   }
+    
+
+
+
+  
 
 
   // const resetInput = () =>{

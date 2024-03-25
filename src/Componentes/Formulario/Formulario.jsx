@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 
 export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo }) => {
 
     const [contacto, setContacto] = useState(contactoModificar)
 
-
     useEffect(() => {
         setContacto(contactoModificar)
     }, [contactoModificar])
+
 
 
     const handleOnSubmit = (e) =>{
@@ -29,6 +29,7 @@ export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton,
             [e.target.name]: e.target.value
         })
     }
+
 
     return (
 
