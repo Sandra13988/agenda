@@ -23,7 +23,7 @@ export const Listado = ({ contactos, onUpdate, onView, onDelete}) => {
                         <tr key={contacto.id}>
                             <td>{contacto.nombre}</td>
                             <td>{contacto.telefono}</td>
-                            <td>{contacto.mail}</td>
+                            <td>{contacto.email}</td>
                             <td><button onClick={() => onView(contacto.id)}>VER DETALLES</button></td>
                             <td><button onClick={() => onUpdate(contacto.id)}>MODIFICAR</button></td>
                             <td><button onClick={() => onDelete(contacto.id)}>BORRAR</button></td>

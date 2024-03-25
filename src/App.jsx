@@ -10,96 +10,115 @@ import { Formulario } from './Componentes/Formulario/Formulario'
 function App() {
 
   const defaultContactos = [
-    { id: 0, 
-      dni: "48557240P", 
-      nombre: "Sandra", 
-      telefono: "722192843", 
-      mail: "sandra@gmail.com", 
-      direccion: "La Cruz 26B", 
-      cp: "03158", 
+    {
+      id: 0,
+      dni: "48557240P",
+      nombre: "Sandra",
+      telefono: "722192843",
+      email: "sandra@gmail.com",
+      direccion: "La Cruz 26B",
+      cp: "03158",
       localidad: "Catral"
-     },
-    { id: 1, 
-      dni: "48555550S", 
-      nombre: "Daniel", 
-      telefono: "722192666", 
-      mail: "daniel@gmail.com", 
-      direccion: "La Purisima 16", 
-      cp: "03158", 
-      localidad: "Catral" 
+    },
+    {
+      id: 1,
+      dni: "48555550S",
+      nombre: "Daniel",
+      telefono: "722192666",
+      email: "daniel@gmail.com",
+      direccion: "La Purisima 16",
+      cp: "03158",
+      localidad: "Catral"
     },
 
-    { id: 2, 
-      dni: "48222250R", 
-      nombre: "Jose", 
-      telefono: "722192666", 
-      mail: "jose@gmail.com", 
-      direccion: "La Purisima 16", 
-      cp: "03360", 
-      localidad: "Callosa" 
+    {
+      id: 2,
+      dni: "48222250R",
+      nombre: "Jose",
+      telefono: "722192666",
+      email: "jose@gmail.com",
+      direccion: "La Purisima 16",
+      cp: "03360",
+      localidad: "Callosa"
     }
   ];
-  
+
   const [contactos, setContactos] = useState(defaultContactos);
   const [contactoModificar, setContactoModificar] = useState({})
+  const [contactoBorrar, setContactoBorrar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
 
-  const elementos = [{name: "id"},{name: "dni"}, {name: "nombre"}, {name: "telefono"}, {name: "e-mail"}, {name: "cp"}, {name: "localidad"}]
-  const boton = "Enviar"
-  const titulo = "Formulario provisional"
-  const [tipoFormulario, setTipoFormulario] = useState() //(modificar o crear)
-      
- 
+  const elementos = [{ name: "id" }, { name: "dni" }, { name: "nombre" }, { name: "telefono" }, { name: "email" }, { name: "cp" }, { name: "localidad" }]
+
+
+
   // useEffect( () => {
   //   cambiarDatos(contactos, datosModificados)
   // }, [datosModificados])
 
-  const getContacto = (idRecibido) =>{
+  const getContacto = (idRecibido) => {
     return contactos.find(contacto => contacto.id === idRecibido)
   }
 
-  
-  
-  const agregarDatos = ( undefined, nuevoContacto) => {
+
+
+  const agregarDatos = (nuevoContacto) => {
     setContactos([...contactos, nuevoContacto])
   }
 
-  const modificarDatos = (contactoModificado) =>{ 
-
-    const contactosPrueba = [...contactos]; // El [...contactos] copia el estado contactos en otra variable     
-    contactosPrueba.map(contacto => {
-
-      if(contacto.id === contactoModificado.id){
-        contacto.dni = contactoModificado.dni;
-        contacto.nombre = contactoModificado.nombre;
-        contacto.telefono = contactoModificado.telefono;
-        contacto.mail = contactoModificado.mail;
-        contacto.direccion = contactoModificado.direccion;
-        contacto.cp = contactoModificado.cp;
-        contacto.localidad = contactoModificado.localidad;
-      }
-      setContactos(contactosPrueba)
-    })
+  const modificarDatos = (contactoModificar) => {
+    if (contactoModificar.id == contactoVer.id && confirm("Está a punto de modificar un contacto que tiene en detalle, desea continuar?")) {
+      setContactoVer({})
+      setContactos(contactosPrevio => {
+        return contactosPrevio.map(contacto => {
+          if (contacto.id === contactoModificar.id) {
+            return {
+              ...contacto,
+              dni: contactoModificar.dni,
+              nombre: contactoModificar.nombre,
+              telefono: contactoModificar.telefono,
+              mail: contactoModificar.mail,
+              direccion: contactoModificar.direccion,
+              cp: contactoModificar.cp,
+              localidad: contactoModificar.localidad
+            }
+          }
+          return contacto;
+        })
+      })
+    }
   }
 
- 
 
-const onUpdate = (contacto) =>{
-  setContactoModificar(getContacto(contacto))
-}
+  const recogeVariable = (variable) => {
+    console.log(variable.nombre)
+  }
 
-const onView = (contacto) => {
-  setContactoVer(getContacto(contacto))
-}
 
-const onDelete = (contacto) =>{
-   
-    setContactoVer({})
-    setContactoModificar({})
-    //resetInput();
-    setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
+  const onUpdate = (contacto) => {
+    setContactoModificar(getContacto(contacto))
+    console.log(contactoModificar)
+  }
 
-}
+  const onView = (contacto) => {
+    setContactoVer(getContacto(contacto))
+  }
+
+
+
+
+  const onDelete = (contacto) => {
+    if (contacto === contactoVer.id && confirm("Está a punto de borrar un contacto que tiene en detalle, desea continuar?")) {
+      setContactoVer({})
+      setContactoModificar({})
+      //resetInput();
+      setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
+    }
+
+
+  }
+
+
   // const resetInput = () =>{
   //   Array.from(document.querySelectorAll("input")).forEach(input => (input.value=""));
   // }
@@ -107,16 +126,32 @@ const onDelete = (contacto) =>{
 
   return (
     <>
-    {/* <pre>
+      {/* <pre>
     <p>{JSON.stringify(getContacto(2), null, 2)}</p>
   </pre> */}
       <div id="contenedor">
-        {/* <div>
-          <Agregar
+        {/* 
+        <div>
+        <Agregar
             contactos={contactos}
             agregarDatos={agregarDatos}
-          />
+        />
+
+        {<Formulario
+            funcion = {agregarDatos}
+            elementos={elementos} 
+            nombreBoton = {boton}
+            titulo = {titulo}
+        />}
+
+        {contactos && <Modificar 
+          contactoModificar={contactoModificar}
+          modificarDatos={modificarDatos} //Boton que ejecuta la modificacion    
+        />} 
+
         </div>
+        */}
+
         <div>
           {contactos && <Listado
             contactos={contactos}
@@ -125,40 +160,34 @@ const onDelete = (contacto) =>{
             onDelete={onDelete}// Boton para borrar un contacto
           />}
         </div>
-        <div>
-          {contactos && <Modificar 
-          contactoModificar={contactoModificar}
-          modificarDatos={modificarDatos} //Boton que ejecuta la modificacion
-            
-          />}
-        </div>
-      
-        <div>
-          {contactos && <Detalle
-            contactoVer={contactoVer} 
-          />}
-        </div>
- */}
 
         <div>
           {<Formulario
-            funcion = {agregarDatos}
-            elementos={elementos} 
-            nombreBoton = {boton}
-            titulo = {titulo}
-          />}
-
-        {<Formulario
-            funcion = {modificarDatos}
             contactoModificar={contactoModificar}
-            elementos={elementos} 
-            nombreBoton = {boton}
-            titulo = {titulo}
+            elementos={elementos}
+            funcion={modificarDatos}
+            nombreBoton={"Modificar"}
+            titulo={"Modificar contacto"}
+          />}
+        </div>
+
+        <div>
+          {contactos && <Detalle
+            contactoVer={contactoVer}
+
+          />}
+        </div>
+
+        <div>
+          {<Formulario
+            contactoModificar={{}}
+            funcion={agregarDatos}
+            elementos={elementos}
+            nombreBoton={"Agregar"}
+            titulo={"Agregar contacto"}
           />}
         </div>
       </div>
-      
-
 
     </>
   )
