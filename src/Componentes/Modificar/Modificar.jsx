@@ -24,6 +24,7 @@ export const Modificar = ({ contactoModificar, modificarDatos }) => {
  
     console.log(contactoModificar)
     
+    
     return(
 
        

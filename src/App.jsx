@@ -43,9 +43,11 @@ function App() {
   const [contactos, setContactos] = useState(defaultContactos);
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
-  const elementos = ["ID", "DNI", "NOMBRE", "TELEFONO", "E-MAIL", "DIRECCION", "CP", "LOCALIDAD"]
+
+  const elementos = [{name: "id"},{name: "dni"}, {name: "nombre"}, {name: "telefono"}, {name: "e-mail"}, {name: "cp"}, {name: "localidad"}]
   const boton = "Enviar"
   const titulo = "Formulario provisional"
+  const [tipoFormulario, setTipoFormulario] = useState() //(modificar o crear)
       
  
   // useEffect( () => {
@@ -58,23 +60,23 @@ function App() {
 
   
   
-  const agregarDatos = (nuevoContacto) => {
+  const agregarDatos = ( undefined, nuevoContacto) => {
     setContactos([...contactos, nuevoContacto])
   }
 
-  const modificarDatos = (contactoModificar, datosModificados) =>{ 
+  const modificarDatos = (contactoModificado) =>{ 
 
-    const contactosPrueba = [...contactos];      
+    const contactosPrueba = [...contactos]; // El [...contactos] copia el estado contactos en otra variable     
     contactosPrueba.map(contacto => {
 
-      if(contacto.id === datosModificados.id && contacto.id === contactoModificar.id){
-        contacto.dni = datosModificados.dni;
-        contacto.nombre = datosModificados.nombre;
-        contacto.telefono = datosModificados.telefono;
-        contacto.mail = datosModificados.mail;
-        contacto.direccion = datosModificados.direccion;
-        contacto.cp = datosModificados.cp;
-        contacto.localidad = datosModificados.localidad;
+      if(contacto.id === contactoModificado.id){
+        contacto.dni = contactoModificado.dni;
+        contacto.nombre = contactoModificado.nombre;
+        contacto.telefono = contactoModificado.telefono;
+        contacto.mail = contactoModificado.mail;
+        contacto.direccion = contactoModificado.direccion;
+        contacto.cp = contactoModificado.cp;
+        contacto.localidad = contactoModificado.localidad;
       }
       setContactos(contactosPrueba)
     })
@@ -140,9 +142,18 @@ const onDelete = (contacto) =>{
 
         <div>
           {<Formulario
+            funcion = {agregarDatos}
             elementos={elementos} 
+            nombreBoton = {boton}
             titulo = {titulo}
-            boton = {boton}
+          />}
+
+        {<Formulario
+            funcion = {modificarDatos}
+            contactoModificar={contactoModificar}
+            elementos={elementos} 
+            nombreBoton = {boton}
+            titulo = {titulo}
           />}
         </div>
       </div>
