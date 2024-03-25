@@ -6,17 +6,17 @@ export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton,
     const [contacto, setContacto] = useState(contactoModificar)
 
     useEffect(() => {
-        setContacto(contactoModificar)
+        setContacto(contactoModificar ? contactoModificar : "")
     }, [contactoModificar])
-
 
 
     const handleOnSubmit = (e) =>{
         //Paso la funcion por prop y modifico contacto
         //const datosNuevos = {id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva}
         //modificarDatos(contactoModificar, datosNuevos)
-        e.preventDefault();
+        e.preventDefault()
         funcion(contacto)
+        e.target.reset()
 
     }
 

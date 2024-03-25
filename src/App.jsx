@@ -68,6 +68,7 @@ function App() {
   const modificarDatos = (contactoModificar) => {
     if (contactoModificar.id == contactoVer.id && confirm("Está a punto de modificar un contacto que tiene en detalle, desea continuar?")) {
       setContactoVer({})
+    }
       setContactos(contactosPrevio => {
         return contactosPrevio.map(contacto => {
           if (contacto.id === contactoModificar.id) {
@@ -85,13 +86,10 @@ function App() {
           return contacto;
         })
       })
+ 
     }
-  }
+  
 
-
-  const recogeVariable = (variable) => {
-    console.log(variable.nombre)
-  }
 
 
   const onUpdate = (contacto) => {
@@ -106,11 +104,12 @@ function App() {
   const onDelete = (contacto) => {
     if (contacto === contactoVer.id && confirm("Está a punto de borrar un contacto que tiene en detalle, desea continuar?")) {
       setContactoVer({})
+    }
       setContactoModificar({})
-      //resetInput();
       setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
     }
-  }
+  
+
     
 
 

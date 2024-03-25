@@ -1,5 +1,5 @@
 
-export const Listado = ({ contactos, onUpdate, onView, onDelete, handleClick}) => {
+export const Listado = ({ contactos, onUpdate, onView, onDelete}) => {
 
     return (
         <div>
