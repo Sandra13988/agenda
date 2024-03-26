@@ -45,11 +45,17 @@ function App() {
 
   const [contactos, setContactos] = useState(defaultContactos);
   const [contactoModificar, setContactoModificar] = useState({})
-  const [contactoBorrar, setContactoBorrar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
+  const inputRef = useRef(null) // Referencia para poner el foco en el primer campo de modificar cuando le das al boton
+  const divRefDetalle = useRef(null) // Referencia para destacar el campo en uso
+  const divRefFormAgregar = useRef(null)
+  const divRefFormModificar = useRef(null)
+  const divRefListado = useRef(null)
+  const [iluminado, setIluminado] = useState()
   
-
   const elementos = [{ name: "id" }, { name: "dni" }, { name: "nombre" }, { name: "telefono" }, { name: "email" }, { name: "cp" }, { name: "localidad" }]
+
+ //todo -> hay que limpiar el formulario de modificar en el momento que se le da a realizar cambios
 
   // useEffect( () => {
   //   cambiarDatos(contactos, datosModificados)
@@ -88,17 +94,17 @@ function App() {
       })
  
     }
-  
-
 
 
   const onUpdate = (contacto) => {
     setContactoModificar(getContacto(contacto))
-    console.log(contactoModificar)
+    inputRef.current.focus()
+    iluminar(divRefFormModificar)
   }
 
   const onView = (contacto) => {
     setContactoVer(getContacto(contacto))
+    iluminar(divRefDetalle)
   }
 
   const onDelete = (contacto) => {
@@ -107,19 +113,17 @@ function App() {
     }
       setContactoModificar({})
       setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
+      iluminar(divRefListado)
     }
   
 
-    
-
-
-
-  
-
-
-  // const resetInput = () =>{
-  //   Array.from(document.querySelectorAll("input")).forEach(input => (input.value=""));
-  // }
+    const iluminar = (ref) =>{ // Funcion que le pasa por parametros la referencia del div, comprueba si hay un div anterior iluminado
+      if(iluminado){            //si lo hay, lo borra, pinta el nuevo div y lo setea en el estado
+        iluminado.current.classList.remove("estiloNuevo")
+      }
+      ref.current.classList.add("estiloNuevo")
+      setIluminado(ref)
+    }
 
 
   return (
@@ -150,7 +154,7 @@ function App() {
         </div>
         */}
 
-        <div>
+        <div ref={divRefListado}>
           {contactos && <Listado
             contactos={contactos}
             onUpdate={onUpdate} //Boton para pasar los datos del contacto al formulario 
@@ -159,24 +163,25 @@ function App() {
           />}
         </div>
 
-        <div>
+        <div ref={divRefFormModificar}>
           {<Formulario
             contactoModificar={contactoModificar}
             elementos={elementos}
             funcion={modificarDatos}
             nombreBoton={"Modificar"}
             titulo={"Modificar contacto"}
+            inputRef={inputRef}
           />}
         </div>
 
-        <div>
+        <div ref={divRefDetalle}>
           {contactos && <Detalle
             contactoVer={contactoVer}
 
           />}
         </div>
 
-        <div>
+        <div ref={divRefFormAgregar}>
           {<Formulario
             contactoModificar={{}}
             funcion={agregarDatos}

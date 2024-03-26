@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from "react"
 
 
-export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo }) => {
+export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo, inputRef }) => {
 
     const [contacto, setContacto] = useState(contactoModificar)
+
 
     useEffect(() => {
         setContacto(contactoModificar ? contactoModificar : "")
     }, [contactoModificar])
 
+    
 
     const handleOnSubmit = (e) =>{
         //Paso la funcion por prop y modifico contacto
@@ -36,13 +38,12 @@ export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton,
 <div>
     <h2>{titulo}</h2>
     <form onSubmit={handleOnSubmit}>
-
         {elementos.map(elemento =>{
             
             return(                                                                                         
             <div key={elemento.name}> 
                 <label htmlFor={elemento.name}>{elemento.name}: </label>
-                <input type="text" onChange={handleOnChange} id={elemento.name} name={elemento.name} value={contacto[elemento.name]} autoComplete="off"/><br></br>
+                <input type="text" onChange={handleOnChange} id={elemento.name} name={elemento.name} value={contacto[elemento.name]} ref={elemento.name === "id" ? inputRef : null} autoComplete="off"/><br></br>
             </div>
             )
 

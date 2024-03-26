@@ -69,3 +69,14 @@ input.focused {
   border: 2px solid #007bff; 
   box-shadow: 0 0 5px #007bff; 
 }
+
+.estiloNuevo{
+  background-color: white;
+  animation-duration: 2s;
+  animation-name: ejemplo;
+}
+
+@keyframes ejemplo {
+  from {background-color: grey;}
+  to {background-color: white;}
+}
