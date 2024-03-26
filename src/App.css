@@ -80,3 +80,8 @@ input.focused {
   from {background-color: grey;}
   to {background-color: white;}
 }
+
+.toast{
+  grid: 2;
+  border: 1px solid black;
+}

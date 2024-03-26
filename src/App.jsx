@@ -1,11 +1,12 @@
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useReducer } from 'react'
 import { Agregar } from './Componentes/Agregar/Agregar'
 import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
 import './App.css'
 import { Formulario } from './Componentes/Formulario/Formulario'
+import { Toast } from './Componentes/Toast/Toast'
 
 function App() {
 
@@ -53,6 +54,10 @@ function App() {
   const divRefListado = useRef(null)
   const [iluminado, setIluminado] = useState()
   
+
+
+
+  
   const elementos = [{ name: "id" }, { name: "dni" }, { name: "nombre" }, { name: "telefono" }, { name: "email" }, { name: "cp" }, { name: "localidad" }]
 
  //todo -> hay que limpiar el formulario de modificar en el momento que se le da a realizar cambios
@@ -61,11 +66,33 @@ function App() {
   //   cambiarDatos(contactos, datosModificados)
   // }, [datosModificados])
 
+  //ESTO ES LA ACCION
+  const showToast = (mensaje) =>{ // Funcion que recibe el mensaje y le asigna el SHOW y 3 segundos despues le asigna el HIDE
+    dispatch({type: "SHOW", playload: mensaje })
+
+    setTimeout(()=> {
+      dispatch({type: "HIDE"})
+    },3000)
+}
+
+const reducer = (state, action) =>{ //Funcion que recible el estado actual y la accion
+    switch(action.type){
+      case "SHOW":
+        return {...state, mensaje: action.playload, visibilidad: true} //devuelve los estados que se le asignan al componente toast
+      break;
+      case "HIDE":
+        return {...state, visibilidad: false}
+      break;
+      default:
+        return state
+      break;
+    }
+}
+  const [state, dispatch] = useReducer(reducer, {mensaje: "", visibilidad: false}) // estado, disparador de la funcion ( funcion {parametros de inicio "", false"}) -->Peguntar porque no accede teniendolo arriba
+
   const getContacto = (idRecibido) => {
     return contactos.find(contacto => contacto.id === idRecibido)
   }
-
-
 
   const agregarDatos = (nuevoContacto) => {
     setContactos([...contactos, nuevoContacto])
@@ -100,6 +127,7 @@ function App() {
     setContactoModificar(getContacto(contacto))
     inputRef.current.focus()
     iluminar(divRefFormModificar)
+    
   }
 
   const onView = (contacto) => {
@@ -125,6 +153,7 @@ function App() {
       setIluminado(ref)
     }
 
+    
 
   return (
     <>
@@ -189,6 +218,10 @@ function App() {
             nombreBoton={"Agregar"}
             titulo={"Agregar contacto"}
           />}
+        </div>
+        <div>
+          {<Toast mensaje={state.mensaje} vilibilidad={state.vilibilidad}/>}
+          
         </div>
       </div>
 
