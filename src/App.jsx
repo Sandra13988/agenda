@@ -88,6 +88,7 @@ const reducer = (state, action) =>{ //Funcion que recible el estado actual y la 
       break;
     }
 }
+  //ShowToast ejecuta el dispatch y reducer lo clasifica entre show y hide
   const [state, dispatch] = useReducer(reducer, {mensaje: "", visibilidad: false}) // estado, disparador de la funcion ( funcion {parametros de inicio "", false"}) -->Peguntar porque no accede teniendolo arriba
 
   const getContacto = (idRecibido) => {
@@ -142,6 +143,7 @@ const reducer = (state, action) =>{ //Funcion que recible el estado actual y la 
       setContactoModificar({})
       setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
       iluminar(divRefListado)
+      showToast("Contacto borrado")
     }
   
 
@@ -200,6 +202,8 @@ const reducer = (state, action) =>{ //Funcion que recible el estado actual y la 
             nombreBoton={"Modificar"}
             titulo={"Modificar contacto"}
             inputRef={inputRef}
+            showToast={showToast}
+            mensaje ={"Contacto modificado"}
           />}
         </div>
 
@@ -217,12 +221,14 @@ const reducer = (state, action) =>{ //Funcion que recible el estado actual y la 
             elementos={elementos}
             nombreBoton={"Agregar"}
             titulo={"Agregar contacto"}
+            showToast={showToast}
+            mensaje ={"Contacto agregado"}
           />}
         </div>
-        <div>
-          {<Toast mensaje={state.mensaje} vilibilidad={state.vilibilidad}/>}
+        
+          {<Toast mensaje={state.mensaje} visibilidad={state.visibilidad}/>}
           
-        </div>
+        
       </div>
 
     </>

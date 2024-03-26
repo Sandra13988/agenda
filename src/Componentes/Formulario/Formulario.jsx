@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 
 
-export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo, inputRef }) => {
+export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo, inputRef, showToast, mensaje }) => {
 
     const [contacto, setContacto] = useState(contactoModificar)
 
@@ -19,7 +19,7 @@ export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton,
         e.preventDefault()
         funcion(contacto)
         e.target.reset()
-
+        showToast(mensaje)
     }
 
     const handleOnChange = (e) =>{
