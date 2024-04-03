@@ -1,8 +1,11 @@
+import { useState, useEffect, useRef } from "react"
 
-export const Listado = ({ contactos, onUpdate, onView, onDelete}) => {
+export const Listado = ({ contactos, onCreate, onUpdate, onView, onDelete}) => {
 
+    
     return (
         <div>
+            <button onClick={() => onCreate()}>AGREGAR</button>
             <h2>Listar contactos</h2>
             <table>
                 <thead>
@@ -19,7 +22,7 @@ export const Listado = ({ contactos, onUpdate, onView, onDelete}) => {
                     
                     {contactos.map(contacto => {
                         return(
-                        <tr key={contacto.id}>
+                        <tr key={contacto.id} >
                             <td>{contacto.nombre}</td>
                             <td>{contacto.telefono}</td>
                             <td>{contacto.email}</td>

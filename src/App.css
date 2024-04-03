@@ -54,7 +54,6 @@ th, td{
 #contenedor{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
- 
   gap: 30px;
   padding: 10px;
 }
@@ -71,17 +70,16 @@ input.focused {
 }
 
 .estiloNuevo{
-  background-color: white;
-  animation-duration: 2s;
-  animation-name: ejemplo;
+  background-color: rgb(182, 213, 225);
 }
 
-@keyframes ejemplo {
-  from {background-color: grey;}
-  to {background-color: white;}
-}
 
 .toast{
   grid: 2;
   border: 1px solid black;
+}
+
+.escondido{
+  display: none;
+  background-color: red;
 }

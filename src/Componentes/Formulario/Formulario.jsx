@@ -1,16 +1,25 @@
 import { useState, useEffect, useRef } from "react"
 
 
-export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo, inputRef, showToast, mensaje }) => {
+export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo, inputRef, showToast, mensaje, innerRef, accion}) => {
 
     const [contacto, setContacto] = useState(contactoModificar)
+    const [visible, setVisible] = useState()
 
 
     useEffect(() => {
-        setContacto(contactoModificar ? contactoModificar : "")
+        setContacto(contactoModificar ? contactoModificar : '')
     }, [contactoModificar])
 
     
+    // useEffect(() => {
+    //     setVisible(accionCrear);
+    // }, [accionCrear]);
+
+    // useEffect(() => {
+    //     setVisible(accionModificar);
+    // }, [accionModificar]);
+
 
     const handleOnSubmit = (e) =>{
         //Paso la funcion por prop y modifico contacto
@@ -23,9 +32,8 @@ export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton,
     }
 
     const handleOnChange = (e) =>{
-        //onChange={e =>{setIContacto(e.target.value)}} value={idNuevo} -> Asi es como estaba
+        //onChange={e =>{setContacto(e.target.value)}} value={idNuevo} -> Asi es como estaba
         //Repasas contacto y donde encuentres el name (por ejemplo id) le colocas el valor nuevo
-
         setContacto({
             ...contacto,
             [e.target.name]: e.target.value
@@ -37,16 +45,16 @@ export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton,
 
 <div>
     <h2>{titulo}</h2>
-    <form onSubmit={handleOnSubmit}>
+    <form onSubmit={handleOnSubmit} className="escondido" ref={innerRef}>
         {elementos.map(elemento =>{
             
             return(                                                                                         
-            <div key={elemento.name}> 
+            <div key={elemento.name}  > 
                 <label htmlFor={elemento.name}>{elemento.name}: </label>
-                <input type="text" onChange={handleOnChange} id={elemento.name} name={elemento.name} value={contacto[elemento.name]} ref={elemento.name === "id" ? inputRef : null} autoComplete="off"/><br></br>
+                <input type="text" onChange={handleOnChange} id={elemento.name} name={elemento.name} value={contacto[elemento.name]} ref={elemento.name === "dni" ? inputRef : null} autoComplete="off"/><br></br>
             </div>
             )
-
+            
         })}
 
       

@@ -1,12 +1,18 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
-export const Detalle = ({ contactoVer }) => { 
+export const Detalle = ({ contactoVer, innerRef, accion}) => { 
 
+    const [visible, setVisible] = useState()
 
+    useEffect(() => {
+        setVisible(accion);
+    }, [accion]);
+
+    
 return(
     <div>
         <h2>Detalles</h2>
-        <table>
+        <table className={visible ? "" : "escondido"} ref={innerRef}>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -24,7 +30,7 @@ return(
                     <td>{contactoVer.dni}</td>
                     <td>{contactoVer.nombre}</td>
                     <td>{contactoVer.telefono}</td>
-                    <td>{contactoVer.mail}</td>
+                    <td>{contactoVer.email}</td>
                     <td>{contactoVer.cp}</td>
                     <td>{contactoVer.localidad}</td>
                 </tr>
