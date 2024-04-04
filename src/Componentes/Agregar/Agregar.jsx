@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Formulario2 } from '../Formulario/Formulario2'
+import { FormularioAgregar } from '../Formulario/FormularioAgregar'
 
-export const Agregar = ({funcion, inputRef, showToast, accionAgregar}) => { 
-        
+export const Agregar = ({funcion, showToast, accionAgregar}) => { 
+
+
     return(
        
         <>
         <h2>Agregar contacto</h2>
-        {accionAgregar && <Formulario2 funcion={funcion} nombreBoton={"Agregar"} inputRef={inputRef} showToast={showToast} mensajeToast={"Contaco Agregado"}/>}
+        {accionAgregar && <FormularioAgregar funcion={funcion} nombreBoton={"Agregar"} showToast={showToast} mensajeToast={"Contaco Agregado"} accionAgregar={accionAgregar}/>}
         </>
     )
 }

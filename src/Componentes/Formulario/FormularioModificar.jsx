@@ -1,30 +1,38 @@
 
-import { useState, useEffect} from "react"
+import { useState, useEffect, useRef} from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 
-export const Formulario2 = ({ contactoEntrante, funcion,   nombreBoton, inputRef, showToast, mensajeToast}) => {
+export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, showToast, mensajeToast}) => {
     
-    const [contacto, setContacto] = useState()
+    const inputRefModificar = useRef(null) 
+    
+    const [contacto, setContacto] = useState(contactoEntrante)
 
     useEffect(() => {
-        setContacto(contactoEntrante)
+        setContacto(contactoEntrante? contactoEntrante: '')
+        console.log(contacto)
     }, [contactoEntrante])
     
-    console.log(contacto)
+    
+
+    useEffect(()=>{
+        inputRefModificar.current.focus()
+    },[])
+
     return (
         
-        <Formik
-            
+        contacto && <Formik
             initialValues={{
-                dni: contacto ?  contacto.dni : '',
-                nombre: contacto ?  contacto.nombre : '',
-                telefono: contacto ?  contacto.telefono : '',
-                email: contacto ?  contacto.email : '',
-                direccion: contacto ?  contacto.direccion : '',
-                cp: contacto ?  contacto.cp : '',
-                localidad: contacto ?  contacto.localidad : ''
+                id: contacto.id,
+                dni: contacto.dni,
+                nombre: contacto.nombre,
+                telefono: contacto.telefono,
+                email: contacto.email,
+                direccion:contacto.direccion,
+                cp: contacto.cp,
+                localidad: contacto.localidad
             }}
 
             validationSchema={Yup.object({
@@ -49,11 +57,11 @@ export const Formulario2 = ({ contactoEntrante, funcion,   nombreBoton, inputRef
             })}
 
 
-            onSubmit={(values) => {
+            onSubmit={(values, {resetForm}) => {
                 console.log(values)
                 showToast(mensajeToast)
                 funcion(values)
-                showToast(mensajeToast)
+                resetForm()
             }}
         >
             {({
@@ -64,10 +72,14 @@ export const Formulario2 = ({ contactoEntrante, funcion,   nombreBoton, inputRef
             touched,
           }) => (
             <Form>
-                
+                <div>
+                    <Field name="id" id="id" type="hidden"  disabled/>
+                    <ErrorMessage name="id" component="div" />
+                </div>
+
                 <div>
                     <label htmlFor="dni">DNI</label>
-                    <Field name="dni" id="dni" type="dni" innerRef={inputRef} />
+                    <Field name="dni" id="dni" type="dni" innerRef={inputRefModificar} />
                     <ErrorMessage name="dni" component="div" />
                 </div>
 

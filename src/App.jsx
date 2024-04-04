@@ -4,11 +4,11 @@ import { Agregar } from './Componentes/Agregar/Agregar'
 import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
-import './App.css'
-import { Formulario } from './Componentes/Formulario/Formulario'
-import { Formulario2 } from './Componentes/Formulario/Formulario2'
 import { Toast } from './Componentes/Toast/Toast'
-import { useEffect } from 'react'
+import './App.css'
+// import { Formulario } from './Componentes/Formulario/Formulario'
+
+
 
 function App() {
 
@@ -49,20 +49,21 @@ function App() {
   const [contactos, setContactos] = useState(defaultContactos);
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
+  const [accion, setAccion] = useState("nada")
+  const [iluminado, setIluminado] = useState()
+  const [incrementoID, setIncrementoID] = useState(4)
+
   const inputRefModificar = useRef(null) // Referencia para poner el foco en el primer campo de modificar cuando le das al boton
   const inputRefAgregar = useRef(null) 
   const divRefDetalle = useRef(null) // Referencia para destacar el campo en uso
   const divRefAgregar = useRef(null)
   const divRefModificar = useRef(null)
   const divRefListado = useRef(null)
-  const [iluminado, setIluminado] = useState()
-  const [incrementoID, setIncrementoID] = useState(4)
-
-  const refAgregar = useRef(null)
   const refVistar = useRef(null)
-  const [accion, setAccion] = useState("nada")
+  
 
   const elementos = [{ name: "dni" }, { name: "nombre" }, { name: "telefono" }, { name: "email" }, { name: "cp" }, { name: "localidad" }]
+
 
   //todo -> hay que limpiar el formulario de modificar en el momento que se le da a realizar cambios
 
@@ -102,15 +103,16 @@ function App() {
   }
 
   const agregarDatos = (nuevoContacto) => {
+    nuevoContacto.id = contactos.length + 1;
     setContactos([...contactos, nuevoContacto])
-    setIncrementoID(incrementoID + 1)
+    // setIncrementoID(incrementoID + 1)
 
   }
 
   const modificarDatos = (contactoModificar) => {
-    if (contactoModificar.id == contactoVer.id && confirm("Está a punto de modificar un contacto que tiene en detalle, desea continuar?")) {
-      setContactoVer({})
-    }
+    // if (contactoModificar.id == contactoVer.id && confirm("Está a punto de modificar un contacto que tiene en detalle, desea continuar?")) {
+    //   setContactoVer({})
+    // }
     setContactos(contactosPrevio => {
       return contactosPrevio.map(contacto => {
         if (contacto.id === contactoModificar.id) {
@@ -133,18 +135,17 @@ function App() {
 
   const onCreate = () => {
     setAccion("agregar")
-    inputRefAgregar.current.focus()
-    iliminar(divRefAgregar)
+    iluminar(divRefAgregar)
+    // inputRefAgregar.current.focus() pasado al componente formulario
   }
 
   const onUpdate = (contacto) => {
     setContactoModificar(getContacto(contacto))
     iluminar(divRefModificar)
     setAccion("modificar")
-    inputRefModificar.current.focus()
+    // inputRefModificar.current.focus() pasado al componente formulario
 
   }
-  console.log(contactoModificar)
 
   const onView = (contacto) => {
     setContactoVer(getContacto(contacto))
@@ -157,6 +158,11 @@ function App() {
     if (contacto === contactoVer.id && confirm("Está a punto de borrar un contacto que tiene en detalle, desea continuar?")) {
       setContactoVer({})
     }
+
+    if (contacto === contactoModificar.id && confirm("Está a punto de borrar un contacto que tiene en detalle, desea continuar?")) {
+      setContactoModificar({})
+    }
+  
     setContactoModificar({})
     setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
     iluminar(divRefListado)
@@ -169,6 +175,7 @@ function App() {
       iluminado.current.classList.remove("estiloNuevo")
     }
     ref.current.classList.remove("escondido")
+    ref.current.classList.add("estiloNuevo")
     setIluminado(ref)
   }
 
@@ -232,7 +239,6 @@ function App() {
             funcion={modificarDatos}
             // nombreBoton={"Modificar"} // Se añadirá en prop de formik
             // titulo={"Modificar contacto"} // Se añadirá en prop de formik
-            inputRef={inputRefModificar}
             showToast={showToast}
             // mensaje ={"Contacto modificado"}// Pasar a formik
             accionModificar={accion === "modificar"}
@@ -254,7 +260,6 @@ function App() {
             funcion={agregarDatos}
             // nombreBoton={"Modificar"} // Se añadirá en prop de formik
             // titulo={"Modificar contacto"} // Se añadirá en prop de formik
-            inputRef={inputRefAgregar}
             showToast={showToast}
             // mensaje ={"Contacto modificado"}// Pasar a formik
             accionAgregar={accion === "agregar"}
