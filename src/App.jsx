@@ -113,6 +113,8 @@ function App() {
     // if (contactoModificar.id == contactoVer.id && confirm("Está a punto de modificar un contacto que tiene en detalle, desea continuar?")) {
     //   setContactoVer({})
     // }
+
+
     setContactos(contactosPrevio => {
       return contactosPrevio.map(contacto => {
         if (contacto.id === contactoModificar.id) {
@@ -130,6 +132,8 @@ function App() {
         return contacto;
       })
     })
+
+    setContactoModificar(contactoModificar)
 
   }
 

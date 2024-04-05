@@ -7,33 +7,16 @@ import * as Yup from 'yup';
 export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, showToast, mensajeToast}) => {
     
     const inputRefModificar = useRef(null) 
-    
-    const [contacto, setContacto] = useState(contactoEntrante)
-
-    useEffect(() => {
-        setContacto(contactoEntrante? contactoEntrante: '')
-        console.log(contacto)
-    }, [contactoEntrante])
-    
-    
-
+   
     useEffect(()=>{
         inputRefModificar.current.focus()
     },[])
 
+    {console.log("contacto en ants del Formik:", contactoEntrante)}
     return (
-        
-        contacto && <Formik
-            initialValues={{
-                id: contacto.id,
-                dni: contacto.dni,
-                nombre: contacto.nombre,
-                telefono: contacto.telefono,
-                email: contacto.email,
-                direccion:contacto.direccion,
-                cp: contacto.cp,
-                localidad: contacto.localidad
-            }}
+        <Formik
+            enableReinitialize={true} //Reinicia el formulario con los valores nuevos
+            initialValues={contactoEntrante}
 
             validationSchema={Yup.object({
                 // id: Yup.string()
@@ -58,9 +41,9 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
 
 
             onSubmit={(values, {resetForm}) => {
-                console.log(values)
-                showToast(mensajeToast)
+                console.log("contacto en submit :", contactoEntrante);
                 funcion(values)
+                showToast(mensajeToast)
                 resetForm()
             }}
         >
@@ -73,6 +56,7 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
           }) => (
             <Form>
                 <div>
+                {console.log("contacto en Field:", contactoEntrante)}
                     <Field name="id" id="id" type="hidden"  disabled/>
                     <ErrorMessage name="id" component="div" />
                 </div>
@@ -120,15 +104,16 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
                     <ErrorMessage name="localidad" component="div" />
                 </div>
 
-                <pre>
+                {/* <pre>
                     <p>{JSON.stringify(values, null, 2)}</p>
                     <p>{JSON.stringify(errors, null, 2)}</p>               
-                </pre>
+                </pre> */}
 
                 <input
                     type="submit"
                     value={nombreBoton}
                     disabled={touched && errors.length > 0}
+                    
                 />
             </Form>
         )}

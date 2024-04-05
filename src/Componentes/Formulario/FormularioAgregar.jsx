@@ -53,7 +53,6 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
                 console.log(values)
                 showToast(mensajeToast)
                 funcion(values)
-                showToast(mensajeToast)
                 resetForm()
 
             }}
