@@ -12,7 +12,6 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
         inputRefModificar.current.focus()
     },[])
 
-    {console.log("contacto en ants del Formik:", contactoEntrante)}
     return (
         <Formik
             enableReinitialize={true} //Reinicia el formulario con los valores nuevos
@@ -44,7 +43,6 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
                 console.log("contacto en submit :", contactoEntrante);
                 funcion(values)
                 showToast(mensajeToast)
-                resetForm()
             }}
         >
             {({
@@ -56,7 +54,6 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
           }) => (
             <Form>
                 <div>
-                {console.log("contacto en Field:", contactoEntrante)}
                     <Field name="id" id="id" type="hidden"  disabled/>
                     <ErrorMessage name="id" component="div" />
                 </div>
@@ -103,11 +100,6 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
                     <Field name="localidad" id="localidad" type="localidad" />
                     <ErrorMessage name="localidad" component="div" />
                 </div>
-
-                {/* <pre>
-                    <p>{JSON.stringify(values, null, 2)}</p>
-                    <p>{JSON.stringify(errors, null, 2)}</p>               
-                </pre> */}
 
                 <input
                     type="submit"

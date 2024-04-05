@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { FormularioModificar } from '../Formulario/FormularioModificar'
-// import { Formulario2 } from '../Componentes/Formulario/Formulario2'
 
 export const Modificar = ({ contactoEntrante, funcion, showToast, accionModificar }) => { 
    

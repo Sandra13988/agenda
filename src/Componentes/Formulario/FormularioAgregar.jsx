@@ -6,10 +6,7 @@ import * as Yup from 'yup';
 
 export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToast, accionAgregar}) => {
     const inputRefAgregar = useRef(null) 
-    // inputRefAgregar.current.focus()// Tocar esto porque no funciona
-    // innerRef={inputRefAgregar} // Esto es para ponerlo en el input de referencia
     
-
     useEffect(()=>{
         inputRefAgregar.current.focus()
     },[])
@@ -108,11 +105,6 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
                     <Field name="localidad" id="localidad" type="localidad" />
                     <ErrorMessage name="localidad" component="div" />
                 </div>
-
-                <pre>
-                    <p>{JSON.stringify(values, null, 2)}</p>
-                    <p>{JSON.stringify(errors, null, 2)}</p>               
-                </pre>
 
                 <input
                     type="submit"

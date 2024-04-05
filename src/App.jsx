@@ -6,9 +6,6 @@ import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
 import { Toast } from './Componentes/Toast/Toast'
 import './App.css'
-// import { Formulario } from './Componentes/Formulario/Formulario'
-
-
 
 function App() {
 
@@ -51,10 +48,7 @@ function App() {
   const [contactoVer, setContactoVer] = useState({})
   const [accion, setAccion] = useState("nada")
   const [iluminado, setIluminado] = useState()
-  const [incrementoID, setIncrementoID] = useState(4)
 
-  const inputRefModificar = useRef(null) // Referencia para poner el foco en el primer campo de modificar cuando le das al boton
-  const inputRefAgregar = useRef(null) 
   const divRefDetalle = useRef(null) // Referencia para destacar el campo en uso
   const divRefAgregar = useRef(null)
   const divRefModificar = useRef(null)
@@ -65,12 +59,6 @@ function App() {
   const elementos = [{ name: "dni" }, { name: "nombre" }, { name: "telefono" }, { name: "email" }, { name: "cp" }, { name: "localidad" }]
 
 
-  //todo -> hay que limpiar el formulario de modificar en el momento que se le da a realizar cambios
-
-  // useEffect( () => {
-  //   cambiarDatos(contactos, datosModificados)
-  // }, [datosModificados])
-
   //ESTO ES LA ACCION
   const showToast = (mensaje) => { // Funcion que recibe el mensaje y le asigna el SHOW y 3 segundos despues le asigna el HIDE
     dispatch({ type: "SHOW", playload: mensaje })
@@ -79,8 +67,6 @@ function App() {
       dispatch({ type: "HIDE" })
     }, 3000)
   }
-
-  //console.log(ultimoId)
 
   const reducer = (state, action) => { //Funcion que recible el estado actual y la accion
     switch (action.type) {
@@ -105,15 +91,10 @@ function App() {
   const agregarDatos = (nuevoContacto) => {
     nuevoContacto.id = contactos.length + 1;
     setContactos([...contactos, nuevoContacto])
-    // setIncrementoID(incrementoID + 1)
 
   }
 
   const modificarDatos = (contactoModificar) => {
-    // if (contactoModificar.id == contactoVer.id && confirm("Está a punto de modificar un contacto que tiene en detalle, desea continuar?")) {
-    //   setContactoVer({})
-    // }
-
 
     setContactos(contactosPrevio => {
       return contactosPrevio.map(contacto => {
@@ -171,6 +152,7 @@ function App() {
     setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
     iluminar(divRefListado)
     showToast("Contacto borrado")
+    setAccion("nada")
   }
 
 
@@ -183,48 +165,10 @@ function App() {
     setIluminado(ref)
   }
 
-
-  // const aparecer = (ref) =>{
-
-  //     ref.current.classList.remove("escondido")
-
-  // }
-
-
-  // useEffectuseEffect(() => {
-  //   contenidoRefListado.current.classList.remove("escondido")
-  // }, [visible])
-
-
-
   return (
     <>
-      {/* <pre>
-    <p>{JSON.stringify(getContacto(2), null, 2)}</p>
-  </pre> */}
       <div id="contenedor">
-        {/* 
-        <div>
-        <Agregar
-            contactos={contactos}
-            agregarDatos={agregarDatos}
-        />
-
-        {<Formulario
-            funcion = {agregarDatos}
-            elementos={elementos} 
-            nombreBoton = {boton}
-            titulo = {titulo}
-        />}
-
-        {contactos && <Modificar 
-          contactoModificar={contactoModificar}
-          modificarDatos={modificarDatos} //Boton que ejecuta la modificacion    
-        />} 
-
-        </div>
-        */}
-
+        
         <div ref={divRefListado}>
           {contactos && <Listado
             contactos={contactos}
@@ -250,7 +194,7 @@ function App() {
         </div>
 
         <div ref={divRefDetalle}>
-          {contactos && <Detalle
+          {<Detalle
             contactoVer={contactoVer}
             innerRef={refVistar}
             accion={accion === "detallar"}
@@ -271,21 +215,6 @@ function App() {
         </div>
 
         {<Toast mensaje={state.mensaje} visibilidad={state.visibilidad} />}
-
-
-        {/* <div ref={divRefFormModificar}>
-          {<Formulario
-            contactoModificar={contactoModificar}
-            elementos={elementos}
-            funcion={modificarDatos}
-            nombreBoton={"Modificar"}
-            titulo={"Modificar contacto"}
-            inputRef={inputRef}
-            showToast={showToast}
-            mensaje ={"Contacto modificado"}
-            accionModificar = {accion === "modificar"}
-          />}
-        </div> */}
 
       </div>
 
