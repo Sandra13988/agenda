@@ -1,11 +1,13 @@
 
 import { useState, useEffect, useRef} from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 
 
 export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToast, accionAgregar}) => {
     const inputRefAgregar = useRef(null) 
+    const navegar = useNavigate()
     
     useEffect(()=>{
         inputRefAgregar.current.focus()
@@ -51,6 +53,7 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
                 showToast(mensajeToast)
                 funcion(values)
                 resetForm()
+                navegar('/')
 
             }}
         >
@@ -106,11 +109,13 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
                     <ErrorMessage name="localidad" component="div" />
                 </div>
 
-                <input
+              
+                    <input
                     type="submit"
                     value={nombreBoton}
                     disabled={touched && errors.length > 0}
-                />
+                    />
+
                 
             </Form>
             

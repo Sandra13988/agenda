@@ -1,12 +1,14 @@
 
 import { useState, useEffect, useRef} from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
+import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 
 
 export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, showToast, mensajeToast}) => {
     
     const inputRefModificar = useRef(null) 
+    const navegar = useNavigate()
    
     useEffect(()=>{
         inputRefModificar.current.focus()
@@ -43,6 +45,7 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
                 console.log("contacto en submit :", contactoEntrante);
                 funcion(values)
                 showToast(mensajeToast)
+                navegar('/')
             }}
         >
             {({
