@@ -190,7 +190,7 @@ function App() {
           {/* </div> */}
 
 
-          <Route path="/modificar" element={<Modificar
+          <Route path="/modificar/:id" element={<Modificar
             contactoEntrante={contactoModificar} //Contacto a modificar PASA
             // contactos = {contactos} //Array de contactos PASA
             // elementos={elementos} // Se quitará en cuanto este formik
@@ -204,7 +204,7 @@ function App() {
 
 
           
-            <Route path="/detalle" element={<Detalle
+            <Route path="/detalles/:id" element={<Detalle
               contactoVer={contactoVer}
               innerRef={refVistar}
               accion={accion === "detallar"}

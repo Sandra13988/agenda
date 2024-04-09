@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef } from "react"
-import { Field, ErrorMessage, Formik, Form } from 'formik';
+import { Field, ErrorMessage, Formik, Form, useFormik } from 'formik';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 
@@ -52,13 +52,12 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
         
         const cp = e.target.value;
         setLongitudCp(cp.length)
-        if (cp) {
             fetchDataLocalidad(cp);
-        
             console.log(cp)
-        }
+        
     };
 
+    const formik = useFormik(false);
     return (
 
         <Formik
@@ -111,6 +110,7 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
                 values,
                 errors,
                 touched,
+                isValid,
             }) => (
                 <Form>
 
@@ -172,12 +172,9 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
                     <input
                         type="submit"
                         value={nombreBoton}
-                        disabled={touched && errors.length > 0}
+                        disabled={!isValid}
                     />
-
-
                 </Form>
-
             )}
         </Formik>
 

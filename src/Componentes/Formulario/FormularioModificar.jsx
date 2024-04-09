@@ -9,10 +9,55 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
     
     const inputRefModificar = useRef(null) 
     const navegar = useNavigate()
+    const [lugares, setLugares] = useState([])
+    const [longitudCp, setLongitudCp] = useState(0)
    
     useEffect(()=>{
         inputRefModificar.current.focus()
     },[])
+
+    function fetchDataLocalidad(cp) {
+        // URL de la API que deseas consultar
+        const apiUrl = 'http://api.zippopotam.us/ES/' + cp;
+
+        // Realizar la solicitud GET a la API
+        fetch(apiUrl)
+            .then(response => {
+                console.log(response)
+                // Verificar si la solicitud fue exitosa (código de estado 200)
+                if (!response.ok) {
+                    throw new Error('Ocurrió un error al obtener los datos');
+                }
+                // Convertir la respuesta a formato JSON
+                return response.json();
+            })
+            .then(data => {
+                // Manipular los datos obtenidos de la API
+                const arrayLugares = []
+                data.places.forEach(place => {
+                    arrayLugares.push(place['place name'])
+                    console.log(data)
+                    setLugares(arrayLugares)
+
+                });
+
+            })
+            .catch(error => {
+                // Capturar y manejar errores
+                console.error('Error al obtener los datos:', error);
+            });
+    }
+
+    const handleOnChange = (e) => {
+        
+        const cp = e.target.value;
+        setLongitudCp(cp.length)
+        if (cp) {
+            fetchDataLocalidad(cp);
+        
+            console.log(cp)
+        }
+    };
 
     return (
         <Formik
@@ -93,16 +138,26 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
                 </div>
 
                 <div>
-                    <label htmlFor="cp">CP</label>
-                    <Field name="cp" id="cp" type="cp" />
-                    <ErrorMessage name="cp" component="div" />
-                </div>
+                        <label htmlFor="cp">CP</label>
+                        <Field name="cp" id="cp" type="cp" onChange={e => {
+                            handleOnChange(e);
+                            setFieldValue("cp", cp.value); //Tiene que venir aqui, no se puede meter en el handle idkw
 
-                <div>
-                    <label htmlFor="localidad">Localidad</label>
-                    <Field name="localidad" id="localidad" type="localidad" />
-                    <ErrorMessage name="localidad" component="div" />
-                </div>
+                        }} />
+                        
+                        <ErrorMessage name="cp" component="div" />
+                    </div>
+
+                    <div>
+                        <label  htmlFor="localidad">Localidad</label>
+                        <Field as="select" name="localidad" id="localidad" type="localidad" disabled={longitudCp<5}>
+                            <option value="" >{values.localidad}</option>
+                            {lugares.map(lugar => (
+                                <option key={lugar} value={lugar}>{lugar}</option>
+                            ))}
+                        </Field>
+                        <ErrorMessage name="localidad" component="div" />
+                    </div>
 
                 <input
                     type="submit"
