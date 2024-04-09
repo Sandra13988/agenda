@@ -51,6 +51,10 @@ th, td{
   width: 120px;
 }
 
+select{
+  width: 152px;
+}
+
 #contenedor{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
