@@ -1,20 +1,22 @@
 
-import { useState, useEffect, useRef} from "react"
+import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import * as Yup from 'yup';
 
 
-export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, showToast, mensajeToast}) => {
-    
-    const inputRefModificar = useRef(null) 
+export const FormularioModificar = ({ contactoEntrante, funcion, nombreBoton, showToast, mensajeToast }) => {
+
+
+    const inputRefModificar = useRef(null)
     const navegar = useNavigate()
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
-   
-    useEffect(()=>{
+    
+
+    useEffect(() => {
         inputRefModificar.current.focus()
-    },[])
+    }, [])
 
     function fetchDataLocalidad(cp) {
         // URL de la API que deseas consultar
@@ -49,12 +51,12 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
     }
 
     const handleOnChange = (e) => {
-        
+
         const cp = e.target.value;
         setLongitudCp(cp.length)
         if (cp) {
             fetchDataLocalidad(cp);
-        
+
             console.log(cp)
         }
     };
@@ -86,7 +88,7 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
             })}
 
 
-            onSubmit={(values, {resetForm}) => {
+            onSubmit={(values, { resetForm }) => {
                 console.log("contacto en submit :", contactoEntrante);
                 funcion(values)
                 showToast(mensajeToast)
@@ -94,63 +96,63 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
             }}
         >
             {({
-            setFieldValue,// setear un valor en un atributo de formik
-            setFieldTouched, // marcar un atributo de formik como tocado
-            values,
-            errors,
-            touched,
-          }) => (
-            <Form>
-                <div>
-                    <Field name="id" id="id" type="hidden"  disabled/>
-                    <ErrorMessage name="id" component="div" />
-                </div>
+                setFieldValue,// setear un valor en un atributo de formik
+                setFieldTouched, // marcar un atributo de formik como tocado
+                values,
+                errors,
+                touched,
+            }) => (
+                <Form>
+                    <div>
+                        <Field name="id" id="id" type="hidden" disabled />
+                        <ErrorMessage name="id" component="div" />
+                    </div>
 
-                <div>
-                    <label htmlFor="dni">DNI</label>
-                    <Field name="dni" id="dni" type="dni" innerRef={inputRefModificar} />
-                    <ErrorMessage name="dni" component="div" />
-                </div>
+                    <div>
+                        <label htmlFor="dni">DNI</label>
+                        <Field name="dni" id="dni" type="dni" innerRef={inputRefModificar} />
+                        <ErrorMessage name="dni" component="div" />
+                    </div>
 
-                <div>
-                    <label htmlFor="nombre">Nombre</label>
-                    <Field name="nombre" id="nombre" type="nombre" />
-                    <ErrorMessage name="nombre" component="div" />
-                </div>
+                    <div>
+                        <label htmlFor="nombre">Nombre</label>
+                        <Field name="nombre" id="nombre" type="nombre" />
+                        <ErrorMessage name="nombre" component="div" />
+                    </div>
 
-                <div>
-                    <label htmlFor="telefono">Telefono</label>
-                    <Field name="telefono" id="telefono" type="telefono" />
-                    <ErrorMessage name="telefono" component="div" />
-                </div>
+                    <div>
+                        <label htmlFor="telefono">Telefono</label>
+                        <Field name="telefono" id="telefono" type="telefono" />
+                        <ErrorMessage name="telefono" component="div" />
+                    </div>
 
 
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <Field name="email" id="email" type="email" autoComplete="on"/>
-                    <ErrorMessage name="email" component="div" />
-                </div>
+                    <div>
+                        <label htmlFor="email">Email</label>
+                        <Field name="email" id="email" type="email" autoComplete="on" />
+                        <ErrorMessage name="email" component="div" />
+                    </div>
 
-                <div>
-                    <label htmlFor="direccion">Direccion</label>
-                    <Field name="direccion" id="direccion" type="direccion" />
-                    <ErrorMessage name="direccion" component="div" />
-                </div>
+                    <div>
+                        <label htmlFor="direccion">Direccion</label>
+                        <Field name="direccion" id="direccion" type="direccion" />
+                        <ErrorMessage name="direccion" component="div" />
+                    </div>
 
-                <div>
+                    <div>
                         <label htmlFor="cp">CP</label>
                         <Field name="cp" id="cp" type="cp" onChange={e => {
                             handleOnChange(e);
                             setFieldValue("cp", cp.value); //Tiene que venir aqui, no se puede meter en el handle idkw
 
                         }} />
-                        
+
                         <ErrorMessage name="cp" component="div" />
                     </div>
 
                     <div>
-                        <label  htmlFor="localidad">Localidad</label>
-                        <Field as="select" name="localidad" id="localidad" type="localidad" disabled={longitudCp<5}>
+                        <label htmlFor="localidad">Localidad</label>
+                        <Field as="select" name="localidad" id="localidad" type="localidad" disabled={longitudCp < 5}>
                             <option value="" >{values.localidad}</option>
                             {lugares.map(lugar => (
                                 <option key={lugar} value={lugar}>{lugar}</option>
@@ -159,16 +161,19 @@ export const FormularioModificar = ({ contactoEntrante, funcion,   nombreBoton, 
                         <ErrorMessage name="localidad" component="div" />
                     </div>
 
-                <input
-                    type="submit"
-                    value={nombreBoton}
-                    disabled={touched && errors.length > 0}
-                    
-                />
-            </Form>
-        )}
+                    <input
+                        type="submit"
+                        value={nombreBoton}
+                        disabled={touched && errors.length > 0}
+                    />
+                     <Link to="/"><input
+                        type="submit"
+                        value={"Volver"}
+                    /></Link>
+                </Form>
+            )}
         </Formik>
-          
+
     );
 
 }

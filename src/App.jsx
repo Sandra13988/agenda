@@ -45,8 +45,8 @@ function App() {
   ];
 
   const [contactos, setContactos] = useState(defaultContactos);
-  const [contactoModificar, setContactoModificar] = useState({})
-  const [contactoVer, setContactoVer] = useState({})
+  const [contactoModificar, setContactoModificar] = useState(JSON.parse(localStorage.getItem("contactoModificar")))
+  const [contactoVer, setContactoVer] = useState(JSON.parse(localStorage.getItem("contactoVer")))
   const [accion, setAccion] = useState("nada")
   const [iluminado, setIluminado] = useState()
 
@@ -127,6 +127,7 @@ function App() {
 
   const onUpdate = (contacto) => {
     setContactoModificar(getContacto(contacto))
+    localStorage.setItem("contactoModificar", JSON.stringify(getContacto(contacto)))
     // iluminar(divRefModificar)
     setAccion("modificar")
     // inputRefModificar.current.focus() pasado al componente formulario
@@ -135,6 +136,7 @@ function App() {
 
   const onView = (contacto) => {
     setContactoVer(getContacto(contacto))
+    localStorage.setItem("contactoVer", JSON.stringify(getContacto(contacto)))
     // iluminar(divRefDetalle)
     setAccion("detallar")
 
@@ -173,7 +175,7 @@ function App() {
     <>
 
       <ul>
-        <li><Link to="/">Atras</Link></li>
+        {/* <li><Link to="/">Atras</Link></li> */}
       </ul>
       <div id="contenedor">
 
@@ -226,7 +228,7 @@ function App() {
         </Routes>
 
         {<Toast mensaje={state.mensaje} visibilidad={state.visibilidad} />}
-
+        {console.log(contactoVer)}
       </div>
 
 
