@@ -5,7 +5,7 @@ import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
 import { Toast } from './Componentes/Toast/Toast'
-import { Routes, Route, Link, useNavigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
 
 function App() {
@@ -45,15 +45,9 @@ function App() {
   ];
 
   const [contactos, setContactos] = useState(defaultContactos);
-  const [contactoModificar, setContactoModificar] = useState(JSON.parse(localStorage.getItem("contactoModificar")))
-  const [contactoVer, setContactoVer] = useState(JSON.parse(localStorage.getItem("contactoVer")))
+  const [contactoModificar, setContactoModificar] = useState({})
+  const [contactoVer, setContactoVer] = useState({})
   const [accion, setAccion] = useState("nada")
-  const [iluminado, setIluminado] = useState()
-
-  const divRefDetalle = useRef(null) // Referencia para destacar el campo en uso
-  const divRefAgregar = useRef(null)
-  const divRefModificar = useRef(null)
-  const divRefListado = useRef(null)
   const refVistar = useRef(null)
 
 
@@ -73,13 +67,13 @@ function App() {
     switch (action.type) {
       case "SHOW":
         return { ...state, mensaje: action.playload, visibilidad: true } //devuelve los estados que se le asignan al componente toast
-        break;
+    
       case "HIDE":
         return { ...state, visibilidad: false }
-        break;
+      
       default:
         return state
-        break;
+     
     }
   }
   //ShowToast ejecuta el dispatch y reducer lo clasifica entre show y hide
@@ -121,23 +115,16 @@ function App() {
 
   const onCreate = () => {
     setAccion("agregar")
-    // iluminar(divRefAgregar)
-    // inputRefAgregar.current.focus() pasado al componente formulario
   }
 
   const onUpdate = (contacto) => {
     setContactoModificar(getContacto(contacto))
-    localStorage.setItem("contactoModificar", JSON.stringify(getContacto(contacto)))
-    // iluminar(divRefModificar)
     setAccion("modificar")
-    // inputRefModificar.current.focus() pasado al componente formulario
     
   }
 
   const onView = (contacto) => {
     setContactoVer(getContacto(contacto))
-    localStorage.setItem("contactoVer", JSON.stringify(getContacto(contacto)))
-    // iluminar(divRefDetalle)
     setAccion("detallar")
 
   }
@@ -153,20 +140,9 @@ function App() {
 
     setContactoModificar({})
     setContactos(contactos.filter(contactoFiltrado => contactoFiltrado.id !== contacto))
-    // iluminar(divRefListado)
     showToast("Contacto borrado")
     setAccion("nada")
   }
-
-
-  // const iluminar = (ref) => { // Funcion que le pasa por parametros la referencia del div, comprueba si hay un div anterior iluminado
-  //   if (iluminado) {            //si lo hay, lo borra, pinta el nuevo div y lo setea en el estado
-  //     iluminado.current.classList.remove("estiloNuevo")
-  //   }
-  //   ref.current.classList.remove("escondido")
-  //   ref.current.classList.add("estiloNuevo")
-  //   setIluminado(ref)
-  // }
 
 
 
@@ -174,14 +150,8 @@ function App() {
   return (
     <>
 
-      <ul>
-        {/* <li><Link to="/">Atras</Link></li> */}
-      </ul>
       <div id="contenedor">
-
-
         <Routes>
-          {/* <div ref={divRefListado}> */}
           <Route path="/" element={<Listado
             contactos={contactos}
             onCreate={onCreate}//Boton para que aparezca el formulario de crear
@@ -189,18 +159,14 @@ function App() {
             onView={onView} //Boton para visualizar el contacto en la lista de detalles
             onDelete={onDelete}// Boton para borrar un contacto
           />} />
-          {/* </div> */}
+
 
 
           <Route path="/modificar/:id" element={<Modificar
             contactoEntrante={contactoModificar} //Contacto a modificar PASA
-            // contactos = {contactos} //Array de contactos PASA
-            // elementos={elementos} // Se quitará en cuanto este formik
+            contactos = {contactos}
             funcion={modificarDatos}
-            // nombreBoton={"Modificar"} // Se añadirá en prop de formik
-            // titulo={"Modificar contacto"} // Se añadirá en prop de formik
             showToast={showToast}
-            // mensaje ={"Contacto modificado"}// Pasar a formik
             accionModificar={accion === "modificar"}
           />} />
 
@@ -208,6 +174,7 @@ function App() {
           
             <Route path="/detalles/:id" element={<Detalle
               contactoVer={contactoVer}
+              contactos = {contactos}
               innerRef={refVistar}
               accion={accion === "detallar"}
             />}/>
@@ -215,26 +182,18 @@ function App() {
 
           
             <Route path="/agregar" element={<Agregar
-              // contactos = {contactos} //Array de contactos PASA
-              // elementos={elementos} // Se quitará en cuanto este formik
               funcion={agregarDatos}
-              // nombreBoton={"Modificar"} // Se añadirá en prop de formik
-              // titulo={"Modificar contacto"} // Se añadirá en prop de formik
               showToast={showToast}
-              // mensaje ={"Contacto modificado"}// Pasar a formik
               accionAgregar={accion === "agregar"}
             />}/>
           
         </Routes>
 
         {<Toast mensaje={state.mensaje} visibilidad={state.visibilidad} />}
-        {console.log(contactoVer)}
       </div>
 
 
     </>
   )
 }
-
-
 export default App

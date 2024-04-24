@@ -57,7 +57,6 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
         
     };
 
-    const formik = useFormik(false);
     return (
 
         <Formik

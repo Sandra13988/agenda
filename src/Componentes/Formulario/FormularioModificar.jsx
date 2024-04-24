@@ -1,18 +1,32 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup';
 
 
-export const FormularioModificar = ({ contactoEntrante, funcion, nombreBoton, showToast, mensajeToast }) => {
+export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nombreBoton, showToast, mensajeToast }) => {
 
 
     const inputRefModificar = useRef(null)
     const navegar = useNavigate()
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
-    
+    const { id } = useParams(); // Obtener Id
+    const [contactoModificar, setContactoModificar] = useState(contactoEntrante);
+
+    useEffect(() => {
+        setearContacto()
+    }, [id, contactos]);
+
+    const setearContacto = () => {
+        const contactoEncontrado = contactos.find(contacto => contacto.id === parseInt(id));
+        if (contactoEncontrado) {
+            setContactoModificar(contactoEncontrado);
+        }
+    }
+
+
 
     useEffect(() => {
         inputRefModificar.current.focus()
@@ -64,7 +78,7 @@ export const FormularioModificar = ({ contactoEntrante, funcion, nombreBoton, sh
     return (
         <Formik
             enableReinitialize={true} //Reinicia el formulario con los valores nuevos
-            initialValues={contactoEntrante}
+            initialValues={contactoModificar}
 
             validationSchema={Yup.object({
                 // id: Yup.string()
@@ -103,10 +117,7 @@ export const FormularioModificar = ({ contactoEntrante, funcion, nombreBoton, sh
                 touched,
             }) => (
                 <Form>
-                    <div>
-                        <Field name="id" id="id" type="hidden" disabled />
-                        <ErrorMessage name="id" component="div" />
-                    </div>
+                    
 
                     <div>
                         <label htmlFor="dni">DNI</label>

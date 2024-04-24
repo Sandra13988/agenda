@@ -1,35 +1,33 @@
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
-export const Detalle = ({ contactoVer, innerRef, accion }) => {
+export const Detalle = ({ contactos, contactoVer, innerRef, accion }) => {
 
-    const [visible, setVisible] = useState()
+    const { id } = useParams(); // Obtener el parámetro de la URL que indica el ID del usuario
+    const [contactoDetalle, setContactoDetalle] = useState(contactoVer);
+
+    console.log(contactos)
 
     useEffect(() => {
-        setVisible(accion);
-    }, [accion]);
+        setearContacto()
+    }, [id, contactos]);
 
+    const setearContacto = () => {
+        // Buscar el contacto correspondiente en la lista de contactos
+        const contactoEncontrado = contactos.find(contacto => contacto.id === parseInt(id));
+        console.log(contactoEncontrado)
+        if (contactoEncontrado) {
+            setContactoDetalle(contactoEncontrado);
+            console.log(contactoEncontrado)
+        }
+    }
 
-    //PREGUNTAR SI ES MEJOR GUARDAR VERCONTACTO EN EL LOCALSTORAGE 
-    //ASI AUNQUE LE DES A F5 CREO QUE SE MANTIENE Y NO SE QUEDA
-    //LA PAGINA VACÍA
-    
-    // useEffect(() => {
-    //     comprobarContacto()
-    // }, [contactoVer]);
-
-
-    // const comprobarContacto = () =>{
-    //     if(!contactoVer){
-    //         return <Redirect to='/'  />
-    //     }
-    // }
 
     return (
         <>
             <div>
                 <h2>Detalles</h2>
-                <table  ref={innerRef}>
+                <table ref={innerRef}>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -43,13 +41,13 @@ export const Detalle = ({ contactoVer, innerRef, accion }) => {
                     </thead>
                     {<tbody>
                         <tr>
-                            <td>{contactoVer.id}</td>
-                            <td>{contactoVer.dni}</td>
-                            <td>{contactoVer.nombre}</td>
-                            <td>{contactoVer.telefono}</td>
-                            <td>{contactoVer.email}</td>
-                            <td>{contactoVer.cp}</td>
-                            <td>{contactoVer.localidad}</td>
+                            <td>{contactoDetalle.id}</td>
+                            <td>{contactoDetalle.dni}</td>
+                            <td>{contactoDetalle.nombre}</td>
+                            <td>{contactoDetalle.telefono}</td>
+                            <td>{contactoDetalle.email}</td>
+                            <td>{contactoDetalle.cp}</td>
+                            <td>{contactoDetalle.localidad}</td>
                         </tr>
 
                     </tbody>}
