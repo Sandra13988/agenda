@@ -51,7 +51,6 @@ function App() {
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
   const [accion, setAccion] = useState("nada")
-  const refVistar = useRef(null)
   const {id} = useParams()
 
 
@@ -178,12 +177,7 @@ console.log(listado)
 
 
           
-            <Route path="/detalles/:id" element={<Detalle
-              contactoVer={contactoVer}
-              contactos = {contactos}
-              innerRef={refVistar}
-              accion={accion === "detallar"}
-            />}/>
+            <Route path="/detalles/:id" element={<Detalle/>}/>
           
 
           

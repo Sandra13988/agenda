@@ -3,18 +3,35 @@ import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form, useFormik } from 'formik';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
+// import { useQueryAgregarContacto } from "../../Queris/QueryAgenda";
+import { useQuery, useMutation } from "@tanstack/react-query"
 
 
-export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToast, accionAgregar }) => {
+export const FormularioAgregar = ({ nombreBoton, showToast, mensajeToast }) => {
     const inputRefAgregar = useRef(null)
     const navegar = useNavigate()
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
-
+    const [valoresFinales, setValoresFinales] = useState({})
 
     useEffect(() => {
         inputRefAgregar.current.focus()
     }, [])
+    // const { isLoading, isError, error, dataPrueba } = useQueryAgregarContacto(valoresFinales)
+
+
+    const mutation = useMutation(data => {
+        // Aquí iría la lógica para llamar a tu API y agregar el dato
+        // Retorna la promesa de la llamada a la API
+        return fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
+            method: 'POST',
+            headers: {
+                'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }).then(response => response.json());
+    });
 
 
     function fetchDataLocalidad(cp) {
@@ -49,13 +66,21 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
             });
     }
     const handleOnChange = (e) => {
-        
+
         const cp = e.target.value;
         setLongitudCp(cp.length)
-            fetchDataLocalidad(cp);
-            console.log(cp)
-        
+        fetchDataLocalidad(cp);
+        console.log(cp)
+
     };
+
+    // if (isLoading) {
+    //     return <h2>Cargando...</h2>
+    // }
+
+    // if (isError || !valoresFinales) {
+    //     return <h2>{error.message}</h2>
+    // }
 
     return (
 
@@ -93,12 +118,25 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
             })}
 
 
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values, { }) => {
                 console.log(values)
                 showToast(mensajeToast)
-                funcion(values)
-                resetForm()
-                navegar('/')
+                // funcion(values)
+               
+                // mutation.mutate(values, {
+                //     onSuccess: () => {
+                //       actions.resetForm();
+                //       // Puedes agregar lógica adicional aquí luego de que la llamada sea exitosa
+                //       alert('¡Dato agregado con éxito!');
+                //     },
+                //     onError: error => {
+                //       // Puedes manejar el error aquí
+                //       alert('Hubo un error al agregar el dato: ' + error.message);
+                //     },
+                //   });
+
+                  setValoresFinales(values)
+                  navegar('/')
             }}
 
 
@@ -150,18 +188,18 @@ export const FormularioAgregar = ({ funcion, nombreBoton, showToast, mensajeToas
                             handleOnChange(e);
                             setFieldValue("cp", cp.value); //Tiene que venir aqui, no se puede meter en el handle idkw
 
-                        }} autoComplete="country"/>
-                        
+                        }} autoComplete="country" />
+
                         <ErrorMessage name="cp" component="div" />
                     </div>
 
                     <div>
                         <label htmlFor="localidad">Localidad</label>
-                        <Field as="select" name="localidad" id="localidad" type="localidad" disabled={longitudCp<5}>
+                        <Field as="select" name="localidad" id="localidad" type="localidad" disabled={longitudCp < 5}>
                             <option value="">Localidades</option>
                             {lugares.map(lugar => (
                                 <option key={lugar} value={lugar}>{lugar}</option>
-                                
+
                             ))}
                         </Field>
                         <ErrorMessage name="localidad" component="div" />

@@ -2,35 +2,27 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from 'react-router-dom'
 import { useQueryContactoDetalle } from '../../Queris/QueryAgenda'
 
-export const Detalle = ({ contactos, contactoVer, innerRef, accion }) => {
+export const Detalle = ({ }) => {
 
     const { id } = useParams(); // Obtener el parámetro de la URL que indica el ID del usuario
-    const [contactoDetalle, setContactoDetalle] = useState(contactoVer);
+  
 
     const { isLoading: isLoadingContacto, isError: isErrorContacto, error: errorContacto, data: contacto } = useQueryContactoDetalle({id: id})
 
-    console.log(contactos)
-
-    useEffect(() => {
-        setearContacto()
-    }, [id, contactos]);
-
-    const setearContacto = () => {
-        // Buscar el contacto correspondiente en la lista de contactos
-        const contactoEncontrado = contactos.find(contacto => contacto.id === parseInt(id));
-        console.log(contactoEncontrado)
-        if (contactoEncontrado) {
-            setContactoDetalle(contactoEncontrado);
-            console.log(contactoEncontrado)
-        }
-    }
     
+    if(isLoadingContacto){
+        return <h2>Cargando ...</h2>
+    }
+
+    if(isErrorContacto || !contacto){
+        return  <h2>{errorContacto.message}</h2>
+    }
 
     return (
         <>
             <div>
                 <h2>Detalles</h2>
-                <table ref={innerRef}>
+                <table >
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -44,13 +36,13 @@ export const Detalle = ({ contactos, contactoVer, innerRef, accion }) => {
                     </thead>
                     {<tbody>
                         <tr>
-                            <td>{contactoDetalle.id}</td>
-                            <td>{contactoDetalle.dni}</td>
-                            <td>{contactoDetalle.nombre}</td>
-                            <td>{contactoDetalle.telefono}</td>
-                            <td>{contactoDetalle.email}</td>
-                            <td>{contactoDetalle.cp}</td>
-                            <td>{contactoDetalle.localidad}</td>
+                            <td>{contacto.id}</td>
+                            <td>{contacto.dni}</td>
+                            <td>{contacto.nombre}</td>
+                            <td>{contacto.telefono}</td>
+                            <td>{contacto.email}</td>
+                            <td>{contacto.cp}</td>
+                            <td>{contacto.localidad}</td>
                         </tr>
 
                     </tbody>}
