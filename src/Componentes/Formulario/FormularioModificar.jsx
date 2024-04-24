@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup';
-
+import { useQueryContactoModificar } from "../../Queris/QueryAgenda";
 
 export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nombreBoton, showToast, mensajeToast }) => {
 
@@ -14,6 +14,9 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nomb
     const [longitudCp, setLongitudCp] = useState(0)
     const { id } = useParams(); // Obtener Id
     const [contactoModificar, setContactoModificar] = useState(contactoEntrante);
+
+    const { isLoading: isLoadingContacto, isError: isErrorContacto, error: errorContacto, data: contacto } = useQueryContactoModificar({id: id})
+
 
     useEffect(() => {
         setearContacto()

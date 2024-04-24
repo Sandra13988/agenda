@@ -3,6 +3,7 @@ import { ListarTipos } from './Pages/ListarTipos'
 import { AgregarTipos } from './Pages/AgregarTipos'
 import { ModificarTipos } from './Pages/ModificarTipos'
 import { Routes, Route } from 'react-router-dom'
+import { useQueryListadoTipos } from '../../Queris/QueryTipo'
 
 export function Tipos() {
   const defaultTipo = [
@@ -28,7 +29,7 @@ export function Tipos() {
 
   const [tipos, setTipos] = useState(defaultTipo)
   const [tipoModificar, setTipoModificar] = useState({})
-
+  const {isLoading, isError, error, data } = useQueryListadoTipos()
 
 
   const añadirTipo = (nuevoTipo) => {

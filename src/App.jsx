@@ -5,8 +5,10 @@ import { Listado } from './Componentes/Listado/Listado'
 import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
 import { Toast } from './Componentes/Toast/Toast'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useParams } from 'react-router-dom'
 import { Tipos } from './Componentes/Tipos/Tipos'
+import { useQueryListadoContactos } from './Queris/QueryAgenda'
+
 import './App.css'
 
 function App() {
@@ -44,15 +46,17 @@ function App() {
       localidad: "Callosa"
     }
   ];
-
+  
   const [contactos, setContactos] = useState(defaultContactos);
   const [contactoModificar, setContactoModificar] = useState({})
   const [contactoVer, setContactoVer] = useState({})
   const [accion, setAccion] = useState("nada")
   const refVistar = useRef(null)
+  const {id} = useParams()
 
 
-  const elementos = [{ name: "dni" }, { name: "nombre" }, { name: "telefono" }, { name: "email" }, { name: "cp" }, { name: "localidad" }]
+ const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado} = useQueryListadoContactos()
+console.log(listado)
 
 
   //ESTO ES LA ACCION
@@ -127,6 +131,7 @@ function App() {
   const onView = (contacto) => {
     setContactoVer(getContacto(contacto))
     setAccion("detallar")
+
 
   }
 
