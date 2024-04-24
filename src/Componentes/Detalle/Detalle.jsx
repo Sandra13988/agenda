@@ -1,17 +1,64 @@
-export const Detalle = (contacto) => { 
-    
+import { useState, useEffect } from "react";
+import { Link, useParams } from 'react-router-dom'
 
-    function detallar(contacto){
-        <table>
-            <tr>
-                <td>{contacto.id}</td>
-                <td>{contacto.dni}</td>
-                <td>{contacto.nombre}</td>
-                <td>{contacto.telefono}</td>
-                <td>{contacto.mail}</td>
-                <td>{contacto.cp}</td>
-                <td>{contacto.localidad}</td>
-            </tr>
-        </table>
+export const Detalle = ({ contactos, contactoVer, innerRef, accion }) => {
+
+    const { id } = useParams(); // Obtener el parámetro de la URL que indica el ID del usuario
+    const [contactoDetalle, setContactoDetalle] = useState(contactoVer);
+
+    console.log(contactos)
+
+    useEffect(() => {
+        setearContacto()
+    }, [id, contactos]);
+
+    const setearContacto = () => {
+        // Buscar el contacto correspondiente en la lista de contactos
+        const contactoEncontrado = contactos.find(contacto => contacto.id === parseInt(id));
+        console.log(contactoEncontrado)
+        if (contactoEncontrado) {
+            setContactoDetalle(contactoEncontrado);
+            console.log(contactoEncontrado)
+        }
     }
+
+
+    return (
+        <>
+            <div>
+                <h2>Detalles</h2>
+                <table ref={innerRef}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>DNI</th>
+                            <th>NOMBRE</th>
+                            <th>TELEFONO</th>
+                            <th>MAIL</th>
+                            <th>CP</th>
+                            <th>LOCALIDAD</th>
+                        </tr>
+                    </thead>
+                    {<tbody>
+                        <tr>
+                            <td>{contactoDetalle.id}</td>
+                            <td>{contactoDetalle.dni}</td>
+                            <td>{contactoDetalle.nombre}</td>
+                            <td>{contactoDetalle.telefono}</td>
+                            <td>{contactoDetalle.email}</td>
+                            <td>{contactoDetalle.cp}</td>
+                            <td>{contactoDetalle.localidad}</td>
+                        </tr>
+
+                    </tbody>}
+                </table>
+
+            </div>
+            {/* <Link to="/"><input
+                type="submit"
+                value={"Volver"}
+            /></Link> */}
+
+        </>
+    )
 }
