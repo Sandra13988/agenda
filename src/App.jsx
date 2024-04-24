@@ -6,6 +6,7 @@ import { Detalle } from './Componentes/Detalle/Detalle'
 import { Modificar } from './Componentes/Modificar/Modificar'
 import { Toast } from './Componentes/Toast/Toast'
 import { Routes, Route } from 'react-router-dom'
+import { Tipos } from './Componentes/Tipos/Tipos'
 import './App.css'
 
 function App() {
@@ -188,6 +189,8 @@ function App() {
             />}/>
           
         </Routes>
+
+        <Tipos/>
 
         {<Toast mensaje={state.mensaje} visibilidad={state.visibilidad} />}
       </div>
