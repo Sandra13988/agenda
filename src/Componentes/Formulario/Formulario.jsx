@@ -1,28 +1,74 @@
-import { useState } from "react";
-export const Formulario = () => { 
+import { useState, useEffect, useRef } from "react"
 
-    const [id, setId] = useState("");
-    const [dni, setDNI] = useState("");
-    const [nombre, setNombre] = useState("");
-    const [telefono, setTelefono] = useState("");
-    const [mail, setMail] = useState("");
-    const [direccion, setDireccion] = useState("");
-    const [CP, setCP] = useState("");
-    const [localidad, setLocalidad] = useState("");
 
-    const[contacto, setContaco] = useState({id, dni, nombre, telefono, mail, direccion, CP, localidad})
+export const Formulario = ({ contactoModificar, elementos, funcion, nombreBoton, titulo, inputRef, showToast, mensaje, innerRef, accion}) => {
 
-    return(
-        <form action="" method="">
-            <label>ID: <input type="text" id="id" name="id"/></label><br></br>
-            <label>DNI: <input type="text" id="dni" name="dni"/></label><br></br>
-            <label>Nombre: <input type="text" id="nombre" name="nombre"/></label><br></br>
-            <label>Telefono: <input type="text" id="telefono" name="telefono"/></label><br></br>
-            <label>E-mail: <input type="text" id="mail" name="mail"/></label><br></br>
-            <label>Direccion: <input type="text" id="direccion" name="direccion"/></label><br></br>
-            <label>CP: <input type="text" id="cp" name="cp"/></label><br></br>
-            <label>Localidad: <input type="text" id="localidad" name="localidad"/></label><br></br>
-            <button onClick={() => a}>Enviar</button>
-        </form>
+    const [contacto, setContacto] = useState(contactoModificar)
+    const [visible, setVisible] = useState()
+
+
+    useEffect(() => {
+        setContacto(contactoModificar ? contactoModificar : '')
+    }, [contactoModificar])
+
+    
+    // useEffect(() => {
+    //     setVisible(accionCrear);
+    // }, [accionCrear]);
+
+    // useEffect(() => {
+    //     setVisible(accionModificar);
+    // }, [accionModificar]);
+
+
+    const handleOnSubmit = (e) =>{
+        //Paso la funcion por prop y modifico contacto
+        //const datosNuevos = {id: idNuevo, dni: dniNuevo, nombre: nombreNuevo, telefono: telefonoNuevo, mail: mailNuevo, direccion: direccionNueva, cp: cpNuevo, localidad: localidadNueva}
+        //modificarDatos(contactoModificar, datosNuevos)
+        e.preventDefault()
+        funcion(contacto)
+        e.target.reset()
+        showToast(mensaje)
+    }
+
+    const handleOnChange = (e) =>{
+        //onChange={e =>{setContacto(e.target.value)}} value={idNuevo} -> Asi es como estaba
+        //Repasas contacto y donde encuentres el name (por ejemplo id) le colocas el valor nuevo
+        setContacto({
+            ...contacto,
+            [e.target.name]: e.target.value
+        })
+    }
+
+
+    return (
+
+<div>
+    <h2>{titulo}</h2>
+    <form onSubmit={handleOnSubmit} className="escondido" ref={innerRef}>
+        {elementos.map(elemento =>{
+            
+            return(                                                                                         
+            <div key={elemento.name}  > 
+                <label htmlFor={elemento.name}>{elemento.name}: </label>
+                <input type="text" onChange={handleOnChange} id={elemento.name} name={elemento.name} value={contacto[elemento.name]} ref={elemento.name === "dni" ? inputRef : null} autoComplete="off"/><br></br>
+            </div>
+            )
+            
+        })}
+
+      
+        {/* <label >ID: <input type="text" name="idNuevo" id="idNuevo" onChange={e =>{setId(e.target.value)}} value={id}/></label><br></br>
+                <label >DNI: <input type="text" name="dniNuevo" id="dniNuevo" onChange={e =>{setDni(e.target.value)}} value={dni}/></label><br></br>
+                <label >NOMBRE: <input type="text" name="nombreNuevo" id="nombreNuevo" onChange={e =>{setNombre(e.target.value)}} value={nombre}/></label><br></br>
+                <label >TELEFONO: <input type="text" name="telefonoNuevo" id="telefonoNuevo" onChange={e =>{setTelefono(e.target.value)}} value={telefono}/></label><br></br>
+                <label >E-MAIL: <input type="text" name="mailNuevo" id="mailNuevo" onChange={e =>{setMail(e.target.value)}} value={mailNuevo}/></label><br></br>
+                <label >DIRECCION: <input type="text" name="direccionNueva" id="direccionNueva" onChange={e =>{setDireccion(e.target.value)}} value={direccion}/></label><br></br>
+                <label >CP: <input type="text" name="cpNuevo" id="cpNuevo" onChange={e =>{setCp(e.target.value)}} value={cp}/></label><br></br>
+                <label >LOCALIDAD: <input type="text" name="localidadNueva" id="localidadNueva" onChange={e =>{setLocalidad(e.target.value)}} value={localidad}/></label><br></br> */}
+        <button type="submit">{nombreBoton}</button>
+    </form>
+</div>
+        
     )
 }
