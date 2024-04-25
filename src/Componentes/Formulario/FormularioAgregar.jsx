@@ -4,34 +4,59 @@ import { Field, ErrorMessage, Formik, Form, useFormik } from 'formik';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 // import { useQueryAgregarContacto } from "../../Queris/QueryAgenda";
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQueryListadoContactos } from "../../Queris/QueryAgenda";
+import { showToast } from "../../Utiles/Toast";
 
 
-export const FormularioAgregar = ({ nombreBoton, showToast, mensajeToast }) => {
+
+export const FormularioAgregar = () => {
     const inputRefAgregar = useRef(null)
     const navegar = useNavigate()
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
-    const [valoresFinales, setValoresFinales] = useState({})
+
+    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado} = useQueryListadoContactos()
+   
+    const queryClient = useQueryClient()
 
     useEffect(() => {
         inputRefAgregar.current.focus()
     }, [])
-    // const { isLoading, isError, error, dataPrueba } = useQueryAgregarContacto(valoresFinales)
 
+    
 
-    const mutation = useMutation(data => {
-        // Aquí iría la lógica para llamar a tu API y agregar el dato
-        // Retorna la promesa de la llamada a la API
-        return fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
-            method: 'POST',
-            headers: {
-                'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        }).then(response => response.json());
-    });
+    //Funcion que ejecuta la mutacion
+  const mutation = useMutation({
+        mutationFn: async (nuevoContacto) => {
+            nuevoContacto.id = listado.record.length + 1;
+            const nuevosDatos = [...listado.record, nuevoContacto]
+            const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
+                    // 'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
+                    'X-Collection-Name': 'contactos2'
+                    
+                },
+                body: JSON.stringify(
+                    nuevosDatos
+                )
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error en la petición');
+            }
+            return response.json()
+    
+        },
+        onSuccess: () => {
+            console.log("Se ha insertado el contacto")
+            queryClient.invalidateQueries({ queryKey:["contactos", "listado"]})
+        },
+    })
+
 
 
     function fetchDataLocalidad(cp) {
@@ -74,18 +99,19 @@ export const FormularioAgregar = ({ nombreBoton, showToast, mensajeToast }) => {
 
     };
 
-    // if (isLoading) {
-    //     return <h2>Cargando...</h2>
-    // }
+    if(isLoadingListado){
+        return <h3>Cargando...</h3>
+    }
 
-    // if (isError || !valoresFinales) {
-    //     return <h2>{error.message}</h2>
-    // }
+    if(isErrorListado || !listado){
+        return <h3>Ha habido unerror ....</h3>
+    }
 
     return (
 
         <Formik
             initialValues={{
+                id: '',
                 dni: '',
                 nombre: '',
                 telefono: '',
@@ -120,23 +146,11 @@ export const FormularioAgregar = ({ nombreBoton, showToast, mensajeToast }) => {
 
             onSubmit={(values, { }) => {
                 console.log(values)
-                showToast(mensajeToast)
-                // funcion(values)
                
-                // mutation.mutate(values, {
-                //     onSuccess: () => {
-                //       actions.resetForm();
-                //       // Puedes agregar lógica adicional aquí luego de que la llamada sea exitosa
-                //       alert('¡Dato agregado con éxito!');
-                //     },
-                //     onError: error => {
-                //       // Puedes manejar el error aquí
-                //       alert('Hubo un error al agregar el dato: ' + error.message);
-                //     },
-                //   });
-
-                  setValoresFinales(values)
-                  navegar('/')
+                //Llamada a la funcion de mutacion
+                mutation.mutate(values)
+                navegar('/') // Esto hay que cambiarlo porque manda a /agregar
+                showToast("Contacto agregado")
             }}
 
 
@@ -208,7 +222,7 @@ export const FormularioAgregar = ({ nombreBoton, showToast, mensajeToast }) => {
 
                     <input
                         type="submit"
-                        value={nombreBoton}
+                        value={"Agregar"}
                         disabled={!isValid}
                     />
                     <Link to="/"><input
@@ -221,5 +235,5 @@ export const FormularioAgregar = ({ nombreBoton, showToast, mensajeToast }) => {
 
 
     );
-
+    
 }
