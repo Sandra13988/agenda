@@ -8,8 +8,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { showToast } from "../../Utiles/Toast";
 import jsonpath from 'jsonpath';
 
-export const FormularioModificar = ({ contactos, contactoEntrante, funcion }) => {
-//NO MODIFICA, DEVUELVE NULL A TODOS LOS OBJETOS
+export const FormularioModificar = () => {
 
     const inputRefModificar = useRef(null)
     const navegar = useNavigate()
@@ -21,27 +20,14 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion }) =>
 
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
 
-    
 
-    const buscarContactoEnListado = () => {
-        listado.record.map(contacto => {
-            if (contacto.id === id) {
-                console.log(contacto)
-                setContactoModificar( contacto);
-               
-            }
-        })
-    }
-
-    
-    buscarContactoEnListado()
     const mutation = useMutation({
-        mutationFn: async (contactoModificado) => {
+        mutationFn: async (valoresNuevos) => {
             const nuevosDatos = listado.record.map(contacto => {
-                if (contacto.id === id) {
-                    return { ...contacto, ...contactoModificado };
+                if (contacto.id === valoresNuevos.id) {
+                    return valoresNuevos;
                 }
-               
+                return contacto; 
             });
 
             const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
@@ -62,6 +48,7 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion }) =>
         onSuccess: () => {
             console.log("Se ha modificado el contacto");
             queryClient.invalidateQueries(["contactos", "listado"]);
+            navegar('/')
         },
     });
 
@@ -142,9 +129,8 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion }) =>
 
             onSubmit={(values, { }) => {
                 mutation.mutate(values)
-                // funcion(values)
                 showToast("Contacto modificado")
-                navegar('/')
+               
             }}
         >
             {({

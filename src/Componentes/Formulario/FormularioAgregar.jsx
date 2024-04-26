@@ -107,6 +107,12 @@ export const FormularioAgregar = () => {
         return <h3>Ha habido unerror ....</h3>
     }
 
+
+mutationFn: async (id) => {
+            const borrarContacto = listado.record.filter(contacto => contacto.id !== id)
+            return borrarContacto
+        }
+
     return (
 
         <Formik
