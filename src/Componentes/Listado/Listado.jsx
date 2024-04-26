@@ -36,7 +36,7 @@ export const Listado = ({ }) => {
 
 
 if (isLoadingListado) {
-    return <h3>Cargando...</h3>
+    return <h3>Cargando contactos...</h3>
 }
 
 if (isErrorListado || !listado) {

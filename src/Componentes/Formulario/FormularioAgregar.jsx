@@ -27,7 +27,7 @@ export const FormularioAgregar = () => {
     
 
     //Funcion que ejecuta la mutacion
-  const mutation = useMutation({
+  const mutationAgregarContacto = useMutation({
         mutationFn: async (nuevoContacto) => {
             nuevoContacto.id = listado.record.length + 1;
             const nuevosDatos = [...listado.record, nuevoContacto]
@@ -37,7 +37,7 @@ export const FormularioAgregar = () => {
                     'Content-Type': 'application/json',
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
                     // 'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
-                    'X-Collection-Name': 'contactos2'
+                    'X-Collection-Name': 'defaultContactos'
                     
                 },
                 body: JSON.stringify(
@@ -108,11 +108,6 @@ export const FormularioAgregar = () => {
     }
 
 
-mutationFn: async (id) => {
-            const borrarContacto = listado.record.filter(contacto => contacto.id !== id)
-            return borrarContacto
-        }
-
     return (
 
         <Formik
@@ -154,7 +149,7 @@ mutationFn: async (id) => {
                 console.log(values)
                
                 //Llamada a la funcion de mutacion
-                mutation.mutate(values)
+                mutationAgregarContacto.mutate(values)
                 navegar('/') // Esto hay que cambiarlo porque manda a /agregar
                 showToast("Contacto agregado")
             }}

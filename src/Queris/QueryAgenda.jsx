@@ -4,7 +4,8 @@ import jsonpath from 'jsonpath';
 
 export function useQueryListadoContactos() {
   const headers = {
-    'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe'
+    'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
+    'X-Collection-Name': 'defaultContactos'
   };
 
   return useQuery({
@@ -20,7 +21,8 @@ export function useQueryListadoContactos() {
 
 export function useQueryContactoDetalle({ id }) {
   const headers = {
-    'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe'
+    'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
+    'X-Collection-Name': 'defaultContactos'
   };
 
   return useQuery({

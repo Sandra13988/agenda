@@ -1,18 +1,65 @@
 import {Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQueryListadoTipos } from '../../../../Queris/QueryTipo';
+import { showToast } from '../../../../Utiles/Toast';
 
-export const FormularioAgregarTipos = ({funcion}) => {
+export const FormularioAgregarTipos = () => {
+
     const navegar = useNavigate()
+  
+
+    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+
+
+    const queryClient = useQueryClient()
+
+    const mutationAgregarTipo = useMutation({
+        mutationFn: async (nuevoTipo) => {
+            nuevoTipo.id = listadoTipos.record.length + 1;
+            const nuevosDatos = [...listadoTipos.record, nuevoTipo]
+            const response = await fetch('https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
+                    'X-Collection-Name': 'tipos'
+                    
+                },
+                body: JSON.stringify(
+                    nuevosDatos
+                )
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error en la petición');
+            }
+            return response.json()
+    
+        },
+        onSuccess: () => {
+            console.log("Se ha insertado el tipo")
+            queryClient.invalidateQueries({ queryKey:["tipos", "listado"]})
+        },
+    })
 
     
+    if(isLoadingListadoTipos){
+        return <h3>Cargando...</h3>
+    }
+
+    if(isErrorListadoTipos ){
+        return <h3>Ha habido unerror ....</h3>
+    }
+
 
     return(
         <>
            <Formik
             initialValues={{
-               
-                name: '',
+                id: '',
+                name: ''
             }}
 
             validationSchema={Yup.object({
@@ -22,11 +69,11 @@ export const FormularioAgregarTipos = ({funcion}) => {
             })}
 
 
-            onSubmit={(values, { resetForm }) => {
-                funcion(values) 
-                resetForm()
+            onSubmit={(values, { }) => {
+                console.log(values)
+                mutationAgregarTipo.mutate(values)
                 navegar("/")
-                
+                showToast("Tipo agregado")
             }}>
 
             {({

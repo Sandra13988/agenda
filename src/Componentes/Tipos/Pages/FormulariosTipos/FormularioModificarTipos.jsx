@@ -2,29 +2,83 @@ import {Formik, Form, Field, ErrorMessage } from 'formik'
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQueryListadoTipos } from '../../../../Queris/QueryTipo';
+import jsonpath from 'jsonpath';
 
 export const FormularioModificarTipos = ({funcion, tipoModificar}) => {
 
 const [tipo, setTipo] = useState()
 const navegar = useNavigate()
 const { id } = useParams()
-    //EL VALUE DEL INPUT NAME NO RECOGE EL INITIAL VALUE
+   
 
     useEffect(()=>{
         setTipo(tipoModificar)
     }, [id, tipoModificar])
 
+    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
 
+    const queryClient = useQueryClient()
+
+    const mutationModificarTipo = useMutation({
+        mutationFn: async (valoresNuevos) => {
+            const nuevosDatos = listadoTipos.record.map(contacto => {
+                if (contacto.id === valoresNuevos.id) {
+                    return valoresNuevos;
+                }
+                return contacto; 
+            });
+
+            const response = await fetch('https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
+                    'X-Collection-Name': 'tipos'
+                },
+                body: JSON.stringify(nuevosDatos)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error en la petición');
+            }
+            return response.json();
+        },
+        onSuccess: (nuevosDatos) => {
+            console.log("Se ha modificado el tipo");
+
+            //Esto es para actualizar los datos de la cache a mano
+
+            queryClient.setQueryData(["tipos", "listado"], (oldData) => {
+                if (!oldData) return [nuevosDatos]; 
+                const updatedData = oldData.map(item => {
+                    if (item.id === nuevosDatos.id) {
+                        return nuevosDatos;
+                    }
+                    return item;
+                });
+                return updatedData;
+            });
+
+            //---------------------------------------------------------
+
+            // Es una de las maneras de recuperar los datos nuevos
+
+            // Esto es para invalidar la query y hacer un refetch
+            // queryClient.invalidateQueries(["contactos", "listado"]);
+            
+        },
+    });
+
+    
     return(
         <>
            <Formik
-            initialValues={{
-                id: tipo ? tipo.id : "",
-                name: tipo ? tipo.name : ""}}
+            initialValues={jsonpath.query(listadoTipos.record, `$[?(@.id == ${id})]`)[0] }
 
             validationSchema={Yup.object({
-                id: Yup.string()
-                    .required("El id no se debe cambiar"),
+                
                 name: Yup.string()
                     .required("El nombre del tipo es requerido"),
             })}
@@ -32,7 +86,7 @@ const { id } = useParams()
             enableReinitialize={true}
             
             onSubmit={(values, { resetForm }) => {
-                funcion(values) 
+                mutationModificarTipo.mutate(values)
                 resetForm()
                 navegar("/")
                 
@@ -45,11 +99,7 @@ const { id } = useParams()
 
                 <Form>
                    
-                    <div>
-                        <label htmlFor="id">ID: </label>
-                        <Field name="id" id="id" type="id" />
-                        <ErrorMessage name="id" component="div" />
-                    </div>
+                
                     <div>
                         <label htmlFor="name">Nombre: </label>
                         <Field name="name" id="name" type="name" />
