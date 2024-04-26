@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
 import { Link, useParams } from 'react-router-dom'
 import { useQueryContactoDetalle } from '../../Queris/QueryAgenda'
 
-export const Detalle = ({ }) => {
+export const Detalle = () => {
 
     const { id } = useParams(); // Obtener el parámetro de la URL que indica el ID del usuario
   

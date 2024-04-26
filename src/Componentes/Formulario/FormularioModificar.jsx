@@ -4,7 +4,7 @@ import { Field, ErrorMessage, Formik, Form } from 'formik'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup';
 import { useQueryListadoContactos } from "../../Queris/QueryAgenda";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { showToast } from "../../Utiles/Toast";
 import jsonpath from 'jsonpath';
 
@@ -15,7 +15,6 @@ export const FormularioModificar = () => {
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
     const { id } = useParams(); // Obtener Id
-    const [contactoModificar, setContactoModificar] = useState();
     const queryClient = useQueryClient()
 
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()

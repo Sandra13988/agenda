@@ -1,22 +1,17 @@
 import {Formik, Form, Field, ErrorMessage } from 'formik'
-import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoTipos } from '../../../../Queris/QueryTipo';
 import jsonpath from 'jsonpath';
 
-export const FormularioModificarTipos = ({funcion, tipoModificar}) => {
+export const FormularioModificarTipos = () => {
 
-const [tipo, setTipo] = useState()
 const navegar = useNavigate()
 const { id } = useParams()
    
 
-    useEffect(()=>{
-        setTipo(tipoModificar)
-    }, [id, tipoModificar])
-
+   
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
 
     const queryClient = useQueryClient()
@@ -50,16 +45,16 @@ const { id } = useParams()
 
             //Esto es para actualizar los datos de la cache a mano
 
-            queryClient.setQueryData(["tipos", "listado"], (oldData) => {
-                if (!oldData) return [nuevosDatos]; 
-                const updatedData = oldData.map(item => {
-                    if (item.id === nuevosDatos.id) {
-                        return nuevosDatos;
-                    }
-                    return item;
-                });
-                return updatedData;
-            });
+            // queryClient.setQueryData(["tipos", "listado"], (oldData) => {
+            //     if (!oldData) return [nuevosDatos]; 
+            //     const updatedData = oldData.map(item => {
+            //         if (item.id === nuevosDatos.id) {
+            //             return nuevosDatos;
+            //         }
+            //         return item;
+            //     });
+            //     return updatedData;
+            // });
 
             //---------------------------------------------------------
 
@@ -98,8 +93,6 @@ const { id } = useParams()
             }) => (
 
                 <Form>
-                   
-                
                     <div>
                         <label htmlFor="name">Nombre: </label>
                         <Field name="name" id="name" type="name" />
@@ -116,7 +109,6 @@ const { id } = useParams()
                         value={"Volver"}
                     /></Link>
                      </div>
-                    
                 </Form>
             )}
         </Formik>

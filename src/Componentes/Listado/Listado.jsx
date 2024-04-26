@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react"
-import { Routes, Route, Link } from 'react-router-dom'
-import { useQueryListadoContactos } from "../../Queris/QueryAgenda"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 
-export const Listado = ({ }) => {
+import { Link } from 'react-router-dom'
+import { useQueryListadoContactos } from "../../Queris/QueryAgenda"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+export const Listado = () => {
 
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
     // const { isLoading: isLoadingBorrado, isError: isErrorBorrado, error: errorBorrado, data: borrado } = useQueryListadoContactos()

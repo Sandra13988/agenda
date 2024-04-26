@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import jsonpath from 'jsonpath';
 
 
@@ -48,10 +48,3 @@ export function useQueryContactoDetalle({ id }) {
     }
   });
 }
-
-
-
-
-
-//HASTA AQUI ESTA CORRECTO 
-

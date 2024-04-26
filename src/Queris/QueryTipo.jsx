@@ -1,7 +1,6 @@
 import { useQuery} from "@tanstack/react-query"
 
 
-
 export  function useQueryListadoTipos  ()  {
     const headers = {
         'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',

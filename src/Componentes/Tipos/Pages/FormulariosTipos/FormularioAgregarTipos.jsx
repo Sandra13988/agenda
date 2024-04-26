@@ -1,7 +1,7 @@
 import {Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoTipos } from '../../../../Queris/QueryTipo';
 import { showToast } from '../../../../Utiles/Toast';
 
@@ -40,7 +40,7 @@ export const FormularioAgregarTipos = () => {
         },
         onSuccess: () => {
             console.log("Se ha insertado el tipo")
-            queryClient.invalidateQueries({ queryKey:["tipos", "listado"]})
+            // queryClient.invalidateQueries({ queryKey:["tipos", "listado"]})
         },
     })
 

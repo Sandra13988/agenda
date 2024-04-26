@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useQueryListadoTipos } from '../../../Queris/QueryTipo'
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-export const ListarTipos = ({tipos, onDelete, onUpdate, añadirTipo}) => {
+export const ListarTipos = () => {
 
     const {isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
     
@@ -28,7 +28,7 @@ export const ListarTipos = ({tipos, onDelete, onUpdate, añadirTipo}) => {
         },
         onSuccess: () => {
             console.log("Se ha borrado el contacto");
-            queryClient.invalidateQueries(["tipos", "listado"]);
+            // queryClient.invalidateQueries(["tipos", "listado"]);
             navegar('/')
         },
     });
@@ -57,7 +57,7 @@ export const ListarTipos = ({tipos, onDelete, onUpdate, añadirTipo}) => {
                         return (
                         <tr key={tipo.id}>
                             <td >{tipo.name}</td>
-                            <td ><Link to={`/tipos/modificar/${tipo.id}`}><button onClick={() => onUpdate(tipo.id)}>MODIFICAR</button></Link></td>
+                            <td ><Link to={`/tipos/modificar/${tipo.id}`}><button>MODIFICAR</button></Link></td>
                             <td >{<button onClick={() =>mutationBorrarTipo.mutate(tipo.id)}>BORRAR</button>}</td>
                         </tr>
                         )
