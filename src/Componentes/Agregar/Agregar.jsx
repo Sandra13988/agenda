@@ -8,7 +8,7 @@ export const Agregar = ({funcion, showToast, accionAgregar}) => {
        
         <>
         <h2>Agregar contacto</h2>
-        {<FormularioAgregar funcion={funcion} nombreBoton={"Agregar"} showToast={showToast} mensajeToast={"Contaco Agregado"} accionAgregar={accionAgregar}/>}
+        {<FormularioAgregar  accionAgregar={accionAgregar}/>}
         </>
     )
 }

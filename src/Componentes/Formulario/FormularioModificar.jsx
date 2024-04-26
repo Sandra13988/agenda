@@ -1,34 +1,56 @@
 
 import { useState, useEffect, useRef } from "react"
-import { Field, ErrorMessage, Formik, Form } from 'formik';
+import { Field, ErrorMessage, Formik, Form } from 'formik'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup';
-import { useQueryContactoModificar } from "../../Queris/QueryAgenda";
+import { useQueryListadoContactos } from "../../Queris/QueryAgenda";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { showToast } from "../../Utiles/Toast";
+import jsonpath from 'jsonpath';
 
-export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nombreBoton, showToast, mensajeToast }) => {
-
+export const FormularioModificar = () => {
 
     const inputRefModificar = useRef(null)
     const navegar = useNavigate()
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
     const { id } = useParams(); // Obtener Id
-    const [contactoModificar, setContactoModificar] = useState(contactoEntrante);
+    const [contactoModificar, setContactoModificar] = useState();
+    const queryClient = useQueryClient()
 
-    const { isLoading: isLoadingContacto, isError: isErrorContacto, error: errorContacto, data: contacto } = useQueryContactoModificar({id: id})
+    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
 
 
-    useEffect(() => {
-        setearContacto()
-    }, [id, contactos]);
+    const mutation = useMutation({
+        mutationFn: async (valoresNuevos) => {
+            const nuevosDatos = listado.record.map(contacto => {
+                if (contacto.id === valoresNuevos.id) {
+                    return valoresNuevos;
+                }
+                return contacto; 
+            });
 
-    const setearContacto = () => {
-        const contactoEncontrado = contactos.find(contacto => contacto.id === parseInt(id));
-        if (contactoEncontrado) {
-            setContactoModificar(contactoEncontrado);
-        }
-    }
+            const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
+                    'X-Collection-Name': 'defaultContactos'
+                },
+                body: JSON.stringify(nuevosDatos)
+            });
 
+            if (!response.ok) {
+                throw new Error('Error en la petición');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            console.log("Se ha modificado el contacto");
+            queryClient.invalidateQueries(["contactos", "listado"]);
+            navegar('/')
+        },
+    });
 
 
     useEffect(() => {
@@ -80,8 +102,8 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nomb
 
     return (
         <Formik
-            enableReinitialize={true} //Reinicia el formulario con los valores nuevos
-            initialValues={contactoModificar}
+            // enableReinitialize={true} //Reinicia el formulario con los valores nuevos
+            initialValues={jsonpath.query(listado.record, `$[?(@.id == ${id})]`)[0] }
 
             validationSchema={Yup.object({
                 // id: Yup.string()
@@ -105,11 +127,10 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nomb
             })}
 
 
-            onSubmit={(values, { resetForm }) => {
-                console.log("contacto en submit :", contactoEntrante);
-                funcion(values)
-                showToast(mensajeToast)
-                navegar('/')
+            onSubmit={(values, { }) => {
+                mutation.mutate(values)
+                showToast("Contacto modificado")
+               
             }}
         >
             {({
@@ -120,8 +141,12 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nomb
                 touched,
             }) => (
                 <Form>
-                    
 
+                    <div>
+                        <label htmlFor="id">ID</label>
+                        <Field name="id" id="id" type="id" innerRef={inputRefModificar} />
+                        <ErrorMessage name="id" component="div" />
+                    </div>
                     <div>
                         <label htmlFor="dni">DNI</label>
                         <Field name="dni" id="dni" type="dni" innerRef={inputRefModificar} />
@@ -167,7 +192,7 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nomb
                     <div>
                         <label htmlFor="localidad">Localidad</label>
                         <Field as="select" name="localidad" id="localidad" type="localidad" disabled={longitudCp < 5}>
-                            <option value="" >{values.localidad}</option>
+                            {/* <option value="" >{values.localidad}</option> */}
                             {lugares.map(lugar => (
                                 <option key={lugar} value={lugar}>{lugar}</option>
                             ))}
@@ -177,10 +202,10 @@ export const FormularioModificar = ({ contactos, contactoEntrante, funcion, nomb
 
                     <input
                         type="submit"
-                        value={nombreBoton}
+                        value={"Modificar"}
                         disabled={touched && errors.length > 0}
                     />
-                     <Link to="/"><input
+                    <Link to="/"><input
                         type="submit"
                         value={"Volver"}
                     /></Link>

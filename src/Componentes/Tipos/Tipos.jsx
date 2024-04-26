@@ -29,7 +29,7 @@ export function Tipos() {
 
   const [tipos, setTipos] = useState(defaultTipo)
   const [tipoModificar, setTipoModificar] = useState({})
-  const {isLoading, isError, error, data } = useQueryListadoTipos()
+  
 
 
   const añadirTipo = (nuevoTipo) => {
