@@ -115,6 +115,7 @@ export const FormularioAgregar = () => {
                 id: '',
                 dni: '',
                 nombre: '',
+                sexo: '',
                 telefono: '',
                 email: '',
                 direccion: '',
@@ -140,6 +141,8 @@ export const FormularioAgregar = () => {
                 cp: Yup.number("El formato debe de ser numerico")
                     .required("El codigo postal es requerido")
                     .min(4, "Minimo 5 numeros"),
+                sexo: Yup.string()
+                    .required("El sexo es requerida"),
                 localidad: Yup.string()
                     .required("La localidad es requerida"),
             })}
@@ -176,6 +179,16 @@ export const FormularioAgregar = () => {
                         <label htmlFor="nombre">Nombre</label>
                         <Field name="nombre" id="nombre" type="nombre" />
                         <ErrorMessage name="nombre" component="div" />
+                    </div>
+
+                    <div>
+                        <label htmlFor="sexo">Sexo</label>
+                        <Field as="select" name="sexo" id="sexo" type="sexo">
+                            <option value=""></option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="Mujer">Mujer</option>
+                        </Field>
+                        <ErrorMessage name="localidad" component="div" />
                     </div>
 
                     <div>

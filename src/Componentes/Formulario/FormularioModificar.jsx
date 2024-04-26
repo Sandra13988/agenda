@@ -160,6 +160,16 @@ export const FormularioModificar = () => {
                     </div>
 
                     <div>
+                        <label htmlFor="sexo">Sexo</label>
+                        <Field as="select" name="sexo" id="sexo" type="sexo">
+                            <option value=""></option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="Mujer">Mujer</option>
+                        </Field>
+                        <ErrorMessage name="localidad" component="div" />
+                    </div>
+                    
+                    <div>
                         <label htmlFor="telefono">Telefono</label>
                         <Field name="telefono" id="telefono" type="telefono" />
                         <ErrorMessage name="telefono" component="div" />
