@@ -28,6 +28,7 @@ export const Detalle = ({ }) => {
                             <th>ID</th>
                             <th>DNI</th>
                             <th>NOMBRE</th>
+                            <th>SEXO</th>
                             <th>TELEFONO</th>
                             <th>MAIL</th>
                             <th>CP</th>
@@ -39,6 +40,7 @@ export const Detalle = ({ }) => {
                             <td>{contacto.id}</td>
                             <td>{contacto.dni}</td>
                             <td>{contacto.nombre}</td>
+                            <td>{contacto.sexo}</td>
                             <td>{contacto.telefono}</td>
                             <td>{contacto.email}</td>
                             <td>{contacto.cp}</td>
@@ -49,10 +51,10 @@ export const Detalle = ({ }) => {
                 </table>
 
             </div>
-            {/* <Link to="/"><input
+            <Link to="/"><input
                 type="submit"
                 value={"Volver"}
-            /></Link> */}
+            /></Link>
 
         </>
     )
