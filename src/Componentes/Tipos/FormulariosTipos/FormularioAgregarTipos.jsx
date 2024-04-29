@@ -17,7 +17,7 @@ export const FormularioAgregarTipos = () => {
 
     const mutationAgregarTipo = useMutation({
         mutationFn: async (nuevoTipo) => {
-            nuevoTipo.id = listadoTipos.record.length + 1;
+            
             const nuevosDatos = [...listadoTipos.record, nuevoTipo]
             const response = await fetch('https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4', {
                 method: 'PUT',
@@ -40,7 +40,7 @@ export const FormularioAgregarTipos = () => {
         },
         onSuccess: () => {
             console.log("Se ha insertado el tipo")
-            // queryClient.invalidateQueries({ queryKey:["tipos", "listado"]})
+            queryClient.invalidateQueries({ queryKey:["tipos", "listado"]})
         },
     })
 
@@ -72,7 +72,9 @@ export const FormularioAgregarTipos = () => {
             onSubmit={(values, { }) => {
                 console.log(values)
                 mutationAgregarTipo.mutate(values)
-                navegar("/")
+                const lastId = listadoTipos.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
+                values.id = lastId + 1;
+                navegar('/tipos')
                 showToast("Tipo agregado")
             }}>
 
@@ -93,7 +95,7 @@ export const FormularioAgregarTipos = () => {
                         value={"Agregar"}
                         disabled={!isValid}
                     />
-                    <Link to="/"><input
+                    <Link to="/tipos"><input
                         type="submit"
                         value={"Volver"}
                     /></Link>

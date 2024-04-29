@@ -83,7 +83,7 @@ const { id } = useParams()
             onSubmit={(values, { resetForm }) => {
                 mutationModificarTipo.mutate(values)
                 resetForm()
-                navegar("/")
+                navegar("/tipos")
                 
             }}>
 
@@ -104,7 +104,7 @@ const { id } = useParams()
                         value={"Modificar"}
                         disabled={!isValid}
                     />
-                    <Link to="/"><input
+                    <Link to="/tipos"><input
                         type="submit"
                         value={"Volver"}
                     /></Link>

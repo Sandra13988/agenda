@@ -49,7 +49,7 @@ export const FormularioModificar = () => {
         onSuccess: () => {
             console.log("Se ha modificado el contacto");
             queryClient.invalidateQueries(["contactos", "listado"]);
-            navegar('/')
+            navegar('/agenda')
         },
     });
 
@@ -240,7 +240,7 @@ export const FormularioModificar = () => {
                         value={"Modificar"}
                         disabled={touched && errors.length > 0}
                     />
-                    <Link to="/"><input
+                    <Link to="/agenda"><input
                         type="submit"
                         value={"Volver"}
                     /></Link>
