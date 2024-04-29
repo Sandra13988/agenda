@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 // import { useQueryAgregarContacto } from "../../Queris/QueryAgenda";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
-import { showToast } from '../../../Utiles/Toast'
+// import { showToast } from '../../../Utiles/Toast'
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 
 
@@ -164,7 +164,7 @@ export const FormularioAgregar = () => {
                 //Llamada a la funcion de mutacion
                 mutationAgregarContacto.mutate(values)
                 navegar('/agenda') // Esto hay que cambiarlo porque manda a /agregar
-                showToast("Contacto agregado")
+                // showToast("Contacto agregado")
             }}
 
 

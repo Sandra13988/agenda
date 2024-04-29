@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoTipos } from '../../../Queris/QueryTipo';
-import { showToast } from '../../../Utiles/Toast';
+// import { showToast } from '../../../Utiles/Toast';
 
 export const FormularioAgregarTipos = () => {
 
@@ -75,7 +75,7 @@ export const FormularioAgregarTipos = () => {
                 const lastId = listadoTipos.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
                 values.id = lastId + 1;
                 navegar('/tipos')
-                showToast("Tipo agregado")
+                // showToast("Tipo agregado")
             }}>
 
             {({
