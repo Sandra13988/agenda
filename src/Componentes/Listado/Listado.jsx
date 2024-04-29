@@ -27,9 +27,9 @@ export const Listado = () => {
             }
             return response.json();
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             console.log("Se ha borrado el contacto");
-            queryClient.invalidateQueries(["contactos", "listado"]);
+            queryClient.setQueryData(["contactos", "listado"], data)
             navegar('/')
         },
     });
