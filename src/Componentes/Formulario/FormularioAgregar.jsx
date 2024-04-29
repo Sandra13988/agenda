@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoContactos } from "../../Queris/QueryAgenda";
 import { showToast } from "../../Utiles/Toast";
+import { useQueryListadoTipos } from "../../Queris/QueryTipo";
+
 
 
 
@@ -16,18 +18,19 @@ export const FormularioAgregar = () => {
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
 
-    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado} = useQueryListadoContactos()
-   
+    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
+    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+
     const queryClient = useQueryClient()
 
-    useEffect(() => {
-        inputRefAgregar.current.focus()
-    }, [])
+    // useEffect(() => {
+    //     inputRefAgregar.current.focus()
+    // }, [])
 
     
-
+  
     //Funcion que ejecuta la mutacion
-  const mutationAgregarContacto = useMutation({
+    const mutationAgregarContacto = useMutation({
         mutationFn: async (nuevoContacto) => {
             nuevoContacto.id = listado.record.length + 1;
             const nuevosDatos = [...listado.record, nuevoContacto]
@@ -38,22 +41,22 @@ export const FormularioAgregar = () => {
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
                     // 'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
                     'X-Collection-Name': 'defaultContactos'
-                    
+
                 },
                 body: JSON.stringify(
                     nuevosDatos
                 )
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error en la petición');
             }
             return response.json()
-    
+
         },
         onSuccess: () => {
             console.log("Se ha insertado el contacto")
-            queryClient.invalidateQueries({ queryKey:["contactos", "listado"]})
+            queryClient.invalidateQueries({ queryKey: ["contactos", "listado"] })
         },
     })
 
@@ -99,11 +102,11 @@ export const FormularioAgregar = () => {
 
     };
 
-    if(isLoadingListado){
+    if (isLoadingListado || isLoadingListadoTipos) {
         return <h3>Cargando...</h3>
     }
 
-    if(isErrorListado || !listado){
+    if (isErrorListado || !listado || isErrorListadoTipos || !listadoTipos) {
         return <h3>Ha habido unerror ....</h3>
     }
 
@@ -113,6 +116,7 @@ export const FormularioAgregar = () => {
         <Formik
             initialValues={{
                 id: '',
+                tipo: '',
                 dni: '',
                 nombre: '',
                 sexo: '',
@@ -126,6 +130,8 @@ export const FormularioAgregar = () => {
             validationSchema={Yup.object({
                 // id: Yup.string()
                 //     .required("El id del usuario es requerido"),
+                tipo: Yup.string()
+                    .required("El tipo es requerido"),
                 dni: Yup.string()
                     .required("El DNI es requerido"),
                 nombre: Yup.string()
@@ -150,7 +156,7 @@ export const FormularioAgregar = () => {
 
             onSubmit={(values, { }) => {
                 console.log(values)
-               
+
                 //Llamada a la funcion de mutacion
                 mutationAgregarContacto.mutate(values)
                 navegar('/') // Esto hay que cambiarlo porque manda a /agregar
@@ -168,6 +174,16 @@ export const FormularioAgregar = () => {
                 isValid,
             }) => (
                 <Form>
+                     <div>
+                        <label htmlFor="tipo">Tipo</label>
+                        <Field as="select" name="tipo" id="tipo" type="tipo">
+                            <option value="">Tipos</option>
+                            {listadoTipos.record.map(tipo => (
+                                <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
+                            ))}
+                        </Field>
+                        <ErrorMessage name="tipo" component="div" />
+                    </div>
 
                     <div>
                         <label htmlFor="dni">DNI</label>
@@ -249,5 +265,5 @@ export const FormularioAgregar = () => {
 
 
     );
-    
+
 }

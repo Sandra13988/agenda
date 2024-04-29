@@ -24,6 +24,7 @@ export const Detalle = () => {
                 <table >
                     <thead>
                         <tr>
+                            <th>TIPO</th>
                             <th>ID</th>
                             <th>DNI</th>
                             <th>NOMBRE</th>
@@ -36,6 +37,7 @@ export const Detalle = () => {
                     </thead>
                     {<tbody>
                         <tr>
+                            <td>{contacto.tipo}</td>
                             <td>{contacto.id}</td>
                             <td>{contacto.dni}</td>
                             <td>{contacto.nombre}</td>

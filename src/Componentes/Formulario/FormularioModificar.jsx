@@ -7,6 +7,7 @@ import { useQueryListadoContactos } from "../../Queris/QueryAgenda";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { showToast } from "../../Utiles/Toast";
 import jsonpath from 'jsonpath';
+import { useQueryListadoTipos } from "../../Queris/QueryTipo";
 
 export const FormularioModificar = () => {
 
@@ -18,6 +19,7 @@ export const FormularioModificar = () => {
     const queryClient = useQueryClient()
 
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
+    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
 
 
     const mutation = useMutation({
@@ -26,7 +28,7 @@ export const FormularioModificar = () => {
                 if (contacto.id === valoresNuevos.id) {
                     return valoresNuevos;
                 }
-                return contacto; 
+                return contacto;
             });
 
             const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
@@ -99,14 +101,26 @@ export const FormularioModificar = () => {
         }
     };
 
+
+    if (isLoadingListado || isLoadingListadoTipos) {
+        return <h3>Cargando...</h3>
+    }
+
+    if (isErrorListado || !listado || isErrorListadoTipos || !listadoTipos) {
+        return <h3>Ha habido unerror ....</h3>
+    }
+
+
     return (
         <Formik
             // enableReinitialize={true} //Reinicia el formulario con los valores nuevos
-            initialValues={jsonpath.query(listado.record, `$[?(@.id == ${id})]`)[0] }
+            initialValues={jsonpath.query(listado.record, `$[?(@.id == ${id})]`)[0]}
 
             validationSchema={Yup.object({
                 // id: Yup.string()
                 //     .required("El id del usuario es requerido"),
+                tipo: Yup.string()
+                    .required("El tipo es requerido"),
                 dni: Yup.string()
                     .required("El DNI es requerido"),
                 nombre: Yup.string()
@@ -129,7 +143,7 @@ export const FormularioModificar = () => {
             onSubmit={(values, { }) => {
                 mutation.mutate(values)
                 showToast("Contacto modificado")
-               
+
             }}
         >
             {({
@@ -140,6 +154,16 @@ export const FormularioModificar = () => {
                 touched,
             }) => (
                 <Form>
+                     <div>
+                        <label htmlFor="tipo">Tipo</label>
+                        <Field as="select" name="tipo" id="tipo" type="tipo">
+                            <option value="">Tipos</option>
+                            {listadoTipos.record.map(tipo => (
+                                <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
+                            ))}
+                        </Field>
+                        <ErrorMessage name="tipo" component="div" />
+                    </div>
 
                     <div>
                         <label htmlFor="id">ID</label>
@@ -158,6 +182,8 @@ export const FormularioModificar = () => {
                         <ErrorMessage name="nombre" component="div" />
                     </div>
 
+                   
+
                     <div>
                         <label htmlFor="sexo">Sexo</label>
                         <Field as="select" name="sexo" id="sexo" type="sexo">
@@ -167,7 +193,7 @@ export const FormularioModificar = () => {
                         </Field>
                         <ErrorMessage name="localidad" component="div" />
                     </div>
-                    
+
                     <div>
                         <label htmlFor="telefono">Telefono</label>
                         <Field name="telefono" id="telefono" type="telefono" />
