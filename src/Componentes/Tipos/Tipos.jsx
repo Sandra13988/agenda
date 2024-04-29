@@ -9,14 +9,7 @@ export function Tipos() {
 
   return (
     <>
-    <Routes>
-        <Route path="/" element={<ListarTipos/>}/>
-      
-        <Route path="tipos/agregar" element={<AgregarTipos/>}/>
     
-        <Route path="tipos/modificar/:id" element={<ModificarTipos/>}/>
-    </Routes>
-
     </>
   )
 }

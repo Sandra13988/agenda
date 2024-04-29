@@ -20,7 +20,7 @@ export function Agenda() {
 
           <Route path="detalles/:id" element={<Detalle />} />
 
-          <Route path="agregar" element={<Agregar />} />
+       
         </Routes>
       </div>
    

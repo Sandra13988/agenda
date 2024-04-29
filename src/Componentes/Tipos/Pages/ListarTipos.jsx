@@ -48,6 +48,7 @@ export const ListarTipos = () => {
     return(
         <>
         <div>
+        <Link to="/"> <button >MENU</button></Link>
         <Link to="/tipos/agregar"> <button >AGREGAR</button></Link>
             <h3>LISTA DE TIPOS</h3>
             <table>
