@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { useQueryContactoDetalle } from '../../Queris/QueryAgenda'
+import { useQueryContactoDetalle } from '../../../Queris/QueryAgenda';
 
 export const Detalle = () => {
 

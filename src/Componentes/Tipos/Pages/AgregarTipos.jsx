@@ -1,4 +1,4 @@
-import { FormularioAgregarTipos } from "./FormulariosTipos/FormularioAgregarTipos"
+import { FormularioAgregarTipos } from "../FormulariosTipos/FormularioAgregarTipos"
 
 export const AgregarTipos = () => {
 

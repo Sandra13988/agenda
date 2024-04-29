@@ -5,9 +5,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 // import { useQueryAgregarContacto } from "../../Queris/QueryAgenda";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useQueryListadoContactos } from "../../Queris/QueryAgenda";
-import { showToast } from "../../Utiles/Toast";
-import { useQueryListadoTipos } from "../../Queris/QueryTipo";
+import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
+import { showToast } from '../../../Utiles/Toast'
+import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 
 
 

@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom'
-import { useQueryListadoContactos } from "../../Queris/QueryAgenda"
+import { useQueryListadoContactos } from '../../../Queris/QueryAgenda'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const Listado = () => {

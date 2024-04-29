@@ -2,7 +2,7 @@ import {Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useQueryListadoTipos } from '../../../../Queris/QueryTipo';
+import { useQueryListadoTipos } from '../../../Queris/QueryTipo';
 import jsonpath from 'jsonpath';
 
 export const FormularioModificarTipos = () => {

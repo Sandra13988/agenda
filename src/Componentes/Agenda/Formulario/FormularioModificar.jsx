@@ -3,11 +3,11 @@ import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup';
-import { useQueryListadoContactos } from "../../Queris/QueryAgenda";
+import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { showToast } from "../../Utiles/Toast";
+import { showToast } from '../../../Utiles/Toast'
 import jsonpath from 'jsonpath';
-import { useQueryListadoTipos } from "../../Queris/QueryTipo";
+import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 
 export const FormularioModificar = () => {
 

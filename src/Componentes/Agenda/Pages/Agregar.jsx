@@ -1,5 +1,5 @@
 
-import { FormularioAgregar } from '../Formulario/FormularioAgregar'
+import { FormularioAgregar } from "../Formulario/FormularioAgregar"
 
 export const Agregar = () => { 
 
