@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 // import { useQueryAgregarContacto } from "../../Queris/QueryAgenda";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
-import { showToast } from '../../../Utiles/Toast'
+// import { showToast } from '../../../Utiles/Toast'
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 
 
@@ -32,8 +32,8 @@ export const FormularioAgregar = () => {
     //Funcion que ejecuta la mutacion
     const mutationAgregarContacto = useMutation({
         mutationFn: async (nuevoContacto) => {
-            nuevoContacto.id = listado.record.length + 1;
             const nuevosDatos = [...listado.record, nuevoContacto]
+            
             const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
                 method: 'PUT',
                 headers: {
@@ -55,8 +55,10 @@ export const FormularioAgregar = () => {
 
         },
         onSuccess: () => {
+            
             console.log("Se ha insertado el contacto")
             queryClient.invalidateQueries({ queryKey: ["contactos", "listado"] })
+            
         },
     })
 
@@ -156,11 +158,13 @@ export const FormularioAgregar = () => {
 
             onSubmit={(values, { }) => {
                 console.log(values)
-
+                //Asignar ID -> averigua cual es el mas alto que hay en la list ay le suma 1
+                const lastId = listado.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
+                values.id = lastId + 1;
                 //Llamada a la funcion de mutacion
                 mutationAgregarContacto.mutate(values)
-                navegar('/') // Esto hay que cambiarlo porque manda a /agregar
-                showToast("Contacto agregado")
+                navegar('/agenda') // Esto hay que cambiarlo porque manda a /agregar
+                // showToast("Contacto agregado")
             }}
 
 
@@ -255,7 +259,7 @@ export const FormularioAgregar = () => {
                         value={"Agregar"}
                         disabled={!isValid}
                     />
-                    <Link to="/"><input
+                    <Link to="/agenda"><input
                         type="submit"
                         value={"Volver"}
                     /></Link>

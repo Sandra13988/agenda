@@ -44,7 +44,9 @@ if (isErrorListado || !listado) {
 }
 return (
     <div>
-        <Link to="/agregar"> <button >AGREGAR</button></Link>
+        <Link to="/"> <button >MENU</button></Link>
+        <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
+       
         <h2>Listar contactos</h2>
         <table>
             <thead>
@@ -65,8 +67,8 @@ return (
                             <td>{contacto.nombre}</td>
                             <td>{contacto.telefono}</td>
                             <td>{contacto.email}</td>
-                            <td><Link to={`/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
-                            <td><Link to={`/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
+                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
                             <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                         </tr>
                     )

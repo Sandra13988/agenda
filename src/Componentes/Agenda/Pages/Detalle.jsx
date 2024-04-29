@@ -52,7 +52,7 @@ export const Detalle = () => {
                 </table>
 
             </div>
-            <Link to="/"><input
+            <Link to="/agenda"><input
                 type="submit"
                 value={"Volver"}
             /></Link>
