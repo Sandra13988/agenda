@@ -1,11 +1,10 @@
 
-
 import { Agregar } from './Pages/Agregar'
 import { Listado } from './Pages/Listado'
 import { Detalle } from './Pages/Detalle'
 import { Modificar } from './Pages/Modificar'
 import { Routes, Route } from 'react-router-dom'
-import { Tipos } from '../Tipos/Tipos'
+
 
 
 export function Agenda() {
@@ -23,10 +22,6 @@ export function Agenda() {
 
           <Route path="agregar" element={<Agregar />} />
         </Routes>
-
-      
-
-
       </div>
    
 
