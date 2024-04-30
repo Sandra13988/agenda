@@ -10,6 +10,7 @@ import { ModificarTipos } from '../Componentes/Tipos/Pages/ModificarTipos';
 import { ListarUsuarios } from '../Componentes/Usuarios/Pages/ListarUsuarios';
 import { AgregarUsuarios } from '../Componentes/Usuarios/Pages/AgregarUsuarios';
 import { ModificarUsuarios } from '../Componentes/Usuarios/Pages/ModificarUsuarios';
+import { DetalleUsuario } from '../Componentes/Usuarios/Pages/DetalleUsuario';
 
 
 export const MainNavigation = () => {
@@ -32,7 +33,7 @@ export const MainNavigation = () => {
                 <Route path="/usuarios" element={<ListarUsuarios />} />   
                 <Route path="/usuarios/agregar" element={<AgregarUsuarios />} />
                 <Route path="/usuarios/modificar/:id" element={<ModificarUsuarios />} />
-                {/* <Route path="/usuarios/detalles/:id" element={<DetalleUsuarios />} /> */}
+                <Route path="/usuarios/detalles/:id" element={<DetalleUsuario />} />
             </Routes>
 
         </>
