@@ -2,7 +2,7 @@ import {Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useQueryListadoTipos } from '../../../Queris/QueryTipo';
+import { useQueryListadoUsuarios } from '../../../Queris/QueryTipo';
 // import { showToast } from '../../../Utiles/Toast';
 
 export const FormularioAgregarTipos = () => {
@@ -10,7 +10,7 @@ export const FormularioAgregarTipos = () => {
     const navegar = useNavigate()
   
 
-    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { isLoading: isLoadingListadoUsuarios, isError: isErrorListadoUsuarios, error: errorListadoUsuarios, data: listadoUsuarios } = useQueryListadoUsuarios()
 
 
     const queryClient = useQueryClient()
@@ -88,19 +88,19 @@ export const FormularioAgregarTipos = () => {
                 <Form>
                    
                     <div>
-                        <label htmlFor="name">Nombre: </label>
+                        <label htmlFor="name">Name: </label>
                         <Field name="name" id="name" type="name" />
                         <ErrorMessage name="name" component="div" />
                     </div>
                     <div>
-                        <label htmlFor="name">Nombre: </label>
-                        <Field name="name" id="name" type="name" />
-                        <ErrorMessage name="name" component="div" />
+                        <label htmlFor="email">E-mail: </label>
+                        <Field name="email" id="email" type="email" />
+                        <ErrorMessage name="email" component="div" />
                     </div>
                     <div>
-                        <label htmlFor="name">Nombre: </label>
-                        <Field name="name" id="name" type="name" />
-                        <ErrorMessage name="name" component="div" />
+                        <label htmlFor="password">Password: </label>
+                        <Field name="password" id="password" type="password" />
+                        <ErrorMessage name="password" component="div" />
                     </div>
                     <div>
                     <input
