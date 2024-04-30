@@ -14,30 +14,42 @@ export const Principal = () => {
 
   return (
     <>
-    <div id="contenedorMenus">
-    <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <Link to={`/agenda`}><li>AGENDA</li></Link>
-      {isOpen && (
-        <div className="menu-content">
-          <ul>
-           <Link to={`/agenda/agregar`}><li>AGREGAR CONTACTO</li></Link>
-          </ul>
+      <div id="contenedorMenus">
+        <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <Link to={`/agenda`}><li>AGENDA</li></Link>
+          {isOpen && (
+            <div className="menu-content">
+              <ul>
+                <Link to={`/agenda/agregar`}><li>AGREGAR CONTACTO</li></Link>
+              </ul>
+            </div>
+
+          )}
         </div>
-        
-      )}
-    </div>
-    <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-    <Link to={`/tipos`}><li>TIPOS</li></Link>
-    {isOpen && (
-      <div className="menu-content">
-        <ul>
-        <Link to={`/tipos/agregar`}><li>AGREGAR TIPO</li></Link>
-        </ul>
+        <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <Link to={`/tipos`}><li>TIPOS</li></Link>
+          {isOpen && (
+            <div className="menu-content">
+              <ul>
+                <Link to={`/tipos/agregar`}><li>AGREGAR TIPO</li></Link>
+              </ul>
+            </div>
+
+          )}
+        </div>
+        <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <Link to={`/usuarios`}><li>USUARIOS</li></Link>
+          {isOpen && (
+            <div className="menu-content">
+              <ul>
+                <Link to={`/usuarios/agregar`}><li>AGREGAR USUARIO</li></Link>
+              </ul>
+            </div>
+
+          )}
+        </div>
       </div>
-    )}
-  </div>
-  </div>
-  </>
+    </>
   );
 };
 

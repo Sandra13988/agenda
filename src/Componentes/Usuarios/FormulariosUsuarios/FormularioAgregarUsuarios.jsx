@@ -2,10 +2,10 @@ import {Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useQueryListadoUsuarios } from '../../../Queris/QueryTipo';
+import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario';
 // import { showToast } from '../../../Utiles/Toast';
 
-export const FormularioAgregarTipos = () => {
+export const FormularioAgregarUsuarios = () => {
 
     const navegar = useNavigate()
   
@@ -15,16 +15,16 @@ export const FormularioAgregarTipos = () => {
 
     const queryClient = useQueryClient()
 
-    const mutationAgregarTipo = useMutation({
-        mutationFn: async (nuevoTipo) => {
+    const mutationAgregarUsuarios = useMutation({
+        mutationFn: async (nuevoUsuario) => {
             
-            const nuevosDatos = [...listadoTipos.record, nuevoTipo]
-            const response = await fetch('https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4', {
+            const nuevosDatos = [...listadoUsuarios.record, nuevoUsuario]
+            const response = await fetch('https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
-                    'X-Collection-Name': 'tipos'
+                    'X-Collection-Name': 'usuarios'
                     
                 },
                 body: JSON.stringify(
@@ -40,16 +40,24 @@ export const FormularioAgregarTipos = () => {
         },
         onSuccess: () => {
             console.log("Se ha insertado el tipo")
-            queryClient.invalidateQueries({ queryKey:["tipos", "listado"]})
+            queryClient.invalidateQueries({ queryKey:["usuarios", "listado"]})
         },
     })
 
+    function randomToken() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let token = '';
+        for (let i = 0; i < 15; i++) {
+            token += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return token;
+    }
     
-    if(isLoadingListadoTipos){
+    if(isLoadingListadoUsuarios){
         return <h3>Cargando...</h3>
     }
 
-    if(isErrorListadoTipos ){
+    if(isErrorListadoUsuarios ){
         return <h3>Ha habido unerror ....</h3>
     }
 
@@ -62,22 +70,30 @@ export const FormularioAgregarTipos = () => {
                 name: '',
                 email: '',
                 password: '',
-                rol: 'user'
+                rol: 'User',
+                token: ''
             }}
 
             validationSchema={Yup.object({
                 
                 name: Yup.string()
-                    .required("El nombre del tipo es requerido"),
+                    .required("El nombre es requerido"),
+                email: Yup.string()
+                    .required("El email es requerido"),
+                password: Yup.string()
+                    .required("La contraseña es requerido"),
+
+                    
             })}
 
 
             onSubmit={(values, { }) => {
                 console.log(values)
-                mutationAgregarTipo.mutate(values)
-                const lastId = listadoTipos.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
+                mutationAgregarUsuarios.mutate(values)
+                values.token = randomToken()
+                const lastId = listadoUsuarios.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
                 values.id = lastId + 1;
-                navegar('/tipos')
+                navegar('/usuarios')
                 // showToast("Tipo agregado")
             }}>
 
@@ -108,7 +124,7 @@ export const FormularioAgregarTipos = () => {
                         value={"Agregar"}
                         disabled={!isValid}
                     />
-                    <Link to="/tipos"><input
+                    <Link to="/usuarios"><input
                         type="submit"
                         value={"Volver"}
                     /></Link>
