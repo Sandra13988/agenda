@@ -5,11 +5,11 @@ import jsonpath from 'jsonpath';
 export function useQueryListadoUsuarios() {
   const headers = {
     'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
-    'X-Collection-Name': 'defaultContactos'
+    'X-Collection-Name': 'usuarios'
   };
 
   return useQuery({
-    queryKey: ["contactos", "listado"], queryFn: async () => await fetch("https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd", { headers })
+    queryKey: ["usuarios", "listado"], queryFn: async () => await fetch("https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972", { headers })
       .then(res => {
         if (!res.ok) throw new Error('Error en la petición')
         const data = res.json()
@@ -19,17 +19,17 @@ export function useQueryListadoUsuarios() {
 }
 
 
-export function useQueryContactoDetalle({ id }) {
+export function useQueryUsuariosDetalle({ id }) {
   const headers = {
     'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
-    'X-Collection-Name': 'defaultContactos'
+    'X-Collection-Name': 'usuarios'
   };
 
   return useQuery({
-    queryKey: ["contacto", "detalle", "ID", id],
+    queryKey: ["usuarios", "detalle", "ID", id],
     queryFn: async () => {
       try {
-        const response = await fetch(`https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd`, { headers });
+        const response = await fetch(`https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972`, { headers });
         if (!response.ok) {
           throw new Error('Error en la petición');
         }

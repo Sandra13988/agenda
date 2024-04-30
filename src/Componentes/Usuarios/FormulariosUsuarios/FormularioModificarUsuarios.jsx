@@ -2,35 +2,35 @@ import {Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useQueryListadoTipos } from '../../../Queris/QueryTipo';
+import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario';
 import jsonpath from 'jsonpath';
 
-export const FormularioModificarTipos = () => {
+export const FormularioModificarUsuarios = () => {
 
 const navegar = useNavigate()
 const { id } = useParams()
    
 
    
-    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { isLoading: isLoadingListadoUsuarios, isError: isErrorListadoUsuarios, error: errorListadoUsuarios, data: listadoUsuarios } = useQueryListadoUsuarios()
 
     const queryClient = useQueryClient()
 
-    const mutationModificarTipo = useMutation({
+    const mutationModificarUsuarios = useMutation({
         mutationFn: async (valoresNuevos) => {
-            const nuevosDatos = listadoTipos.record.map(contacto => {
-                if (contacto.id === valoresNuevos.id) {
+            const nuevosDatos = listadoUsuarios.record.map(usuario => {
+                if (usuario.id === valoresNuevos.id) {
                     return valoresNuevos;
                 }
-                return contacto; 
+                return usuario; 
             });
 
-            const response = await fetch('https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4', {
+            const response = await fetch('https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
-                    'X-Collection-Name': 'tipos'
+                    'X-Collection-Name': 'usuarios'
                 },
                 body: JSON.stringify(nuevosDatos)
             });
@@ -41,49 +41,42 @@ const { id } = useParams()
             return response.json();
         },
         onSuccess: (nuevosDatos) => {
+            queryClient.invalidateQueries({ queryKey: ["usuarios", "listado"] })
             console.log("Se ha modificado el tipo");
-
-            //Esto es para actualizar los datos de la cache a mano
-
-            // queryClient.setQueryData(["tipos", "listado"], (oldData) => {
-            //     if (!oldData) return [nuevosDatos]; 
-            //     const updatedData = oldData.map(item => {
-            //         if (item.id === nuevosDatos.id) {
-            //             return nuevosDatos;
-            //         }
-            //         return item;
-            //     });
-            //     return updatedData;
-            // });
-
-            //---------------------------------------------------------
-
-            // Es una de las maneras de recuperar los datos nuevos
-
-            // Esto es para invalidar la query y hacer un refetch
-            // queryClient.invalidateQueries(["contactos", "listado"]);
-            
         },
     });
 
+    if(isLoadingListadoUsuarios){
+        return <h3>Cargando...</h3>
+    }
+
+    if(isErrorListadoUsuarios ){
+        return <h3>Ha habido unerror ....</h3>
+    }
     
     return(
         <>
            <Formik
-            initialValues={jsonpath.query(listadoTipos.record, `$[?(@.id == ${id})]`)[0] }
+            initialValues={jsonpath.query(listadoUsuarios.record, `$[?(@.id == ${id})]`)[0] }
 
             validationSchema={Yup.object({
                 
                 name: Yup.string()
-                    .required("El nombre del tipo es requerido"),
+                    .required("El nombre es requerido"),
+                email: Yup.string()
+                    .required("El email es requerido"),
+                password: Yup.string()
+                    .required("La contraseña es requerido"),
+                rol: Yup.string()
+                    .required("El rol es requerido")
             })}
 
             enableReinitialize={true}
             
             onSubmit={(values, { resetForm }) => {
-                mutationModificarTipo.mutate(values)
+                mutationModificarUsuarios.mutate(values)
                 resetForm()
-                navegar("/tipos")
+                navegar("/usuarios")
                 
             }}>
 
@@ -93,10 +86,32 @@ const { id } = useParams()
             }) => (
 
                 <Form>
-                    <div>
-                        <label htmlFor="name">Nombre: </label>
+                     <div>
+                        <label htmlFor="name">Name: </label>
                         <Field name="name" id="name" type="name" />
                         <ErrorMessage name="name" component="div" />
+                    </div>
+                    <div>
+                        <label htmlFor="email">E-mail: </label>
+                        <Field name="email" id="email" type="email" />
+                        <ErrorMessage name="email" component="div" />
+                    </div>
+                    <div>
+                        <label htmlFor="password">Password: </label>
+                        <Field name="password" id="password" type="password" />
+                        <ErrorMessage name="password" component="div" />
+                    </div>
+                    <div>
+                        <label htmlFor="rol">Rol: </label>
+                        <Field as="select" name="rol" id="rol" type="rol" >
+                            <option value="Admin" name="Admin">Admin</option>
+                            <option value="User" name="User">Usuario</option>
+                        </Field>
+                        {/* <Field as="select" name="tipo" id="tipo" type="tipo">
+                            <option value="">Tipos</option>
+                            <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
+                        </Field> */}
+                        <ErrorMessage name="rol" component="div" />
                     </div>
                     <div>
                     <input
@@ -104,7 +119,7 @@ const { id } = useParams()
                         value={"Modificar"}
                         disabled={!isValid}
                     />
-                    <Link to="/tipos"><input
+                    <Link to="/usuarios"><input
                         type="submit"
                         value={"Volver"}
                     /></Link>
