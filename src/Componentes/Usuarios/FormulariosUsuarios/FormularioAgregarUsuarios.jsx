@@ -15,10 +15,10 @@ export const FormularioAgregarUsuarios = () => {
 
     const queryClient = useQueryClient()
 
-    const mutationAgregarTipo = useMutation({
-        mutationFn: async (nuevoTipo) => {
+    const mutationAgregarUsuarios = useMutation({
+        mutationFn: async (nuevoUsuario) => {
             
-            const nuevosDatos = [...listadoTipos.record, nuevoTipo]
+            const nuevosDatos = [...listadoUsuarios.record, nuevoUsuario]
             const response = await fetch('https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972', {
                 method: 'PUT',
                 headers: {
@@ -70,7 +70,7 @@ export const FormularioAgregarUsuarios = () => {
                 name: '',
                 email: '',
                 password: '',
-                rol: 'user',
+                rol: 'User',
                 token: ''
             }}
 
@@ -89,11 +89,11 @@ export const FormularioAgregarUsuarios = () => {
 
             onSubmit={(values, { }) => {
                 console.log(values)
-                mutationAgregarTipo.mutate(values)
+                mutationAgregarUsuarios.mutate(values)
                 values.token = randomToken()
-                const lastId = listadoTipos.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
+                const lastId = listadoUsuarios.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
                 values.id = lastId + 1;
-                navegar('/tipos')
+                navegar('/usuarios')
                 // showToast("Tipo agregado")
             }}>
 
