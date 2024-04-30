@@ -42,7 +42,7 @@ const { id } = useParams()
         },
         onSuccess: (nuevosDatos) => {
             queryClient.invalidateQueries({ queryKey: ["usuarios", "listado"] })
-            console.log("Se ha modificado el tipo");
+            console.log("Se ha modificado el usuario");
         },
     });
 
@@ -53,11 +53,22 @@ const { id } = useParams()
     if(isErrorListadoUsuarios ){
         return <h3>Ha habido unerror ....</h3>
     }
-    
+    const pregunta = listadoUsuarios.record[id].pregunta
+    const respuesta = listadoUsuarios.record[id].respuesta
+    console.log(listadoUsuarios.record[id].respuesta)
+   
+
     return(
         <>
            <Formik
-            initialValues={jsonpath.query(listadoUsuarios.record, `$[?(@.id == ${id})]`)[0] }
+            initialValues={{
+                name: listadoUsuarios.record[id].name,
+                email: listadoUsuarios.record[id].email,
+                password: listadoUsuarios.record[id].password,
+                pregunta: '',
+                respuesta: '',
+                rol: listadoUsuarios.record[id].rol
+            }}
 
             validationSchema={Yup.object({
                 
@@ -67,6 +78,20 @@ const { id } = useParams()
                     .required("El email es requerido"),
                 password: Yup.string()
                     .required("La contraseña es requerido"),
+                pregunta: Yup.string().test(
+                        'match-pregunta',
+                        'La pregunta no es correcta',
+                        function(value) {
+                            return value === pregunta;
+                        }
+                    ).required("La respuesta es requerida"),
+                respuesta: Yup.string().test(
+                        'match-respuesta',
+                        'La respuesta no es correcta',
+                        function(value) {
+                            return value === respuesta;
+                        }
+                    ).required("La respuesta es requerida"),
                 rol: Yup.string()
                     .required("El rol es requerido")
             })}
@@ -74,6 +99,7 @@ const { id } = useParams()
             enableReinitialize={true}
             
             onSubmit={(values, { resetForm }) => {
+                
                 mutationModificarUsuarios.mutate(values)
                 resetForm()
                 navegar("/usuarios")
@@ -102,15 +128,26 @@ const { id } = useParams()
                         <ErrorMessage name="password" component="div" />
                     </div>
                     <div>
+                        <label htmlFor="pregunta">Pregunta secreta: </label>
+                        <Field as="select" name="pregunta" id="pregunta" type="pregunta" >
+                            <option value="1" name="1">¿Como se llamaba tu primera mascota?</option>
+                            <option value="2" name="2">¿Donde nació tu madre?</option>
+                            <option value="3" name="3">¿Cuál era el nombre de tu mejor amigo/a de la infancia?</option>
+                            <option value="4" name="4">¿Cuál era tu apodo en la escuela secundaria?</option>
+                        </Field>
+                        <ErrorMessage name="pregunta" component="div" />
+                    </div>
+                    <div>
+                        <label htmlFor="respuesta">Respuesta secreta: </label>
+                        <Field name="respuesta" id="respuesta" type="respuesta" />
+                        <ErrorMessage name="respuesta" component="div" />
+                    </div>
+                    <div>
                         <label htmlFor="rol">Rol: </label>
                         <Field as="select" name="rol" id="rol" type="rol" >
                             <option value="Admin" name="Admin">Admin</option>
                             <option value="User" name="User">Usuario</option>
                         </Field>
-                        {/* <Field as="select" name="tipo" id="tipo" type="tipo">
-                            <option value="">Tipos</option>
-                            <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
-                        </Field> */}
                         <ErrorMessage name="rol" component="div" />
                     </div>
                     <div>

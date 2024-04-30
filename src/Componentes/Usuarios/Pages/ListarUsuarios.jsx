@@ -28,7 +28,6 @@ export const ListarUsuarios = () => {
         },
         onSuccess: (data) => {
             console.log("Se ha borrado el contacto");
-            // queryClient.invalidateQueries(["tipos", "listado"]);
             queryClient.setQueryData(["uauarios", "listado"], data)
             navegar('/')
         },
@@ -58,7 +57,9 @@ export const ListarUsuarios = () => {
                 {listadoUsuarios.record.map(usuario => {
                         return (
                         <tr key={usuario.id}>
+                            <td >{usuario.id}</td>
                             <td >{usuario.name}</td>
+                            <td><Link to={`/usuarios/detalles/${usuario.id}`}><button>VER DETALLES</button></Link></td>
                             <td ><Link to={`/usuarios/modificar/${usuario.id}`}><button>MODIFICAR</button></Link></td>
                             <td >{<button onClick={() =>mutationBorrarUsuario.mutate(usuario.id)}>BORRAR</button>}</td>
                         </tr>

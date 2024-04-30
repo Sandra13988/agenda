@@ -70,6 +70,8 @@ export const FormularioAgregarUsuarios = () => {
                 name: '',
                 email: '',
                 password: '',
+                pregunta: '',
+                respuesta: '',
                 rol: 'User',
                 token: ''
             }}
@@ -82,6 +84,11 @@ export const FormularioAgregarUsuarios = () => {
                     .required("El email es requerido"),
                 password: Yup.string()
                     .required("La contraseña es requerido"),
+                pregunta: Yup.string()
+                    .required("La pregunta es requerido"),
+                respuesta: Yup.string()
+                    .required("La respuesta es requerido"),
+
 
                     
             })}
@@ -117,6 +124,21 @@ export const FormularioAgregarUsuarios = () => {
                         <label htmlFor="password">Password: </label>
                         <Field name="password" id="password" type="password" />
                         <ErrorMessage name="password" component="div" />
+                    </div>
+                    <div>
+                        <label htmlFor="pregunta">Pregunta secreta: </label>
+                        <Field as="select" name="pregunta" id="pregunta" type="pregunta" >
+                            <option value="1" name="1">¿Como se llamaba tu primera mascota?</option>
+                            <option value="2" name="2">¿Donde nació tu madre?</option>
+                            <option value="3" name="3">¿Cuál era el nombre de tu mejor amigo/a de la infancia?</option>
+                            <option value="4" name="4">¿Cuál era tu apodo en la escuela secundaria?</option>
+                        </Field>
+                        <ErrorMessage name="pregunta" component="div" />
+                    </div>
+                    <div>
+                        <label htmlFor="respuesta">Respuesta secreta: </label>
+                        <Field name="respuesta" id="respuesta" type="respuesta" />
+                        <ErrorMessage name="respuesta" component="div" />
                     </div>
                     <div>
                     <input
