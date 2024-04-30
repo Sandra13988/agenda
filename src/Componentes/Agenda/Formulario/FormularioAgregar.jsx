@@ -165,6 +165,7 @@ export const FormularioAgregar = () => {
                 mutationAgregarContacto.mutate(values)
                 navegar('/agenda') // Esto hay que cambiarlo porque manda a /agregar
                 // showToast("Contacto agregado")
+                
             }}
 
 

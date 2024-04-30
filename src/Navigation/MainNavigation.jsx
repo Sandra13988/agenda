@@ -8,14 +8,15 @@ import { ListarTipos } from '../Componentes/Tipos/Pages/ListarTipos';
 import { AgregarTipos } from '../Componentes/Tipos/Pages/AgregarTipos';
 import { ModificarTipos } from '../Componentes/Tipos/Pages/ModificarTipos';
 
+
 export const MainNavigation = () => {
 
     return (
         <>
             <Routes>
                 <Route path="/" element={<Principal />} />
-
-                <Route path="/agenda" element={<Listado />} />
+                
+                <Route path="/agenda" element={<Listado />} />   
                 <Route path="/agenda/agregar" element={<Agregar />} />
                 <Route path="/agenda/modificar/:id" element={<Modificar />} />
                 <Route path="/agenda/detalles/:id" element={<Detalle />} />

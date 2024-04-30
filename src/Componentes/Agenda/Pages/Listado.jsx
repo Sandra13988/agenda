@@ -2,11 +2,17 @@
 import { Link } from 'react-router-dom'
 import { useQueryListadoContactos } from '../../../Queris/QueryAgenda'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Filtro } from '../../Filtro'
+import { useContext } from 'react'
+import { Tipos } from '../../context'
+
 
 export const Listado = () => {
+    const  {tipoSeleccionado} = useContext(Tipos)
 
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
-    // const { isLoading: isLoadingBorrado, isError: isErrorBorrado, error: errorBorrado, data: borrado } = useQueryListadoContactos()
+  
+    console.log(tipoSeleccionado)
     const queryClient = useQueryClient()
 
     const mutationBorrar = useMutation({
@@ -34,7 +40,6 @@ export const Listado = () => {
         },
     });
 
-
 if (isLoadingListado) {
     return <h3>Cargando contactos...</h3>
 }
@@ -44,6 +49,7 @@ if (isErrorListado || !listado) {
 }
 return (
     <div>
+        <Filtro/>
         <Link to="/"> <button >MENU</button></Link>
         <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
        
@@ -62,6 +68,9 @@ return (
             <tbody>
 
                 {listado.record.map(contacto => {
+                  
+                  if (!tipoSeleccionado) {
+                    // Si no hay filtro, muestra todos los contactos
                     return (
                         <tr key={contacto.id} >
                             <td>{contacto.nombre}</td>
@@ -71,7 +80,26 @@ return (
                             <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
                             <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                         </tr>
-                    )
+                    );
+                } else {
+                    // Si hay un filtro, verifica si el contacto coincide con el tipoSeleccionado
+                    if (contacto.tipo === tipoSeleccionado) {
+                        return (
+                            <tr key={contacto.id} >
+                                <td>{contacto.nombre}</td>
+                                <td>{contacto.telefono}</td>
+                                <td>{contacto.email}</td>
+                                <td><Link to={`/agenda/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
+                                <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                            </tr>
+                        );
+                    } else {
+                        // Si no coincide, no renderiza nada
+                        return null;
+                    }
+                }
+                    
                 })}
             </tbody>
         </table>
