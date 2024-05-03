@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { Autenticacion } from '../Contextos/contextLogin';
+export const Menu = ({handleLogout}) => {
+  const  {usuarioLogueado, setUsuarioLogueado} = useContext(Autenticacion)
 
-export const Principal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleMouseEnter = () => {
@@ -12,10 +15,12 @@ export const Principal = () => {
     setIsOpen(false);
   };
 
+
   return (
     <>
+      <h2>Hola {usuarioLogueado.name}</h2>
       <div id="contenedorMenus">
-        <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      {usuarioLogueado.rol === "User" &&<div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <Link to={`/agenda`}><li>AGENDA</li></Link>
           {isOpen && (
             <div className="menu-content">
@@ -25,8 +30,8 @@ export const Principal = () => {
             </div>
 
           )}
-        </div>
-        <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        </div>}
+        {usuarioLogueado.rol === "User" && <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <Link to={`/tipos`}><li>TIPOS</li></Link>
           {isOpen && (
             <div className="menu-content">
@@ -36,8 +41,8 @@ export const Principal = () => {
             </div>
 
           )}
-        </div>
-        <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        </div>}
+        {usuarioLogueado.rol === "Admin" && <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <Link to={`/usuarios`}><li>USUARIOS</li></Link>
           {isOpen && (
             <div className="menu-content">
@@ -47,6 +52,9 @@ export const Principal = () => {
             </div>
 
           )}
+        </div>}
+        <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <Link to={`/`} onClick={() => handleLogout()}><li>LOGOUT</li></Link>
         </div>
       </div>
     </>

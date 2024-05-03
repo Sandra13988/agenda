@@ -47,7 +47,7 @@ export const ListarUsuarios = () => {
     return(
         <>
         <div>
-        <Link to="/"> <button >MENU</button></Link>
+        <Link to="/menu"> <button >MENU</button></Link>
         <Link to="/usuarios/agregar"> <button >AGREGAR</button></Link>
             <h3>LISTA DE USUARIOS</h3>
             <table>

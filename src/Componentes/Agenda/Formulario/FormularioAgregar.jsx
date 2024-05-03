@@ -1,15 +1,13 @@
-
 import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
-// import { useQueryAgregarContacto } from "../../Queris/QueryAgenda";
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
 // import { showToast } from '../../../Utiles/Toast'
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
-
-
+import { useContext } from 'react'
+import { Autenticacion } from "../../../Contextos/contextLogin";
 
 
 export const FormularioAgregar = () => {
@@ -17,6 +15,7 @@ export const FormularioAgregar = () => {
     const navegar = useNavigate()
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
+    const { usuarioLogueado} = useContext(Autenticacion)
 
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
@@ -126,7 +125,8 @@ export const FormularioAgregar = () => {
                 email: '',
                 direccion: '',
                 cp: '',
-                localidad: ''
+                localidad: '',
+                tokenUsuario: usuarioLogueado.token
             }}
 
             validationSchema={Yup.object({
