@@ -73,7 +73,8 @@ export const FormularioAgregarUsuarios = () => {
                 pregunta: '',
                 respuesta: '',
                 rol: 'User',
-                token: ''
+                token: '',
+                permisos: false
             }}
 
             validationSchema={Yup.object({

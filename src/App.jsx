@@ -1,7 +1,7 @@
 import { MainNavigation } from './Navigation/MainNavigation'
 import './App.css'
-import { TipoProvider } from './Componentes/context'
-import { AutenticacionUsuario } from './Componentes/contextLogin'
+import { TipoProvider } from './Contextos/contextoTipo'
+import { AutenticacionUsuario } from './Contextos/contextLogin'
 
 
 function App() {

@@ -93,7 +93,9 @@ const { id } = useParams()
                         }
                     ).required("La respuesta es requerida"),
                 rol: Yup.string()
-                    .required("El rol es requerido")
+                    .required("El rol es requerido"),
+                permiso: Yup.boolean()
+                    .required("Especifique el permiso deseado")
             })}
 
             enableReinitialize={true}
@@ -149,6 +151,14 @@ const { id } = useParams()
                             <option value="User" name="User">Usuario</option>
                         </Field>
                         <ErrorMessage name="rol" component="div" />
+                    </div>
+                    <div>
+                        <label htmlFor="permiso">¿Desea darle permiso al admin para que gestione su agenda? </label>
+                        <Field as="select" name="permiso" id="permiso" type="permiso" >
+                            <option value={true} name="Admin">Si</option>
+                            <option value={false} name="User">No</option>
+                        </Field>
+                        <ErrorMessage name="permiso" component="div" />
                     </div>
                     <div>
                     <input

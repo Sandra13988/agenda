@@ -20,7 +20,7 @@ export const Menu = ({handleLogout}) => {
     <>
       <h2>Hola {usuarioLogueado.name}</h2>
       <div id="contenedorMenus">
-      {usuarioLogueado.rol === "User" &&<div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <Link to={`/agenda`}><li>AGENDA</li></Link>
           {isOpen && (
             <div className="menu-content">
@@ -30,7 +30,7 @@ export const Menu = ({handleLogout}) => {
             </div>
 
           )}
-        </div>}
+        </div>
         {usuarioLogueado.rol === "User" && <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <Link to={`/tipos`}><li>TIPOS</li></Link>
           {isOpen && (
