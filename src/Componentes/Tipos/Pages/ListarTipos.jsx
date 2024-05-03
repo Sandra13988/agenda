@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useQueryListadoTipos } from '../../../Queris/QueryTipo'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useContext } from 'react'
+import { Autenticacion } from '../../../Contextos/contextLogin'
 
 export const ListarTipos = () => {
 
     const {isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { usuarioLogueado} = useContext(Autenticacion)
     
     const queryClient = useQueryClient()
     
@@ -30,7 +33,7 @@ export const ListarTipos = () => {
             console.log("Se ha borrado el contacto");
             // queryClient.invalidateQueries(["tipos", "listado"]);
             queryClient.setQueryData(["tipos", "listado"], data)
-            navegar('/')
+            navegar('/tipos')
         },
     });
 
@@ -48,7 +51,7 @@ export const ListarTipos = () => {
     return(
         <>
         <div>
-        <Link to="/"> <button >MENU</button></Link>
+        <Link to="/menu"> <button >MENU</button></Link>
         <Link to="/tipos/agregar"> <button >AGREGAR</button></Link>
             <h3>LISTA DE TIPOS</h3>
             <table>
@@ -56,13 +59,16 @@ export const ListarTipos = () => {
             <tbody>
                 
                 {listadoTipos.record.map(tipo => {
+                    if(tipo.tokenUsuario === usuarioLogueado.token){
                         return (
-                        <tr key={tipo.id}>
-                            <td >{tipo.name}</td>
-                            <td ><Link to={`/tipos/modificar/${tipo.id}`}><button>MODIFICAR</button></Link></td>
-                            <td >{<button onClick={() =>mutationBorrarTipo.mutate(tipo.id)}>BORRAR</button>}</td>
-                        </tr>
-                        )
+                            <tr key={tipo.id}>
+                                <td >{tipo.name}</td>
+                                <td ><Link to={`/tipos/modificar/${tipo.id}`}><button>MODIFICAR</button></Link></td>
+                                <td >{<button onClick={() =>mutationBorrarTipo.mutate(tipo.id)}>BORRAR</button>}</td>
+                            </tr>
+                            )
+                    }
+                       
                     })}
             </tbody>
             </table>

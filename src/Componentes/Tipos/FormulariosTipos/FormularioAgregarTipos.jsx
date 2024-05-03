@@ -3,12 +3,14 @@ import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoTipos } from '../../../Queris/QueryTipo';
+import { useContext } from 'react'
+import { Autenticacion } from '../../../Contextos/contextLogin';
 // import { showToast } from '../../../Utiles/Toast';
 
 export const FormularioAgregarTipos = () => {
 
     const navegar = useNavigate()
-  
+    const { usuarioLogueado} = useContext(Autenticacion)
 
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
 
@@ -59,7 +61,8 @@ export const FormularioAgregarTipos = () => {
            <Formik
             initialValues={{
                 id: '',
-                name: ''
+                name: '',
+                tokenUsuario: usuarioLogueado.token
             }}
 
             validationSchema={Yup.object({

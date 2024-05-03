@@ -4,12 +4,15 @@ import { useQueryListadoContactos } from '../../../Queris/QueryAgenda'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Filtro } from '../../Filtro'
 import { useContext } from 'react'
-import { Tipos } from '../../context'
+import { Autenticacion } from '../../../Contextos/contextLogin'
+import { Tipos } from '../../../Contextos/contextoTipo'
+
 
 
 export const Listado = () => {
-    const  {tipoSeleccionado} = useContext(Tipos)
 
+    const { usuarioLogueado} = useContext(Autenticacion)
+    const { tipoSeleccionado} = useContext(Tipos)
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
   
     console.log(tipoSeleccionado)
@@ -50,7 +53,7 @@ if (isErrorListado || !listado) {
 return (
     <div>
         <Filtro/>
-        <Link to="/"> <button >MENU</button></Link>
+        <Link to="/menu"> <button >MENU</button></Link>
         <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
        
         <h2>Listar contactos</h2>
@@ -69,7 +72,7 @@ return (
 
                 {listado.record.map(contacto => {
                   
-                  if (!tipoSeleccionado) {
+                  if (!tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
                     // Si no hay filtro, muestra todos los contactos
                     return (
                         <tr key={contacto.id} >
@@ -83,7 +86,7 @@ return (
                     );
                 } else {
                     // Si hay un filtro, verifica si el contacto coincide con el tipoSeleccionado
-                    if (contacto.tipo === tipoSeleccionado) {
+                    if (contacto.tipo === tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
                         return (
                             <tr key={contacto.id} >
                                 <td>{contacto.nombre}</td>

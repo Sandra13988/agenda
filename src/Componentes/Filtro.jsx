@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { useQueryListadoTipos } from '../Queris/QueryTipo';
 // import { showToast } from '../../../Utiles/Toast';
 import { useContext } from 'react'
-import { Tipos } from './context';
+import { Tipos } from '../Contextos/contextoTipo';
 
 export const Filtro = () => {
 
