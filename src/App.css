@@ -1,47 +1,54 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+
+
+
+#cuerpo{
+  width: 100%;
+  height: 100vh;
+  
+}
+
+.estiloBody {
+  max-width: 100%;
+  height: 100vh;
   text-align: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+
+
+
+.estiloBody.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../Imagenes/verde.jpg');
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.estiloBody.admin {
+  
+  background-image: url('../Imagenes/azul.jpg');
+  display: grid;
+  grid-template-rows: repeat(100px, auto) ;
+  color:#212a70;
 }
 
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.estiloBody.user {
+  background-image: url('../Imagenes/rosa.jpg');
+  display: grid;
+  grid-template-rows: repeat(100px, auto) ;
+  
+ 
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+.completo > header,fotter{
+  width: 100%;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+#encabezado{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 
@@ -97,10 +104,10 @@ li {
 }
 
 /* SLIDE DOWN */
-#contenedorMenus {
+.contenedorMenus {
   width: 300px;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   justify-content: space-between;
 }
 
@@ -110,11 +117,10 @@ li {
 
 .menu-content {
   position: absolute;
-  top: 100%;
+  
   left: 0;
   width: 300%;
   background-color: #ffffff;
-  border-top: none;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   transition: max-height 0.3s ease-in-out;
   overflow: hidden;
@@ -131,6 +137,74 @@ li {
 }
 
 .slide-down-menu:hover .menu-content {
-  max-height: 500px;
-  /* Adjust this value based on your content */
+  max-height: 200px;
+
 }
+
+.estiloBody.login > .contenedorLogin {
+  color: #56b61e;
+  width: 350px;
+  height: auto;
+  border: 7px solid #99BC85;
+  border-radius: 10%;
+  padding: 50px;
+  background-color: #D4E7C5;
+  
+}
+
+.estiloBody.admin > .completo > .layCuerpo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: max-content;
+  height: auto;
+  border-radius: 10%;
+  padding: 20px;
+ 
+  border: 7px solid #6084cb;
+  border-radius: 10%;
+  background-color: #b0bbce;
+  
+}
+
+.estiloBody.user > .completo > .layCuerpo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  height: auto;
+  border-radius: 10%;
+  padding: 50px;
+  margin-top: 80px;
+  border: 7px solid #BD83CE;
+  border-radius: 10%;
+  background-color: #F7E8F6;
+  
+}
+
+
+.completo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  
+}
+
+
+
+.layCuerpo{
+  flex: 1;
+}
+
+
+.contenedorLogin>button {
+  color: #A6B1E1;
+}
+
+
+/* https://colorhunt.co/palette/f7e8f6f1c6e7e5b0eabd83ce colores rosas
+https://colorhunt.co/palette/f4eeffdcd6f7a6b1e1424874 colores azules 
+https://colorhunt.co/palette/e1f0dad4e7c5bfd8af99bc85 verdes*/

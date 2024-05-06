@@ -59,7 +59,7 @@ const { id } = useParams()
    
 
     return(
-        <>
+    
            <Formik
             initialValues={{
                 name: listadoUsuarios.record[id].name,
@@ -174,6 +174,6 @@ const { id } = useParams()
                 </Form>
             )}
         </Formik>
-        </>
+        
     )
 } 

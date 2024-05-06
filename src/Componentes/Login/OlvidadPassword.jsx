@@ -3,9 +3,9 @@ import * as Yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useContext } from 'react'
-import { Autenticacion } from '../../../Contextos/contextLogin'
+import { Autenticacion } from '../../Contextos/contextLogin';
 
-export const FormularioModificarPerfil = () => {
+export const OlvidaPassword = () => {
 
     const navegar = useNavigate()
 
@@ -45,11 +45,12 @@ export const FormularioModificarPerfil = () => {
     
     const pregunta = usuarioLogueado.pregunta
     const respuesta = usuarioLogueado.respuesta
+    const passAntigua = usuarioLogueado.password
     console.log(usuarioLogueado.respuesta)
 
 
     return (
-    
+        <>
             <Formik
                 initialValues={{
                     name: usuarioLogueado.name,
@@ -66,7 +67,14 @@ export const FormularioModificarPerfil = () => {
                         .required("El nombre es requerido"),
                     email: Yup.string()
                         .required("El email es requerido"),
-                    password: Yup.string()
+                    oldPassword: Yup.string().test(
+                        'match-oldPassword',
+                        'La contraseña no es correcta',
+                        function (value) {
+                            return value === passAntigua;
+                        }
+                    ).required("La respuesta es requerida"),
+                    newPassword: Yup.string()
                         .required("La contraseña es requerido"),
                     pregunta: Yup.string().test(
                         'match-pregunta',
@@ -94,7 +102,7 @@ export const FormularioModificarPerfil = () => {
 
                     mutationModificarUsuarios.mutate(values)
                     resetForm()
-                    navegar("/usuarios")
+                    navegar("/")
 
                 }}>
 
@@ -105,19 +113,19 @@ export const FormularioModificarPerfil = () => {
 
                     <Form>
                         <div>
-                            <label htmlFor="name">Name: </label>
-                            <Field name="name" id="name" type="name" />
-                            <ErrorMessage name="name" component="div" />
-                        </div>
-                        <div>
                             <label htmlFor="email">E-mail: </label>
                             <Field name="email" id="email" type="email" />
                             <ErrorMessage name="email" component="div" />
                         </div>
                         <div>
-                            <label htmlFor="password">Password: </label>
-                            <Field name="password" id="password" type="password" />
-                            <ErrorMessage name="password" component="div" />
+                            <label htmlFor="oldPassword">Antigua Password: </label>
+                            <Field name="oldPassword" id="oldPassword" type="oldPassword" />
+                            <ErrorMessage name="oldPassword" component="div" />
+                        </div>
+                        <div>
+                            <label htmlFor="newPassword">Nueva Password: </label>
+                            <Field name="newPassword" id="newPassword" type="newPassword" />
+                            <ErrorMessage name="newPassword" component="div" />
                         </div>
                         <div>
                             <label htmlFor="pregunta">Pregunta secreta: </label>
@@ -143,20 +151,12 @@ export const FormularioModificarPerfil = () => {
                             <ErrorMessage name="rol" component="div" />
                         </div>}
                         <div>
-                            <label htmlFor="permiso">¿Desea darle permiso al admin para que gestione su agenda? </label>
-                            <Field as="select" name="permiso" id="permiso" type="permiso" >
-                                <option value={true} name="Admin">Si</option>
-                                <option value={false} name="User">No</option>
-                            </Field>
-                            <ErrorMessage name="permiso" component="div" />
-                        </div>
-                        <div>
                             <input
                                 type="submit"
-                                value={"Modificar"}
+                                value={"Cambiar"}
                                 disabled={!isValid}
                             />
-                            <Link to="/perfil"><input
+                            <Link to="/"><input
                                 type="submit"
                                 value={"Volver"}
                             /></Link>
@@ -164,6 +164,6 @@ export const FormularioModificarPerfil = () => {
                     </Form>
                 )}
             </Formik>
-        
+        </>
     )
 } 

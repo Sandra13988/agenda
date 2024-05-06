@@ -53,10 +53,13 @@ export const Listado = () => {
         return <h3>Ha habido un error .... {errorListado.message}</h3>
     }
     return (
-        <div>
-            <Filtro />
-            <Link to="/menu"> <button >MENU</button></Link>
-            <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
+        <div className='mainContenido'>
+            <div className='botonesAgenda'>
+                
+                <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
+                <Filtro />
+            </div>
+
 
             <h2>Listar contactos</h2>
             <table>
@@ -77,19 +80,19 @@ export const Listado = () => {
                     {listado.record.map(contacto => {
 
                         //VISUALIZAR CONTACTOS SI ERES ADMIN Y EL USUARIO TIENE EL PERMISO ACTIVADO
-                        if (usuarioLogueado.rol === "Admin" ) {
-                           
+                        if (usuarioLogueado.rol === "Admin") {
+
                             return (
                                 <tr key={contacto.id} >
                                     <td>{contacto.nombre}</td>
                                     <td>{contacto.nombre}</td>
                                     <td>{contacto.telefono}</td>
                                     <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
+                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
                                     <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
                                     <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                                 </tr>
-                                
+
                             );
                         }
 
@@ -101,13 +104,13 @@ export const Listado = () => {
                                     <td>{contacto.nombre}</td>
                                     <td>{contacto.telefono}</td>
                                     <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
+                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
                                     <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
                                     <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                                 </tr>
                             );
                         }
-                        
+
                         //VISUALIZAR CONTACTOS SI ERES USUARIO Y TIENES TIPO SELECCIONADO
                         if (usuarioLogueado.rol === "User" && contacto.tipo === tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
                             return (
@@ -115,15 +118,15 @@ export const Listado = () => {
                                     <td>{contacto.nombre}</td>
                                     <td>{contacto.telefono}</td>
                                     <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
+                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
                                     <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
                                     <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                                 </tr>
                             );
                         }
 
-                        
-                       
+
+
                     }
                     )
                     }

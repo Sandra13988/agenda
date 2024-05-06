@@ -63,7 +63,7 @@ export const FormularioAgregarUsuarios = () => {
 
 
     return(
-        <>
+        
            <Formik
             initialValues={{
                 id: '',
@@ -156,6 +156,6 @@ export const FormularioAgregarUsuarios = () => {
                 </Form>
             )}
         </Formik>
-        </>
+        
     )
 } 

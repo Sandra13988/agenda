@@ -4,11 +4,11 @@ export const ModificarUsuarios = () => {
 
 
     return (
-        <>
-            <div>
-                <h3>MODIFICAR TIPOS</h3>
-                <FormularioModificarUsuarios/>
-            </div>
-        </>
+
+        <div className='mainContenido'>
+            <h3>MODIFICAR TIPOS</h3>
+            <FormularioModificarUsuarios />
+        </div>
+
     )
 } 

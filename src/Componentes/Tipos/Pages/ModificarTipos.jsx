@@ -4,11 +4,11 @@ export const ModificarTipos = () => {
 
 
     return (
-        <>
-            <div>
+        
+            <div className='mainContenido'>
                 <h3>MODIFICAR TIPOS</h3>
                 <FormularioModificarTipos/>
             </div>
-        </>
+        
     )
 } 

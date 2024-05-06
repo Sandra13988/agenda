@@ -6,11 +6,11 @@ import { Autenticacion } from '../../../Contextos/contextLogin'
 
 export const ListarTipos = () => {
 
-    const {isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
-    const { usuarioLogueado} = useContext(Autenticacion)
-    
+    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { usuarioLogueado } = useContext(Autenticacion)
+
     const queryClient = useQueryClient()
-    
+
     const mutationBorrarTipo = useMutation({
         mutationFn: async (id) => {
             const nuevaLista = listadoTipos.record.filter(tipo => tipo.id !== id);
@@ -43,36 +43,36 @@ export const ListarTipos = () => {
         return <h3>Cargando tipos...</h3>
     }
 
-    
+
     if (isErrorListadoTipos || !listadoTipos) {
         return <h3>Ha habido un error .... {errorListado.message}</h3>
     }
-    
-    return(
-        <>
-        <div>
-        <Link to="/menu"> <button >MENU</button></Link>
-        <Link to="/tipos/agregar"> <button >AGREGAR</button></Link>
+
+    return (
+        <div className='mainContenido'>
+
+          
+            <Link to="/tipos/agregar"> <button >AGREGAR</button></Link>
             <h3>LISTA DE TIPOS</h3>
             <table>
-           
-            <tbody>
-                
-                {listadoTipos.record.map(tipo => {
-                    if(tipo.tokenUsuario === usuarioLogueado.token){
-                        return (
-                            <tr key={tipo.id}>
-                                <td >{tipo.name}</td>
-                                <td ><Link to={`/tipos/modificar/${tipo.id}`}><button>MODIFICAR</button></Link></td>
-                                <td >{<button onClick={() =>mutationBorrarTipo.mutate(tipo.id)}>BORRAR</button>}</td>
-                            </tr>
+
+                <tbody>
+
+                    {listadoTipos.record.map(tipo => {
+                        if (tipo.tokenUsuario === usuarioLogueado.token) {
+                            return (
+                                <tr key={tipo.id}>
+                                    <td >{tipo.name}</td>
+                                    <td ><Link to={`/tipos/modificar/${tipo.id}`}><button>MODIFICAR</button></Link></td>
+                                    <td >{<button onClick={() => mutationBorrarTipo.mutate(tipo.id)}>BORRAR</button>}</td>
+                                </tr>
                             )
-                    }
-                       
+                        }
+
                     })}
-            </tbody>
+                </tbody>
             </table>
-            </div>
-        </>
+
+        </div >
     )
 } 
