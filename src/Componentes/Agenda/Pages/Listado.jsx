@@ -11,10 +11,12 @@ import { Tipos } from '../../../Contextos/contextoTipo'
 
 export const Listado = () => {
 
-    const { usuarioLogueado} = useContext(Autenticacion)
-    const { tipoSeleccionado} = useContext(Tipos)
+    const { usuarioLogueado } = useContext(Autenticacion)
+    const { tipoSeleccionado } = useContext(Tipos)
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
-  
+    const { isLoading: isLoadingUsuarios, isError: isErrorUsuarios, error: errorUsuarios, data: usuarios } = useQueryListadoContactos()
+
+
     console.log(tipoSeleccionado)
     const queryClient = useQueryClient()
 
@@ -43,71 +45,96 @@ export const Listado = () => {
         },
     });
 
-if (isLoadingListado) {
-    return <h3>Cargando contactos...</h3>
-}
+    if (isLoadingListado) {
+        return <h3>Cargando contactos...</h3>
+    }
 
-if (isErrorListado || !listado) {
-    return <h3>Ha habido un error .... {errorListado.message}</h3>
-}
-return (
-    <div>
-        <Filtro/>
-        <Link to="/menu"> <button >MENU</button></Link>
-        <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
-       
-        <h2>Listar contactos</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>NOMBRE</th>
-                    <th>TELEFONO</th>
-                    <th>E-MAIL</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+    if (isErrorListado || !listado) {
+        return <h3>Ha habido un error .... {errorListado.message}</h3>
+    }
+    return (
+        <div className='mainContenido'>
+            <div className='botonesAgenda'>
+                
+                <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
+                <Filtro />
+            </div>
 
-                {listado.record.map(contacto => {
-                  
-                  if (!tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
-                    // Si no hay filtro, muestra todos los contactos
-                    return (
-                        <tr key={contacto.id} >
-                            <td>{contacto.nombre}</td>
-                            <td>{contacto.telefono}</td>
-                            <td>{contacto.email}</td>
-                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
-                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                        </tr>
-                    );
-                } else {
-                    // Si hay un filtro, verifica si el contacto coincide con el tipoSeleccionado
-                    if (contacto.tipo === tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
-                        return (
-                            <tr key={contacto.id} >
-                                <td>{contacto.nombre}</td>
-                                <td>{contacto.telefono}</td>
-                                <td>{contacto.email}</td>
-                                <td><Link to={`/agenda/detalles/${contacto.id}`}><button>VER DETALLES</button></Link></td>
-                                <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                            </tr>
-                        );
-                    } else {
-                        // Si no coincide, no renderiza nada
-                        return null;
+
+            <h2>Listar contactos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>NOMBRE</th>
+                        <th>TELEFONO</th>
+                        <th>E-MAIL</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    {listado.record.map(contacto => {
+
+                        //VISUALIZAR CONTACTOS SI ERES ADMIN Y EL USUARIO TIENE EL PERMISO ACTIVADO
+                        if (usuarioLogueado.rol === "Admin") {
+
+                            return (
+                                <tr key={contacto.id} >
+                                    <td>{contacto.nombre}</td>
+                                    <td>{contacto.nombre}</td>
+                                    <td>{contacto.telefono}</td>
+                                    <td>{contacto.email}</td>
+                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                </tr>
+
+                            );
+                        }
+
+                        //VISUALIZAR CONTACOS SI ERES USUARIO Y NO TIENES NINGUN TIPO SELECCIONADO
+                        if (usuarioLogueado.rol === "User" && !tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
+                            // Si no hay filtro, muestra todos los contactos
+                            return (
+                                <tr key={contacto.id} >
+                                    <td>{contacto.nombre}</td>
+                                    <td>{contacto.telefono}</td>
+                                    <td>{contacto.email}</td>
+                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                </tr>
+                            );
+                        }
+
+                        //VISUALIZAR CONTACTOS SI ERES USUARIO Y TIENES TIPO SELECCIONADO
+                        if (usuarioLogueado.rol === "User" && contacto.tipo === tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
+                            return (
+                                <tr key={contacto.id} >
+                                    <td>{contacto.nombre}</td>
+                                    <td>{contacto.telefono}</td>
+                                    <td>{contacto.email}</td>
+                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                </tr>
+                            );
+                        }
+
+
+
                     }
-                }
-                    
-                })}
-            </tbody>
-        </table>
-    </div>
-)
+                    )
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 

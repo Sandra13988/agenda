@@ -63,7 +63,7 @@ export const FormularioAgregarUsuarios = () => {
 
 
     return(
-        <>
+        
            <Formik
             initialValues={{
                 id: '',
@@ -73,7 +73,8 @@ export const FormularioAgregarUsuarios = () => {
                 pregunta: '',
                 respuesta: '',
                 rol: 'User',
-                token: ''
+                token: '',
+                permisos: false
             }}
 
             validationSchema={Yup.object({
@@ -155,6 +156,6 @@ export const FormularioAgregarUsuarios = () => {
                 </Form>
             )}
         </Formik>
-        </>
+        
     )
 } 

@@ -57,7 +57,7 @@ export const FormularioAgregarTipos = () => {
 
 
     return(
-        <>
+    
            <Formik
             initialValues={{
                 id: '',
@@ -107,6 +107,6 @@ export const FormularioAgregarTipos = () => {
                 </Form>
             )}
         </Formik>
-        </>
+        
     )
 } 

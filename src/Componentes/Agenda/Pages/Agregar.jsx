@@ -1,14 +1,14 @@
 
 import { FormularioAgregar } from "../Formulario/FormularioAgregar"
 
-export const Agregar = () => { 
+export const Agregar = () => {
 
-    return(
-       
-        <>
-        <h2>Agregar contacto</h2>
-        {<FormularioAgregar />}
-        </>
+    return (
+
+        <div className='mainContenido'>
+            <h2>Agregar contacto</h2>
+            {<FormularioAgregar />}
+        </div>
     )
 }
 

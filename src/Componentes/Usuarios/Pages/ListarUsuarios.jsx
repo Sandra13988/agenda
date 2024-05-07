@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom'
 import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { comprobarAdmin } from '../../../Utiles/comprobarAdmin'
 
 export const ListarUsuarios = () => {
+    comprobarAdmin()
 
-    const {isLoading: isLoadingListadoUsuarios, isError: isErrorListadoUsuarios, error: errorListadoUsuarios, data: listadoUsuarios } = useQueryListadoUsuarios()
-    
+    const { isLoading: isLoadingListadoUsuarios, isError: isErrorListadoUsuarios, error: errorListadoUsuarios, data: listadoUsuarios } = useQueryListadoUsuarios()
+
     const queryClient = useQueryClient()
-    
+
     const mutationBorrarUsuario = useMutation({
         mutationFn: async (id) => {
             const nuevaLista = listadoUsuarios.record.filter(tipo => tipo.id !== id);
@@ -39,35 +41,35 @@ export const ListarUsuarios = () => {
         return <h3>Cargando tipos...</h3>
     }
 
-    
+
     if (isErrorListadoUsuarios || !listadoUsuarios) {
         return <h3>Ha habido un error .... {errorListadoUsuarios.message}</h3>
     }
-    
-    return(
-        <>
-        <div>
-        <Link to="/menu"> <button >MENU</button></Link>
-        <Link to="/usuarios/agregar"> <button >AGREGAR</button></Link>
+
+    return (
+
+        <div className='mainContenido'>
+            <Link to="/menu"> <button >MENU</button></Link>
+            <Link to="/usuarios/agregar"> <button >AGREGAR</button></Link>
             <h3>LISTA DE USUARIOS</h3>
             <table>
-           
-            <tbody>
-                
-                {listadoUsuarios.record.map(usuario => {
+
+                <tbody>
+
+                    {listadoUsuarios.record.map(usuario => {
                         return (
-                        <tr key={usuario.id}>
-                            <td >{usuario.id}</td>
-                            <td >{usuario.name}</td>
-                            <td><Link to={`/usuarios/detalles/${usuario.id}`}><button>VER DETALLES</button></Link></td>
-                            <td ><Link to={`/usuarios/modificar/${usuario.id}`}><button>MODIFICAR</button></Link></td>
-                            <td >{<button onClick={() =>mutationBorrarUsuario.mutate(usuario.id)}>BORRAR</button>}</td>
-                        </tr>
+                            <tr key={usuario.id}>
+                                <td >{usuario.id}</td>
+                                <td >{usuario.name}</td>
+                                <td><Link to={`/usuarios/detalles/${usuario.id}`}><button>DETALLE</button></Link></td>
+                                <td ><Link to={`/usuarios/modificar/${usuario.id}`}><button>MODIFICAR</button></Link></td>
+                                <td >{<button onClick={() => mutationBorrarUsuario.mutate(usuario.id)}>BORRAR</button>}</td>
+                            </tr>
                         )
                     })}
-            </tbody>
+                </tbody>
             </table>
-            </div>
-        </>
+        </div>
+
     )
 } 

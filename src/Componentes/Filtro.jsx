@@ -58,10 +58,9 @@ export const Filtro = () => {
                                 ))}
                             </Field>
                             <ErrorMessage name="tipo" component="div" />
+                            <button>FILTRAR</button>
                         </div>
-                        <button
-                        
-                        >FILTRAR</button>
+                       
                    
                     </Form>
                 )}

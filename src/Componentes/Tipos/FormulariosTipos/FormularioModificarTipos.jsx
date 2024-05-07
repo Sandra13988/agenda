@@ -68,7 +68,7 @@ const { id } = useParams()
 
     
     return(
-        <>
+        
            <Formik
             initialValues={jsonpath.query(listadoTipos.record, `$[?(@.id == ${id})]`)[0] }
 
@@ -112,6 +112,6 @@ const { id } = useParams()
                 </Form>
             )}
         </Formik>
-        </>
+        
     )
 } 

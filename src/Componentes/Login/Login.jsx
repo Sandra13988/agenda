@@ -4,66 +4,79 @@ import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom'
 
 
-export const Login = ({handleLogin}) => {
+export const Login = ({ handleLogin }) => {
     const navegar = useNavigate()
     return (
         <>
-            <h2>Login</h2>
-            <Formik
-                initialValues={{
-                    email: '',
-                    password: '',
-                }}
+            
+                <div className="contenedorLogin">
+                    <div>
+                        <h2>Login</h2>
+                        <Formik
+                            initialValues={{
+                                email: '',
+                                password: '',
+                            }}
 
-                validationSchema={Yup.object({
+                            validationSchema={Yup.object({
 
-                    email: Yup.string()
-                        .required("El email es requerido"),
-                    password: Yup.string()
-                        .required("La contraseña es requerido"),
+                                email: Yup.string()
+                                    .required("El email es requerido"),
+                                password: Yup.string()
+                                    .required("La contraseña es requerido"),
 
-                })}
+                            })}
 
 
-                onSubmit={(values, { }) => {
-                   
-                    console.log(values)
-                    handleLogin(values)
-                    
-                }}>
+                            onSubmit={(values, { }) => {
 
-                {({
-                    isValid,
-                }) => (
+                                console.log(values)
+                                handleLogin(values)
+                                
 
-                    <Form>
+                            }}>
 
-                        <div>
-                            <label htmlFor="email">E-mail: </label>
-                            <Field name="email" id="email" type="email" />
-                            <ErrorMessage name="email" component="div" />
-                        </div>
-                        <div>
-                            <label htmlFor="password">Password: </label>
-                            <Field name="password" id="password" type="password" />
-                            <ErrorMessage name="password" component="div" />
-                        </div>
+                            {({
+                                isValid,
+                            }) => (
 
-                        <div>
-                            <input
-                                type="submit"
-                                value={"Login"}
-                                disabled={!isValid}
-                            />
+                                <Form>
 
-                        </div>
+                                    <div>
+                                        <label htmlFor="email">E-mail: </label>
+                                        <Field name="email" id="email" type="email" />
+                                        <ErrorMessage name="email" component="div" />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="password">Password: </label>
+                                        <Field name="password" id="password" type="password" />
+                                        <ErrorMessage name="password" component="div" />
+                                    </div>
 
-                    </Form>
-                )}
-            </Formik>
+                                    <div>
+                                        <input
+                                            type="submit"
+                                            value={"Login"}
+                                            disabled={!isValid}
+                                        />
 
-            <h2>Aun no estas registrado?</h2>
-            <Link to="/registro"> <button >Registrate</button></Link>
+                                    </div>
+
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
+
+                    <div>
+                        <h3>Aun no estas registrado?</h3>
+                        <Link to="/registro"> <button >Registrate</button></Link>
+                    </div>
+                    <div>
+                        <h3>Has olvidado la contraseña?</h3>
+                        <Link to="/OlvidaPassword"> <button >Cambiar contraseña</button></Link>
+                    </div>
+                </div>
+            
         </>
     );
 }
