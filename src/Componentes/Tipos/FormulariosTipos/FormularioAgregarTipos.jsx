@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoTipos } from '../../../Queris/QueryTipo';
 import { useContext } from 'react'
 import { Autenticacion } from '../../../Contextos/contextLogin';
+import { useQueryListadoTiposPrueba } from '../../../Queris/QueryTipo';
 // import { showToast } from '../../../Utiles/Toast';
 
 export const FormularioAgregarTipos = () => {
@@ -13,6 +14,7 @@ export const FormularioAgregarTipos = () => {
     const { usuarioLogueado} = useContext(Autenticacion)
 
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { isLoading: isLoadingListadoTiposPrueba, isError: isErrorListadoTiposPrueba, error: errorListadoTiposPrueba, data: listadoTiposPrueba } = useQueryListadoTiposPrueba()
 
 
     const queryClient = useQueryClient()
@@ -20,7 +22,14 @@ export const FormularioAgregarTipos = () => {
     const mutationAgregarTipo = useMutation({
         mutationFn: async (nuevoTipo) => {
             
-            const nuevosDatos = [...listadoTipos.record, nuevoTipo]
+            const actualizacion = { ...listadoTiposPrueba.record };
+
+       
+            if (!actualizacion[usuarioLogueado.id]) {
+                actualizacion[usuarioLogueado.id] = [];
+            }
+            actualizacion[usuarioLogueado.id].push(nuevoTipo);
+
             const response = await fetch('https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4', {
                 method: 'PUT',
                 headers: {
@@ -29,9 +38,7 @@ export const FormularioAgregarTipos = () => {
                     'X-Collection-Name': 'tipos'
                     
                 },
-                body: JSON.stringify(
-                    nuevosDatos
-                )
+                body: JSON.stringify(actualizacion)
             });
     
             if (!response.ok) {
@@ -42,7 +49,7 @@ export const FormularioAgregarTipos = () => {
         },
         onSuccess: () => {
             console.log("Se ha insertado el tipo")
-            queryClient.invalidateQueries({ queryKey:["tipos", "listado"]})
+            queryClient.invalidateQueries({ queryKey:["tiposPrueba", "listado"]})
         },
     })
 
@@ -61,8 +68,8 @@ export const FormularioAgregarTipos = () => {
            <Formik
             initialValues={{
                 id: '',
-                name: '',
-                tokenUsuario: usuarioLogueado.token
+                name: ''
+                
             }}
 
             validationSchema={Yup.object({
@@ -75,7 +82,7 @@ export const FormularioAgregarTipos = () => {
             onSubmit={(values, { }) => {
                 console.log(values)
                 mutationAgregarTipo.mutate(values)
-                const lastId = listadoTipos.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
+                const lastId = listadoTipos.record[usuarioLogueado.id].reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
                 values.id = lastId + 1;
                 navegar('/tipos')
                 // showToast("Tipo agregado")
@@ -88,8 +95,8 @@ export const FormularioAgregarTipos = () => {
                 <Form>
                    
                     <div>
-                        <label htmlFor="name">Nombre: </label>
-                        <Field name="name" id="name" type="name" />
+                        <label htmlFor="nombre">Nombre: </label>
+                        <Field name="nombre" id="nombre" type="nombre" />
                         <ErrorMessage name="name" component="div" />
                     </div>
                     <div>

@@ -3,8 +3,10 @@ import * as Yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoTipos } from '../../../Queris/QueryTipo';
+import { useQueryListadoTiposPrueba } from '../../../Queris/QueryTipo';
 import jsonpath from 'jsonpath';
-
+import { useContext } from 'react'
+import { Autenticacion } from '../../../Contextos/contextLogin';
 export const FormularioModificarTipos = () => {
 
 const navegar = useNavigate()
@@ -13,16 +15,24 @@ const { id } = useParams()
 
    
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { isLoading: isLoadingListadoTiposPrueba, isError: isErrorListadoTiposPrueba, error: errorListadoTiposPrueba, data: listadoTiposPrueba } = useQueryListadoTiposPrueba()
+    const { usuarioLogueado } = useContext(Autenticacion)
+
 
     const queryClient = useQueryClient()
 
     const mutationModificarTipo = useMutation({
         mutationFn: async (valoresNuevos) => {
-            const nuevosDatos = listadoTipos.record.map(contacto => {
-                if (contacto.id === valoresNuevos.id) {
-                    return valoresNuevos;
+            
+            const actualizacion = { ...listadoTiposPrueba.record }
+       
+
+            actualizacion[usuarioLogueado.id] = actualizacion[usuarioLogueado.id].map(tipo => {
+                if (tipo.id === valoresNuevos.id) {
+                    console.log("Coincide")
+                    return valoresNuevos
                 }
-                return contacto; 
+                return tipo
             });
 
             const response = await fetch('https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4', {
@@ -32,7 +42,7 @@ const { id } = useParams()
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
                     'X-Collection-Name': 'tipos'
                 },
-                body: JSON.stringify(nuevosDatos)
+                body: JSON.stringify(actualizacion)
             });
 
             if (!response.ok) {
@@ -42,6 +52,7 @@ const { id } = useParams()
         },
         onSuccess: (nuevosDatos) => {
             console.log("Se ha modificado el tipo");
+            queryClient.invalidateQueries(["tipos", "listado"]);
 
             //Esto es para actualizar los datos de la cache a mano
 
@@ -70,11 +81,11 @@ const { id } = useParams()
     return(
         
            <Formik
-            initialValues={jsonpath.query(listadoTipos.record, `$[?(@.id == ${id})]`)[0] }
+            initialValues={jsonpath.query(listadoTiposPrueba.record[usuarioLogueado.id], `$[?(@.id == ${id})]`)[0] }
 
             validationSchema={Yup.object({
                 
-                name: Yup.string()
+                nombre: Yup.string()
                     .required("El nombre del tipo es requerido"),
             })}
 
@@ -94,9 +105,9 @@ const { id } = useParams()
 
                 <Form>
                     <div>
-                        <label htmlFor="name">Nombre: </label>
-                        <Field name="name" id="name" type="name" />
-                        <ErrorMessage name="name" component="div" />
+                        <label htmlFor="nombre">Nombre: </label>
+                        <Field name="nombre" id="nombre" type="nombre" />
+                        <ErrorMessage name="nombre" component="div" />
                     </div>
                     <div>
                     <input

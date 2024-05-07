@@ -4,21 +4,24 @@ import { useQueryListadoTipos } from '../Queris/QueryTipo';
 // import { showToast } from '../../../Utiles/Toast';
 import { useContext } from 'react'
 import { Tipos } from '../Contextos/contextoTipo';
+import { Autenticacion } from '../Contextos/contextLogin';
+import { useQueryListadoTiposPrueba } from '../Queris/QueryTipo';
 
 export const Filtro = () => {
 
-
+    const { usuarioLogueado } = useContext(Autenticacion)
     const  {tipoSeleccionado, setTipoSeleccionado} = useContext(Tipos)
     console.log(tipoSeleccionado)
 
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { isLoading: isLoadingListadoTiposPrueba, isError: isErrorListadoTiposPrueba, error: errorListadoTiposPrueba, data: listadoTiposPrueba } = useQueryListadoTiposPrueba()
 
 
-    if (isLoadingListadoTipos) {
+    if (isLoadingListadoTipos || isLoadingListadoTiposPrueba) {
         return <h3>Cargando...</h3>
     }
 
-    if (isErrorListadoTipos) {
+    if (isErrorListadoTipos || isErrorListadoTiposPrueba || !listadoTiposPrueba) {
         return <h3>Ha habido unerror ....</h3>
     }
 
@@ -53,8 +56,8 @@ export const Filtro = () => {
                             <label htmlFor="tipo">Tipo</label>
                             <Field as="select" name="tipo" id="tipo" type="tipo">
                                 <option value=""></option>
-                                {listadoTipos.record.map(tipo => (
-                                    <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
+                                {listadoTiposPrueba.record[usuarioLogueado.id].map(tipo => (
+                                    <option key={tipo.nombre} value={tipo.nombre}>{tipo.nombre}</option>
                                 ))}
                             </Field>
                             <ErrorMessage name="tipo" component="div" />
