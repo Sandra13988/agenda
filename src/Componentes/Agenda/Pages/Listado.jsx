@@ -6,6 +6,7 @@ import { Filtro } from '../../Filtro'
 import { useContext } from 'react'
 import { Autenticacion } from '../../../Contextos/contextLogin'
 import { Tipos } from '../../../Contextos/contextoTipo'
+import { useQueryListadoContactosPrueba } from '../../../Queris/QueryAgenda'
 
 
 
@@ -15,22 +16,32 @@ export const Listado = () => {
     const { tipoSeleccionado } = useContext(Tipos)
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
     const { isLoading: isLoadingUsuarios, isError: isErrorUsuarios, error: errorUsuarios, data: usuarios } = useQueryListadoContactos()
+    const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
 
 
-    console.log(tipoSeleccionado)
     const queryClient = useQueryClient()
 
     const mutationBorrar = useMutation({
         mutationFn: async (id) => {
-            const nuevaLista = listado.record.filter(contacto => contacto.id !== id);
-            const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
+            const nuevaAgenda = usuariosPrueba.record[usuarioLogueado.id].filter(contacto => contacto.id !== id);
+            
+
+            const actualizacion = {...usuariosPrueba.record}
+            console.log(actualizacion)
+
+            actualizacion[usuarioLogueado.id] = nuevaAgenda
+            console.log(actualizacion)
+
+
+
+            const response = await fetch('https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
-                    'X-Collection-Name': 'defaultContactos'
+                    'X-Collection-Name': 'pruebaContactos'
                 },
-                body: JSON.stringify(nuevaLista)
+                body: JSON.stringify(actualizacion)
             });
 
             if (!response.ok) {
@@ -40,22 +51,24 @@ export const Listado = () => {
         },
         onSuccess: (data) => {
             console.log("Se ha borrado el contacto");
-            queryClient.setQueryData(["contactos", "listado"], data)
-            navegar('/')
+            queryClient.setQueryData(["contactosPrueba", "listado"], data)
+            console.log(data)
+  
         },
     });
 
-    if (isLoadingListado) {
+    if (isLoadingListado || isLoadingUsuariosPrueba) {
         return <h3>Cargando contactos...</h3>
     }
 
-    if (isErrorListado || !listado) {
+    if (isErrorListado || !listado || !usuariosPrueba || isErrorUsuariosPrueba) {
         return <h3>Ha habido un error .... {errorListado.message}</h3>
     }
+
     return (
         <div className='mainContenido'>
             <div className='botonesAgenda'>
-                
+
                 <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
                 <Filtro />
             </div>
@@ -76,28 +89,30 @@ export const Listado = () => {
                 <tbody>
 
 
-
-                    {listado.record.map(contacto => {
+                    {usuarioLogueado.rol === "Admin" && Object.values(usuariosPrueba.record).flat().map(contacto => {
 
                         //VISUALIZAR CONTACTOS SI ERES ADMIN Y EL USUARIO TIENE EL PERMISO ACTIVADO
-                        if (usuarioLogueado.rol === "Admin") {
 
-                            return (
-                                <tr key={contacto.id} >
-                                    <td>{contacto.nombre}</td>
-                                    <td>{contacto.nombre}</td>
-                                    <td>{contacto.telefono}</td>
-                                    <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                                </tr>
+                        return (
+                            <tr key={contacto.id} >
+                                <td>{contacto.nombre}</td>
+                                <td>{contacto.telefono}</td>
+                                <td>{contacto.email}</td>
+                                <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                            </tr>
 
-                            );
-                        }
+                        );
 
+                    }
+                    )
+                    }
+
+
+                    { usuarioLogueado.rol === "User" && usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
                         //VISUALIZAR CONTACOS SI ERES USUARIO Y NO TIENES NINGUN TIPO SELECCIONADO
-                        if (usuarioLogueado.rol === "User" && !tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
+                        if (!tipoSeleccionado) {
                             // Si no hay filtro, muestra todos los contactos
                             return (
                                 <tr key={contacto.id} >
@@ -112,7 +127,7 @@ export const Listado = () => {
                         }
 
                         //VISUALIZAR CONTACTOS SI ERES USUARIO Y TIENES TIPO SELECCIONADO
-                        if (usuarioLogueado.rol === "User" && contacto.tipo === tipoSeleccionado && contacto.tokenUsuario === usuarioLogueado.token) {
+                        if (contacto.tipo === tipoSeleccionado) {
                             return (
                                 <tr key={contacto.id} >
                                     <td>{contacto.nombre}</td>
@@ -130,6 +145,7 @@ export const Listado = () => {
                     }
                     )
                     }
+
 
                 </tbody>
             </table>

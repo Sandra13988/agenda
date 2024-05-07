@@ -13,6 +13,7 @@ export function comprobarConectado (usuario)  {
     useEffect(()=>{
         if(!usuario){
             navegar("/error")
+            console.log("no tiene acceso")
         }
     },[usuario])
 

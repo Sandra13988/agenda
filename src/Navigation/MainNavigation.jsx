@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import { Menu } from '../Componentes/Menu'
@@ -28,7 +28,7 @@ import { useQueryListadoUsuarios } from '../Queris/QueryUsuario';
 import { NavegacionAdmin } from './NavegacionAdmin';
 import { NavegacionUser } from './NavegacionUser';
 import { NavegacionLogin } from './NavegacionLogin';
-import { LayOut } from '../Componentes/LayOut';
+
 
 
 
@@ -40,9 +40,21 @@ export const MainNavigation = () => {
     const { isLoading: isLoadingListadoUsuarios, isError: isErrorListadoUsuarios, error: errorListadoUsuarios, data: listadoUsuarios } = useQueryListadoUsuarios()
     const navegar = useNavigate()
 
+
+    useEffect(()=>{
+        if(!isLoggedIn){
+            navegar("/")
+            console.log("no tiene acceso")
+        }
+    },[isLoggedIn])
+
+
+
+
+
     const handleLogin = (valores) => {
         console.log(listadoUsuarios)
-        const user = listadoUsuarios.record.find(u => u.email === valores.email || u.password === valores.password);
+        const user = listadoUsuarios.record.find(u => u.email === valores.email && u.password === valores.password);
         console.log(user)
         if (user) {
             setIsLoggedIn(true);
@@ -93,6 +105,7 @@ export const MainNavigation = () => {
     }
 
 
+
     return (
         <>
 
@@ -103,7 +116,7 @@ export const MainNavigation = () => {
           
 
                 {/* PERFIL DE ADMIN */}
-                {isLoggedIn && usuarioLogueado.rol === "Admin" && <NavegacionAdmin handleLogout={handleLogout}/>}
+                {isLoggedIn && usuarioLogueado.rol === "Admin" && <NavegacionAdmin handleLogout={handleLogout} /> }
 
 
 

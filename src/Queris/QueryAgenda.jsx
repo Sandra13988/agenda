@@ -48,3 +48,20 @@ export function useQueryContactoDetalle({ id }) {
     }
   });
 }
+
+
+export function useQueryListadoContactosPrueba() {
+  const headers = {
+    'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
+    'X-Collection-Name': 'defaultContactos'
+  };
+
+  return useQuery({
+    queryKey: ["contactosPrueba", "listado"], queryFn: async () => await fetch(`https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53`, { headers })
+      .then(res => {
+        if (!res.ok) throw new Error('Error en la petición')
+        const data = res.json()
+        return data
+      })
+  })
+}

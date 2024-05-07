@@ -8,6 +8,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { showToast } from '../../../Utiles/Toast'
 import jsonpath from 'jsonpath';
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
+import { useContext } from 'react'
+import { Autenticacion } from "../../../Contextos/contextLogin";
+import { useQueryListadoContactosPrueba } from "../../../Queris/QueryAgenda";
 
 export const FormularioModificar = () => {
 
@@ -20,25 +23,34 @@ export const FormularioModificar = () => {
 
     const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
 
+    const { usuarioLogueado } = useContext(Autenticacion)
 
     const mutation = useMutation({
         mutationFn: async (valoresNuevos) => {
-            const nuevosDatos = listado.record.map(contacto => {
-                if (contacto.id === valoresNuevos.id) {
-                    return valoresNuevos;
-                }
-                return contacto;
-            });
 
-            const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
+            
+            const actualizacion = { ...usuariosPrueba.record }
+            console.log(actualizacion)
+            console.log(valoresNuevos)
+
+            actualizacion[usuarioLogueado.id] = actualizacion[usuarioLogueado.id].map(contacto => {
+                if (contacto.id === valoresNuevos.id) {
+                    console.log("Coincide")
+                    return valoresNuevos
+                }
+                return contacto
+            });
+            console.log(actualizacion)
+            const response = await fetch('https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
-                    'X-Collection-Name': 'defaultContactos'
+                    'X-Collection-Name': 'pruebaContactos'
                 },
-                body: JSON.stringify(nuevosDatos)
+                body: JSON.stringify(actualizacion)
             });
 
             if (!response.ok) {
@@ -110,11 +122,17 @@ export const FormularioModificar = () => {
         return <h3>Ha habido unerror ....</h3>
     }
 
-
+    // const seleccionarUsuarioModificar = () =>{
+    //     usuariosPrueba.record[usuarioLogueado.id].map(contacto =>{
+    //         if(contacto.id === id){
+    //             return contacto
+    //         }
+    //     })
+    // }
     return (
         <Formik
             // enableReinitialize={true} //Reinicia el formulario con los valores nuevos
-            initialValues={jsonpath.query(listado.record, `$[?(@.id == ${id})]`)[0]}
+            initialValues={jsonpath.query(usuariosPrueba.record[usuarioLogueado.id], `$[?(@.id == ${id})]`)[0]}
 
             validationSchema={Yup.object({
                 // id: Yup.string()
@@ -154,7 +172,7 @@ export const FormularioModificar = () => {
                 touched,
             }) => (
                 <Form>
-                     <div>
+                    <div>
                         <label htmlFor="tipo">Tipo</label>
                         <Field as="select" name="tipo" id="tipo" type="tipo">
                             <option value="">Tipos</option>
@@ -182,7 +200,7 @@ export const FormularioModificar = () => {
                         <ErrorMessage name="nombre" component="div" />
                     </div>
 
-                   
+
 
                     <div>
                         <label htmlFor="sexo">Sexo</label>

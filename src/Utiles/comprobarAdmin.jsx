@@ -13,7 +13,7 @@ export function comprobarAdmin ()  {
     useEffect(()=>{
         if(usuarioLogueado.rol !== "Admin"){
             setUsuarioLogueado()
-            navegar("/error")
+            navegar("/")
         }
     },[usuarioLogueado])
 
