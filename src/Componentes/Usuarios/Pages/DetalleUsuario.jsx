@@ -29,19 +29,19 @@ export const DetalleUsuario = () => {
                         <th>NOMBRE</th>
                         <th>MAIL</th>
                         <th>PASSWORD</th>
-                        <th>TOKEN</th>
+                        <th>PERMISO</th>
                     </tr>
                 </thead>
-                {<tbody>
+                <tbody>
                     <tr>
                         <td>{usuario.id}</td>
                         <td>{usuario.name}</td>
                         <td>{usuario.email}</td>
                         <td>{usuario.password}</td>
-                        <td>{usuario.token}</td>
+                        <td>{usuario.permiso ? <h2>Si</h2> : <h2>No</h2>}</td>
                     </tr>
+                </tbody>
 
-                </tbody>}
             </table>
 
 

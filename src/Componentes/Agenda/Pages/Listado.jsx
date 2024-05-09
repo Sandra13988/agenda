@@ -1,12 +1,16 @@
 
 import { Link } from 'react-router-dom'
-import { useQueryListadoContactos } from '../../../Queris/QueryAgenda'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Filtro } from '../../Filtro'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Autenticacion } from '../../../Contextos/contextLogin'
+import { UsuarioSeleccionado } from '../../../Contextos/contextUsuarioSeleccionad'
 import { Tipos } from '../../../Contextos/contextoTipo'
 import { useQueryListadoContactosPrueba } from '../../../Queris/QueryAgenda'
+import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import * as Yup from 'yup';
+import { FiltroUsuarioPermiso } from '../../FiltroUsuariosPermiso'
 
 
 
@@ -14,19 +18,18 @@ export const Listado = () => {
 
     const { usuarioLogueado } = useContext(Autenticacion)
     const { tipoSeleccionado } = useContext(Tipos)
-    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
-    const { isLoading: isLoadingUsuarios, isError: isErrorUsuarios, error: errorUsuarios, data: usuarios } = useQueryListadoContactos()
     const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
-
+    const { isLoading: isLoadingUsuarios, isError: isErrorUsuarios, error: errorUsuaros, data: usuarios } = useQueryListadoUsuarios()
+    const { usuarioSeleccionado } = useContext(UsuarioSeleccionado)
 
     const queryClient = useQueryClient()
 
     const mutationBorrar = useMutation({
         mutationFn: async (id) => {
             const nuevaAgenda = usuariosPrueba.record[usuarioLogueado.id].filter(contacto => contacto.id !== id);
-            
 
-            const actualizacion = {...usuariosPrueba.record}
+
+            const actualizacion = { ...usuariosPrueba.record }
             console.log(actualizacion)
 
             actualizacion[usuarioLogueado.id] = nuevaAgenda
@@ -45,7 +48,7 @@ export const Listado = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la eliminacion del contacto');
             }
             return response.json();
         },
@@ -53,16 +56,18 @@ export const Listado = () => {
             console.log("Se ha borrado el contacto");
             queryClient.setQueryData(["contactosPrueba", "listado"], data)
             console.log(data)
-  
+
         },
     });
 
-    if (isLoadingListado || isLoadingUsuariosPrueba) {
+    
+
+    if (isLoadingUsuariosPrueba) {
         return <h3>Cargando contactos...</h3>
     }
 
-    if (isErrorListado || !listado || !usuariosPrueba || isErrorUsuariosPrueba) {
-        return <h3>Ha habido un error .... {errorListado.message}</h3>
+    if (!usuariosPrueba || isErrorUsuariosPrueba) {
+        return <h3>Ha habido un error .... {errorUsuariosPrueba.message}</h3>
     }
 
     return (
@@ -71,6 +76,7 @@ export const Listado = () => {
 
                 <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
                 <Filtro />
+                {usuarioLogueado.rol === "Admin" && <FiltroUsuarioPermiso  />}
             </div>
 
 
@@ -87,30 +93,31 @@ export const Listado = () => {
                     </tr>
                 </thead>
                 <tbody>
-
-
-                    {usuarioLogueado.rol === "Admin" && Object.values(usuariosPrueba.record).flat().map(contacto => {
-
-                        //VISUALIZAR CONTACTOS SI ERES ADMIN Y EL USUARIO TIENE EL PERMISO ACTIVADO
-
-                        return (
-                            <tr key={contacto.id} >
-                                <td>{contacto.nombre}</td>
-                                <td>{contacto.telefono}</td>
-                                <td>{contacto.email}</td>
-                                <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                            </tr>
-
-                        );
-
+                    {console.log(usuarioSeleccionado)}
+                    {console.log(usuariosPrueba.record[0])}
+                    {
+                        usuarioLogueado.rol === "Admin" && usuarioSeleccionado &&
+                        (
+                            usuariosPrueba.record[usuarioSeleccionado] === undefined ?
+                                <h2>Este usuario no tiene contactos registrados</h2> :
+                                usuariosPrueba.record[usuarioSeleccionado].map(contacto => (
+                                    (!tipoSeleccionado || contacto.tipo === tipoSeleccionado) && (
+                                        <tr key={contacto.id}>
+                                            <td>{contacto.nombre}</td>
+                                            <td>{contacto.telefono}</td>
+                                            <td>{contacto.email}</td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                        </tr>
+                                    )
+                                ))
+                        )
                     }
-                    )
-                    }
 
 
-                    { usuarioLogueado.rol === "User" && usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
+
+                    {usuarioLogueado.rol === "User" && usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
                         //VISUALIZAR CONTACOS SI ERES USUARIO Y NO TIENES NINGUN TIPO SELECCIONADO
                         if (!tipoSeleccionado) {
                             // Si no hay filtro, muestra todos los contactos

@@ -4,6 +4,8 @@ import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario';
 import jsonpath from 'jsonpath';
+import { useContext } from 'react';
+import { UsuarioSeleccionado } from '../../../Contextos/contextUsuarioSeleccionad';
 
 export const FormularioModificarUsuarios = () => {
 
@@ -11,7 +13,7 @@ const navegar = useNavigate()
 const { id } = useParams()
    
 
-   
+    const { usarioSeleccionado } = useContext(UsuarioSeleccionado)
     const { isLoading: isLoadingListadoUsuarios, isError: isErrorListadoUsuarios, error: errorListadoUsuarios, data: listadoUsuarios } = useQueryListadoUsuarios()
 
     const queryClient = useQueryClient()
@@ -36,7 +38,7 @@ const { id } = useParams()
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la modificiacion de usuario');
             }
             return response.json();
         },
@@ -53,24 +55,33 @@ const { id } = useParams()
     if(isErrorListadoUsuarios ){
         return <h3>Ha habido unerror ....</h3>
     }
-    const pregunta = listadoUsuarios.record[id].pregunta
-    const respuesta = listadoUsuarios.record[id].respuesta
-    console.log(listadoUsuarios.record[id].respuesta)
-   
+
+
+    console.log(UsuarioSeleccionado)
+    const pregunta = listadoUsuarios.record[parseInt(id)].pregunta
+    const respuesta = listadoUsuarios.record[parseInt(id)].respuesta
+  
+    console.log(pregunta)
+    console.log(respuesta)
+    console.log(listadoUsuarios.record[parseInt(id)])
+
 
     return(
-    
+        <>
+        {    console.log(listadoUsuarios.record[parseInt(id)])}
            <Formik
             initialValues={{
-                name: listadoUsuarios.record[id].name,
-                email: listadoUsuarios.record[id].email,
-                password: listadoUsuarios.record[id].password,
+                id: parseInt(id),
+                name: listadoUsuarios.record[parseInt(id)].name,
+                email: listadoUsuarios.record[parseInt(id)].email,
+                password: listadoUsuarios.record[parseInt(id)].password,
                 pregunta: '',
                 respuesta: '',
-                rol: listadoUsuarios.record[id].rol
+                rol: listadoUsuarios.record[parseInt(id)].rol
             }}
 
             validationSchema={Yup.object({
+                
                 
                 name: Yup.string()
                     .required("El nombre es requerido"),
@@ -101,7 +112,7 @@ const { id } = useParams()
             enableReinitialize={true}
             
             onSubmit={(values, { resetForm }) => {
-                
+                console.log(values)
                 mutationModificarUsuarios.mutate(values)
                 resetForm()
                 navegar("/usuarios")
@@ -174,6 +185,7 @@ const { id } = useParams()
                 </Form>
             )}
         </Formik>
+        </>
         
     )
 } 

@@ -9,7 +9,7 @@ export  function useQueryListadoTipos  ()  {
 
   return  useQuery({ queryKey: ["tipos", "listado"], queryFn: async () => await fetch("https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4", { headers })
        .then( res => {
-         if (!res.ok) throw new Error('Error en la petición')
+         if (!res.ok) throw new Error('Error en la petición de listado de tipos')
          const data =  res.json()
          return  data 
        }) })
@@ -24,7 +24,7 @@ export  function useQueryListadoTipos  ()  {
 
 return  useQuery({ queryKey: ["tiposPrueba", "listado"], queryFn: async () => await fetch("https://api.jsonbin.io/v3/b/6628f255acd3cb34a83d90c4", { headers })
      .then( res => {
-       if (!res.ok) throw new Error('Error en la petición')
+       if (!res.ok) throw new Error('Error en la petición de listado de tipos')
        const data =  res.json()
        return  data 
      }) })

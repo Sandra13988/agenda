@@ -42,7 +42,7 @@ export const FormularioAgregarTipos = () => {
             });
     
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la agregacion del tipo');
             }
             return response.json()
     
@@ -74,8 +74,8 @@ export const FormularioAgregarTipos = () => {
 
             validationSchema={Yup.object({
                 
-                name: Yup.string()
-                    .required("El nombre del tipo es requerido"),
+                nombre: Yup.string()
+                    .required("El nombre del tipo es requerido")
             })}
 
 
@@ -97,7 +97,7 @@ export const FormularioAgregarTipos = () => {
                     <div>
                         <label htmlFor="nombre">Nombre: </label>
                         <Field name="nombre" id="nombre" type="nombre" />
-                        <ErrorMessage name="name" component="div" />
+                        <ErrorMessage name="nombre" component="div" />
                     </div>
                     <div>
                     <input

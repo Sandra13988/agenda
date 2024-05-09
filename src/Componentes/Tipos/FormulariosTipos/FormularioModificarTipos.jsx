@@ -46,7 +46,7 @@ const { id } = useParams()
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la modificacion del tipo');
             }
             return response.json();
         },

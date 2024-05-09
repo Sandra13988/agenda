@@ -7,10 +7,10 @@ import { Tipos } from '../Contextos/contextoTipo';
 import { Autenticacion } from '../Contextos/contextLogin';
 import { useQueryListadoTiposPrueba } from '../Queris/QueryTipo';
 
-export const Filtro = () => {
+export const Filtro = ( {usuarioSeleccionado}) => {
 
     const { usuarioLogueado } = useContext(Autenticacion)
-    const  {tipoSeleccionado, setTipoSeleccionado} = useContext(Tipos)
+    const { tipoSeleccionado, setTipoSeleccionado } = useContext(Tipos)
     console.log(tipoSeleccionado)
 
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
@@ -28,7 +28,7 @@ export const Filtro = () => {
 
     return (
         <>
-            
+
             <Formik
                 initialValues={{
                     tipo: ''
@@ -36,12 +36,13 @@ export const Filtro = () => {
 
                 validationSchema={Yup.object({
 
-                    
+
                 })}
 
 
                 onSubmit={(values) => {
                     setTipoSeleccionado(values.tipo)
+
                     // setTipoSeleccionado(values)
 
                 }}>
@@ -52,19 +53,34 @@ export const Filtro = () => {
 
                     <Form>
 
-                        <div>
+                        {usuarioLogueado.rol === "Admin" && usuarioSeleccionado && listadoTiposPrueba.record[usuarioSeleccionado] !== undefined &&<div>
+                            <label htmlFor="tipo">Tipo</label>
+                            <Field as="select" name="tipo" id="tipo" type="tipo">
+                                <option value=""></option>
+                                {listadoTiposPrueba.record[usuarioSeleccionado].map(tipo => (
+                                    <option key={tipo.nombre} value={tipo.nombre}>{tipo.nombre}</option>
+
+                                ))}
+                            </Field>
+                            <ErrorMessage name="tipo" component="div" />
+                            <button>FILTRAR</button>
+                        </div>}
+
+
+                        {usuarioLogueado.rol === "User" && <div>
                             <label htmlFor="tipo">Tipo</label>
                             <Field as="select" name="tipo" id="tipo" type="tipo">
                                 <option value=""></option>
                                 {listadoTiposPrueba.record[usuarioLogueado.id].map(tipo => (
                                     <option key={tipo.nombre} value={tipo.nombre}>{tipo.nombre}</option>
+
                                 ))}
                             </Field>
                             <ErrorMessage name="tipo" component="div" />
                             <button>FILTRAR</button>
-                        </div>
-                       
-                   
+                        </div>}
+
+
                     </Form>
                 )}
             </Formik>

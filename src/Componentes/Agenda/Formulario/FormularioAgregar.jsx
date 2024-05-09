@@ -3,7 +3,7 @@ import { Field, ErrorMessage, Formik, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
+
 // import { showToast } from '../../../Utiles/Toast'
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 import { useContext } from 'react'
@@ -18,7 +18,8 @@ export const FormularioAgregar = () => {
     const [longitudCp, setLongitudCp] = useState(0)
     const { usuarioLogueado } = useContext(Autenticacion)
 
-    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
+    const { isLoading: isLoadingListadoContactos, isError: isErrorListadoContactos, error: errorListadoContactos, data: listado } = useQueryListadoContactosPrueba()
+
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
     const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
 
@@ -57,7 +58,7 @@ export const FormularioAgregar = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la agregacion de contacto');
             }
             return response.json()
 
@@ -113,11 +114,11 @@ export const FormularioAgregar = () => {
 
     };
 
-    if (isLoadingListado || isLoadingListadoTipos) {
+    if (isLoadingListadoTipos) {
         return <h3>Cargando...</h3>
     }
 
-    if (isErrorListado || !listado || isErrorListadoTipos || !listadoTipos) {
+    if (isErrorListadoTipos || !listadoTipos) {
         return <h3>Ha habido unerror ....</h3>
     }
 
@@ -193,8 +194,8 @@ export const FormularioAgregar = () => {
                         <label htmlFor="tipo">Tipo</label>
                         <Field as="select" name="tipo" id="tipo" type="tipo">
                             <option value="">Tipos</option>
-                            {listadoTipos.record.map(tipo => (
-                                <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
+                            {listadoTipos.record[usuarioLogueado.id].map(tipo => (
+                                <option key={tipo.nombre} value={tipo.nombre}>{tipo.nombre}</option>
                             ))}
                         </Field>
                         <ErrorMessage name="tipo" component="div" />

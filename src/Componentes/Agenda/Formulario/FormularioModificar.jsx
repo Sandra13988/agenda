@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup';
-import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { showToast } from '../../../Utiles/Toast'
 import jsonpath from 'jsonpath';
@@ -21,7 +21,7 @@ export const FormularioModificar = () => {
     const { id } = useParams(); // Obtener Id
     const queryClient = useQueryClient()
 
-    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
+
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
     const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
 
@@ -54,7 +54,7 @@ export const FormularioModificar = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la modificacion del contacto');
             }
             return response.json();
         },
@@ -114,11 +114,11 @@ export const FormularioModificar = () => {
     };
 
 
-    if (isLoadingListado || isLoadingListadoTipos) {
+    if (isLoadingListadoTipos) {
         return <h3>Cargando...</h3>
     }
 
-    if (isErrorListado || !listado || isErrorListadoTipos || !listadoTipos) {
+    if (isErrorListadoTipos || !listadoTipos) {
         return <h3>Ha habido unerror ....</h3>
     }
 
@@ -176,7 +176,7 @@ export const FormularioModificar = () => {
                         <label htmlFor="tipo">Tipo</label>
                         <Field as="select" name="tipo" id="tipo" type="tipo">
                             <option value="">Tipos</option>
-                            {listadoTipos.record.map(tipo => (
+                            {listadoTipos.record[usuarioLogueado.id].map(tipo => (
                                 <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
                             ))}
                         </Field>

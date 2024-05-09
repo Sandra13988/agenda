@@ -1,10 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Shadows+Into+Light&display=swap');
 
 
 
 #cuerpo{
   width: 100%;
   height: 100vh;
+}
+
+h2{
   
+  font-family: "Shadows Into Light", cursive;
+  font-style: normal;
 }
 
 .estiloBody {
@@ -45,10 +52,34 @@
 .completo > header,fotter{
   width: 100%;
 }
+
+
+.pie{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+}
+
+
 #encabezado{
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  font-family: "Shadows Into Light", cursive;
+  font-size: 30px;
+  font-style: normal;
+  
+}
+
+#encabezado > div{
+  justify-content: center;
+  font-size: 18px;
+  font-family:'Franklin Gothic Medium';
+ 
+  
 }
 
 
@@ -101,30 +132,40 @@ input.focused {
 
 li {
   list-style: none;
+  color: black;
+  font-family: "Shadows Into Light", cursive;
+  font-size: 20px;
+  font-style: normal;
 }
 
 /* SLIDE DOWN */
 .contenedorMenus {
-  width: 300px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: right;
+}
+
+#encabezado > .contenidoMenu{
+  justify-content: right;
 }
 
 .slide-down-menu {
   position: relative;
+
 }
 
+/*Contenedor de opciones*/
 .menu-content {
   position: absolute;
-  
   left: 0;
   width: 300%;
-  background-color: #ffffff;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  transition: max-height 0.3s ease-in-out;
+  box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
+  transition: max-height max-width 0.3s ease-in-out;
   overflow: hidden;
+ background-color: rgba(255, 255, 255, 0.5);
   max-height: 0;
+  text-decoration: underline;
 }
 
 .menu-content ul {
@@ -137,8 +178,8 @@ li {
 }
 
 .slide-down-menu:hover .menu-content {
-  max-height: 200px;
-
+  max-height: 800px;
+  width: 200px;
 }
 
 .estiloBody.login > .contenedorLogin {
@@ -152,34 +193,32 @@ li {
   
 }
 
-.estiloBody.admin > .completo > .layCuerpo{
+.estiloBody.admin > .completo > .layCuerpo > .mainContenido{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   max-width: max-content;
   height: auto;
-  border-radius: 10%;
   padding: 20px;
- 
   border: 7px solid #6084cb;
-  border-radius: 10%;
-  background-color: #b0bbce;
+  border-radius: 3%;
+  background-color: #cbd6e8;
+  
   
 }
 
-.estiloBody.user > .completo > .layCuerpo{
+.estiloBody.user > .completo > .layCuerpo > .mainContenido{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: max-content;
   height: auto;
-  border-radius: 10%;
   padding: 50px;
   margin-top: 80px;
   border: 7px solid #BD83CE;
-  border-radius: 10%;
+  border-radius: 3%;
   background-color: #F7E8F6;
   
 }
@@ -197,6 +236,7 @@ li {
 
 .layCuerpo{
   flex: 1;
+  margin-top: 80px;
 }
 
 
@@ -205,6 +245,22 @@ li {
 }
 
 
+.cabeceraUser{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.estiloMenu{
+ font-size: 30px;
+}
+
+.botonesAgenda{
+  width: 700px;
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+}
 /* https://colorhunt.co/palette/f7e8f6f1c6e7e5b0eabd83ce colores rosas
 https://colorhunt.co/palette/f4eeffdcd6f7a6b1e1424874 colores azules 
 https://colorhunt.co/palette/e1f0dad4e7c5bfd8af99bc85 verdes*/

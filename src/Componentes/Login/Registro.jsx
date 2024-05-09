@@ -33,7 +33,7 @@ export const Registro = () => {
             });
     
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en el registro de usuario');
             }
             return response.json()
     

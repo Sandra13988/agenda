@@ -24,7 +24,7 @@ export const ListarUsuarios = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la eliminacion del usuario');
             }
             return response.json();
         },
@@ -49,11 +49,15 @@ export const ListarUsuarios = () => {
     return (
 
         <div className='mainContenido'>
-            <Link to="/menu"> <button >MENU</button></Link>
             <Link to="/usuarios/agregar"> <button >AGREGAR</button></Link>
             <h3>LISTA DE USUARIOS</h3>
             <table>
-
+            <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOMBRE</th>
+                    </tr>
+                </thead>
                 <tbody>
 
                     {listadoUsuarios.record.map(usuario => {

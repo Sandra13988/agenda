@@ -32,11 +32,11 @@ import { useQueryListadoUsuarios } from '../Queris/QueryUsuario';
 export const NavegacionUser = ({ handleLogout }) => {
 
 
-    
+
     return (
         <>
             {<div className='completo'>
-                <header>
+                <header className='cabeceraUser'>
                     <Menu handleLogout={handleLogout} />
                 </header>
                 <main className='layCuerpo'>
@@ -58,9 +58,20 @@ export const NavegacionUser = ({ handleLogout }) => {
                     </Routes>
                 </main>
 
-                <fotter>
-                <h2>Este será el footer</h2>
+                <fotter className="pie">
+                    <a href="#">
+                        <img src="https://cdn.hugeicons.com/icons/linkedin-02-stroke-rounded.svg" alt="linkedin-02" width="24" height="24" />
+                    
+                    </a>
+                    <a href="#">
+                        <img src="https://cdn.hugeicons.com/icons/instagram-stroke-rounded.svg" alt="instagram" width="24" height="24" />
+                    </a>
+                    <a href="#">
+                        <img src="https://cdn.hugeicons.com/icons/twitter-stroke-rounded.svg" alt="twitter" width="24" height="24" />
+                    </a>
+
                 </fotter>
+
             </div>}
 
 

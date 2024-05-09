@@ -1,4 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
+
+
 import { useQueryContactoDetalle } from '../../../Queris/QueryAgenda';
 
 export const Detalle = () => {
@@ -6,9 +8,9 @@ export const Detalle = () => {
     const { id } = useParams(); // Obtener el parámetro de la URL que indica el ID del usuario
 
 
-    const { isLoading: isLoadingContacto, isError: isErrorContacto, error: errorContacto, data: contacto } = useQueryContactoDetalle({ id: id })
+    const { isLoading: isLoadingContacto, isError: isErrorContacto, error: errorContacto, data: contacto } = useQueryContactoDetalle(id)
 
-
+    console.log(contacto)
     if (isLoadingContacto) {
         return <h2>Cargando ...</h2>
     }

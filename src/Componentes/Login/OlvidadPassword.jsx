@@ -31,7 +31,7 @@ export const OlvidaPassword = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la busqueda de usuario');
             }
             return response.json();
         },

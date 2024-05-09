@@ -11,7 +11,7 @@ export function useQueryListadoUsuarios() {
   return useQuery({
     queryKey: ["usuarios", "listado"], queryFn: async () => await fetch("https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972", { headers })
       .then(res => {
-        if (!res.ok) throw new Error('Error en la petición')
+        if (!res.ok) throw new Error('Error en la petición de listado de usuarios')
         const data = res.json()
         return data
       })
@@ -31,7 +31,7 @@ export function useQueryUsuariosDetalle({ id }) {
       try {
         const response = await fetch(`https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972`, { headers });
         if (!response.ok) {
-          throw new Error('Error en la petición');
+          throw new Error('Error en la petición de detalles de usuario');
         }
         const data = await response.json();
 
@@ -43,7 +43,7 @@ export function useQueryUsuariosDetalle({ id }) {
 
         return objetoConId[0]; // Devolver el primer objeto encontrado (debería ser único por ID)
       } catch (error) {
-        throw new Error('Error en la petición');
+        throw new Error('Error en la petición de detalles de usuario');
       }
     }
   });

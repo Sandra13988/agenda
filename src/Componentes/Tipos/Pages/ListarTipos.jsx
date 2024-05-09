@@ -35,7 +35,7 @@ export const ListarTipos = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la eliminacion del tipo');
             }
             return response.json();
         },

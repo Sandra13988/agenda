@@ -4,21 +4,28 @@ import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useContext } from 'react'
 import { Autenticacion } from '../../../Contextos/contextLogin'
+import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario';
 
 export const FormularioModificarPerfil = () => {
 
     const navegar = useNavigate()
 
 
-    const { usuarioLogueado } = useContext(Autenticacion)
+    const { usuarioLogueado, setUsuarioLogueado } = useContext(Autenticacion)
+    const { isLoading: isLoadingListadoUsuarios, isError: isErrorListadoUsuarios, error: errorListadoUsuarios, data: listadoUsuarios } = useQueryListadoUsuarios()
 
 
     const queryClient = useQueryClient()
 
     const mutationModificarUsuarios = useMutation({
         mutationFn: async (valoresNuevos) => {
-            
-               
+            const nuevosDatos = listadoUsuarios.record.map(usuario => {
+                if (usuario.id === valoresNuevos.id) {
+                    return valoresNuevos;
+                }
+                return usuario;
+            });
+
 
             const response = await fetch('https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972', {
                 method: 'PUT',
@@ -27,31 +34,37 @@ export const FormularioModificarPerfil = () => {
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
                     'X-Collection-Name': 'usuarios'
                 },
-                body: JSON.stringify(valoresNuevos)
+                body: JSON.stringify(nuevosDatos)
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la modificacion del perfil');
             }
             return response.json();
         },
         onSuccess: (nuevosDatos) => {
             queryClient.invalidateQueries({ queryKey: ["usuarios", "listado"] })
-            console.log("Se ha modificado el usuario");
+            console.log("Se ha modificado el perfil");
         },
     });
 
 
-    
+
     const pregunta = usuarioLogueado.pregunta
     const respuesta = usuarioLogueado.respuesta
-    console.log(usuarioLogueado.respuesta)
 
 
     return (
-    
+
+        <>
+
+            {console.log(usuarioLogueado)}
+            {console.log(usuarioLogueado.respuesta)}
+            {console.log(usuarioLogueado.pregunta)}
+
             <Formik
                 initialValues={{
+                    id: usuarioLogueado.id,
                     name: usuarioLogueado.name,
                     email: usuarioLogueado.email,
                     password: usuarioLogueado.password,
@@ -91,10 +104,11 @@ export const FormularioModificarPerfil = () => {
                 enableReinitialize={true}
 
                 onSubmit={(values, { resetForm }) => {
-
+                    console.log(values)
                     mutationModificarUsuarios.mutate(values)
                     resetForm()
-                    navegar("/usuarios")
+                    navegar("/agenda")
+                    setUsuarioLogueado(values)
 
                 }}>
 
@@ -134,7 +148,7 @@ export const FormularioModificarPerfil = () => {
                             <Field name="respuesta" id="respuesta" type="respuesta" />
                             <ErrorMessage name="respuesta" component="div" />
                         </div>
-                        {usuarioLogueado.rol === "Admin" &&<div>
+                        {usuarioLogueado.rol === "Admin" && <div>
                             <label htmlFor="rol">Rol: </label>
                             <Field as="select" name="rol" id="rol" type="rol" >
                                 <option value="Admin" name="Admin">Admin</option>
@@ -164,6 +178,7 @@ export const FormularioModificarPerfil = () => {
                     </Form>
                 )}
             </Formik>
-        
+        </>
+
     )
 } 

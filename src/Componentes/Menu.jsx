@@ -22,13 +22,13 @@ export const Menu = ({ handleLogout }) => {
     <>
       {comprobarConectado(usuarioLogueado)}
     <div id="encabezado">
-    {usuarioLogueado && <h2>Hola {usuarioLogueado.name}</h2>}
+   
       <div className="contenedorMenus">
 
         {/* //ADMIN */}
         {usuarioLogueado.rol === "Admin" &&
         <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <Link to={`/agenda`}><li>MENU</li></Link>
+          <Link to={`/agenda`} ><li className='estiloMenu'>MENU</li></Link>
           {isOpen && (
             <div className="menu-content">
               <ul>
@@ -36,7 +36,6 @@ export const Menu = ({ handleLogout }) => {
                 <Link to={`/agenda/agregar`}><li>AGREGAR CONTACTO</li></Link>
                 <Link to={`/tipos`}><li>TIPO</li></Link>
                 <Link to={`/tipos/agregar`}><li>AGREGAR TIPO</li></Link>
-                <Link to={`/perfil/modificar`}><li>MODIFICAR PERFIL</li></Link>
                 <Link to={`/usuarios`}><li>USUARIOS</li></Link>
                 <Link to={`/usuarios/agregar`}><li>AGREGAR USUARIO</li></Link>
               </ul>
@@ -61,10 +60,11 @@ export const Menu = ({ handleLogout }) => {
           )}
         </div>}
         </div>
+        {usuarioLogueado && <h2>Hola {usuarioLogueado.name}</h2>}
         <div className="contenedorMenus">
         {/* PERFIL */}
         {usuarioLogueado && <div className="slide-down-menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <Link to={`/perfil`}><li>PERFIL</li></Link>
+          <Link to={`/perfil`}><li><img src="https://cdn.hugeicons.com/icons/user-edit-01-stroke-rounded.svg" alt="user-edit-01" width="40" height="40" /></li></Link>
           {isOpen && (
             <div className="menu-content">
               <ul>
