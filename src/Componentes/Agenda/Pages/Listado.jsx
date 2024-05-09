@@ -2,14 +2,11 @@
 import { Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Filtro } from '../../Filtro'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Autenticacion } from '../../../Contextos/contextLogin'
 import { UsuarioSeleccionado } from '../../../Contextos/contextUsuarioSeleccionad'
 import { Tipos } from '../../../Contextos/contextoTipo'
 import { useQueryListadoContactosPrueba } from '../../../Queris/QueryAgenda'
-import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import * as Yup from 'yup';
 import { FiltroUsuarioPermiso } from '../../FiltroUsuariosPermiso'
 
 
@@ -19,7 +16,6 @@ export const Listado = () => {
     const { usuarioLogueado } = useContext(Autenticacion)
     const { tipoSeleccionado } = useContext(Tipos)
     const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
-    const { isLoading: isLoadingUsuarios, isError: isErrorUsuarios, error: errorUsuaros, data: usuarios } = useQueryListadoUsuarios()
     const { usuarioSeleccionado } = useContext(UsuarioSeleccionado)
 
     const queryClient = useQueryClient()

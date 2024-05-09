@@ -59,21 +59,3 @@ export function useQueryListadoContactosPrueba() {
 }
 
 
-
-// export function useQueryDetalle(iden) {
-//   const headers = {
-//     'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
-//     'X-Collection-Name': 'pruebaContactos'
-//   };
-
-//   return useQuery({
-//     queryKey: ["contactosPrueba", "listado"], queryFn: async () => await fetch(`https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53`, { headers })
-//       .then(res => {
-//         if (!res.ok) throw new Error('Error en la petición de listado de contactos')
-//         const data = res.json()
-//         const objetoConId = jsonpath.query(data.record[usuarioLogueado.id], `$[?(@.id == ${iden})]`);
-//         console.log(objetoConId)
-//         return data
-//       })
-//   })
-// }

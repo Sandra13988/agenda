@@ -1,7 +1,6 @@
 import { MainNavigation } from "../Navigation/MainNavigation"
 import { Menu } from "./Menu"
 import { Fotter } from "./Fotter"
-
 import { useContext, useState } from "react";
 import { Autenticacion } from "../Contextos/contextLogin";
 
@@ -9,13 +8,13 @@ import { Autenticacion } from "../Contextos/contextLogin";
 
 export const LayOut = () => {
 
-    const { usuarioLogueado, setUsuarioLogueado } = useContext(Autenticacion)
+    const { usuarioLogueado } = useContext(Autenticacion)
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+   
 
     let bodyClass = "estiloBody"; // Clase base común
 
-    if (!isLoggedIn) {
+    if (!usuarioLogueado) {
         bodyClass += " login"; // Si no está autenticado, agrega la clase para el login
     } else {
         if (usuarioLogueado.rol === "Admin") {

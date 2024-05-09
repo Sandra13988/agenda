@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup';
-
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { showToast } from '../../../Utiles/Toast'
 import jsonpath from 'jsonpath';
@@ -114,11 +113,11 @@ export const FormularioModificar = () => {
     };
 
 
-    if (isLoadingListadoTipos) {
+    if (isLoadingListadoTipos || isLoadingUsuariosPrueba) {
         return <h3>Cargando...</h3>
     }
 
-    if (isErrorListadoTipos || !listadoTipos) {
+    if (isErrorListadoTipos || isErrorUsuariosPrueba || !listadoTipos || !usuariosPrueba) {
         return <h3>Ha habido unerror ....</h3>
     }
 

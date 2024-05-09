@@ -16,7 +16,7 @@ export const DetalleUsuario = () => {
     }
 
     if (isErrorUsuario || !usuario) {
-        return <h2>{errorusuario.message}</h2>
+        return <h2>{errorUsuario.message}</h2>
     }
 
     return (

@@ -13,15 +13,15 @@ export const Filtro = ( {usuarioSeleccionado}) => {
     const { tipoSeleccionado, setTipoSeleccionado } = useContext(Tipos)
     console.log(tipoSeleccionado)
 
-    const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+
     const { isLoading: isLoadingListadoTiposPrueba, isError: isErrorListadoTiposPrueba, error: errorListadoTiposPrueba, data: listadoTiposPrueba } = useQueryListadoTiposPrueba()
 
 
-    if (isLoadingListadoTipos || isLoadingListadoTiposPrueba) {
+    if ( isLoadingListadoTiposPrueba) {
         return <h3>Cargando...</h3>
     }
 
-    if (isErrorListadoTipos || isErrorListadoTiposPrueba || !listadoTiposPrueba) {
+    if (isErrorListadoTiposPrueba || !listadoTiposPrueba) {
         return <h3>Ha habido unerror ....</h3>
     }
 

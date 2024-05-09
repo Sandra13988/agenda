@@ -1,8 +1,5 @@
-
 import { Routes, Route} from 'react-router-dom'
-
 import { OlvidaPassword } from '../Componentes/Login/OlvidadPassword';
-
 import { Login } from '../Componentes/Login/Login';
 import { Registro } from '../Componentes/Login/Registro';
 

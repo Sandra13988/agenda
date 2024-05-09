@@ -3,7 +3,6 @@ import * as Yup from 'yup';
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario';
-import jsonpath from 'jsonpath';
 import { useContext } from 'react';
 import { UsuarioSeleccionado } from '../../../Contextos/contextUsuarioSeleccionad';
 
@@ -52,7 +51,7 @@ const { id } = useParams()
         return <h3>Cargando...</h3>
     }
 
-    if(isErrorListadoUsuarios ){
+    if(isErrorListadoUsuarios || !listadoUsuarios){
         return <h3>Ha habido unerror ....</h3>
     }
 

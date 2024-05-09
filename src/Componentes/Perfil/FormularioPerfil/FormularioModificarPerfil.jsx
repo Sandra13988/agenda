@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
-import { useNavigate, Link, useParams } from 'react-router-dom'
+import { useNavigate, Link} from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useContext } from 'react'
 import { Autenticacion } from '../../../Contextos/contextLogin'
@@ -42,7 +42,7 @@ export const FormularioModificarPerfil = () => {
             }
             return response.json();
         },
-        onSuccess: (nuevosDatos) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["usuarios", "listado"] })
             console.log("Se ha modificado el perfil");
         },
@@ -53,6 +53,14 @@ export const FormularioModificarPerfil = () => {
     const pregunta = usuarioLogueado.pregunta
     const respuesta = usuarioLogueado.respuesta
 
+
+    if( isLoadingListadoUsuarios){
+        <h2>Cargando ...</h2>
+    }
+
+    if(isErrorListadoUsuarios || !listadoUsuarios){
+        <h2> Ha habido un error ...</h2>
+    }
 
     return (
 

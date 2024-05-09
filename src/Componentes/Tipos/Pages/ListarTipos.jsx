@@ -49,12 +49,12 @@ export const ListarTipos = () => {
 
 
 
-    if (isLoadingListadoTipos) {
+    if (isLoadingListadoTipos || isLoadingListadoTiposPrueba) {
         return <h3>Cargando tipos...</h3>
     }
 
 
-    if (isErrorListadoTipos || !listadoTipos) {
+    if (isErrorListadoTipos || isErrorListadoTiposPrueba || !listadoTipos || !listadoTiposPrueba) {
         return <h3>Ha habido un error .... {errorListado.message}</h3>
     }
 

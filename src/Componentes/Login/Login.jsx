@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom'
 
 
 export const Login = ({ handleLogin }) => {
-    const navegar = useNavigate()
+
     return (
         <>
             
