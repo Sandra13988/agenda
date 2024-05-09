@@ -1,30 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom'
-
-import { Menu } from '../Componentes/Menu'
-import { Agregar } from '../Componentes/Agenda/Pages/Agregar';
-import { Listado } from '../Componentes/Agenda/Pages/Listado';
-import { Modificar } from '../Componentes/Agenda/Pages/Modificar';
-import { Detalle } from '../Componentes/Agenda/Pages/Detalle';
-import { ListarTipos } from '../Componentes/Tipos/Pages/ListarTipos';
-import { AgregarTipos } from '../Componentes/Tipos/Pages/AgregarTipos';
-import { ModificarTipos } from '../Componentes/Tipos/Pages/ModificarTipos';
-import { ListarUsuarios } from '../Componentes/Usuarios/Pages/ListarUsuarios';
-import { AgregarUsuarios } from '../Componentes/Usuarios/Pages/AgregarUsuarios';
-import { ModificarUsuarios } from '../Componentes/Usuarios/Pages/ModificarUsuarios';
-import { DetalleUsuario } from '../Componentes/Usuarios/Pages/DetalleUsuario';
-import { ModificarPerfil } from '../Componentes/Perfil/ModificarPerfil';
-import { DetallePerfil } from '../Componentes/Perfil/DetallePerfil';
-import { OlvidaPassword } from '../Componentes/Login/OlvidadPassword';
-
-import { Login } from '../Componentes/Login/Login';
-import { Registro } from '../Componentes/Login/Registro';
-
+import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { Autenticacion } from '../Contextos/contextLogin';
-
 import { useQueryListadoUsuarios } from '../Queris/QueryUsuario';
-
 import { NavegacionAdmin } from './NavegacionAdmin';
 import { NavegacionUser } from './NavegacionUser';
 import { NavegacionLogin } from './NavegacionLogin';

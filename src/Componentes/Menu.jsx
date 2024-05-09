@@ -5,7 +5,7 @@ import { Autenticacion } from '../Contextos/contextLogin';
 import { comprobarConectado } from '../Utiles/comprobarConectado';
 export const Menu = ({ handleLogout }) => {
 
-  const { usuarioLogueado, setUsuarioLogueado } = useContext(Autenticacion)
+  const { usuarioLogueado } = useContext(Autenticacion)
 
   const [isOpen, setIsOpen] = useState(false);
 

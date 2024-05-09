@@ -2,14 +2,11 @@
 import { Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Filtro } from '../../Filtro'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Autenticacion } from '../../../Contextos/contextLogin'
 import { UsuarioSeleccionado } from '../../../Contextos/contextUsuarioSeleccionad'
 import { Tipos } from '../../../Contextos/contextoTipo'
 import { useQueryListadoContactosPrueba } from '../../../Queris/QueryAgenda'
-import { useQueryListadoUsuarios } from '../../../Queris/QueryUsuario'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import * as Yup from 'yup';
 import { FiltroUsuarioPermiso } from '../../FiltroUsuariosPermiso'
 
 
@@ -19,7 +16,6 @@ export const Listado = () => {
     const { usuarioLogueado } = useContext(Autenticacion)
     const { tipoSeleccionado } = useContext(Tipos)
     const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
-    const { isLoading: isLoadingUsuarios, isError: isErrorUsuarios, error: errorUsuaros, data: usuarios } = useQueryListadoUsuarios()
     const { usuarioSeleccionado } = useContext(UsuarioSeleccionado)
 
     const queryClient = useQueryClient()
@@ -60,7 +56,7 @@ export const Listado = () => {
         },
     });
 
-    
+
 
     if (isLoadingUsuariosPrueba) {
         return <h3>Cargando contactos...</h3>
@@ -76,7 +72,7 @@ export const Listado = () => {
 
                 <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
                 <Filtro />
-                {usuarioLogueado.rol === "Admin" && <FiltroUsuarioPermiso  />}
+                {usuarioLogueado.rol === "Admin" && <FiltroUsuarioPermiso />}
             </div>
 
 
@@ -95,11 +91,12 @@ export const Listado = () => {
                 <tbody>
                     {console.log(usuarioSeleccionado)}
                     {console.log(usuariosPrueba.record[0])}
-                    {
-                        usuarioLogueado.rol === "Admin" && usuarioSeleccionado &&
+                    {usuarioLogueado.rol === "Admin" && usuarioSeleccionado &&
                         (
                             usuariosPrueba.record[usuarioSeleccionado] === undefined ?
-                                <h2>Este usuario no tiene contactos registrados</h2> :
+                                <td colSpan="3">
+                                    <h2>Este usuario no tiene contactos registrados</h2>
+                                </td> :
                                 usuariosPrueba.record[usuarioSeleccionado].map(contacto => (
                                     (!tipoSeleccionado || contacto.tipo === tipoSeleccionado) && (
                                         <tr key={contacto.id}>
@@ -117,41 +114,41 @@ export const Listado = () => {
 
 
 
-                    {usuarioLogueado.rol === "User" && usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
-                        //VISUALIZAR CONTACOS SI ERES USUARIO Y NO TIENES NINGUN TIPO SELECCIONADO
-                        if (!tipoSeleccionado) {
-                            // Si no hay filtro, muestra todos los contactos
-                            return (
-                                <tr key={contacto.id} >
-                                    <td>{contacto.nombre}</td>
-                                    <td>{contacto.telefono}</td>
-                                    <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                                </tr>
-                            );
-                        }
+                    {usuarioLogueado.rol === "User" && (
+                        usuariosPrueba.record[usuarioLogueado.id] === undefined ? (
+                            <td colSpan="3">
+                                <h2>Este usuario no tiene contactos registrados</h2>
+                            </td>
+                        ) : (
+                            usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
+                                if (!tipoSeleccionado) {
+                                    return (
+                                        <tr key={contacto.id}>
+                                            <td>{contacto.nombre}</td>
+                                            <td>{contacto.telefono}</td>
+                                            <td>{contacto.email}</td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                        </tr>
+                                    );
+                                }
+                                if (contacto.tipo === tipoSeleccionado) {
+                                    return (
+                                        <tr key={contacto.id}>
+                                            <td>{contacto.nombre}</td>
+                                            <td>{contacto.telefono}</td>
+                                            <td>{contacto.email}</td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                        </tr>
+                                    );
+                                }
 
-                        //VISUALIZAR CONTACTOS SI ERES USUARIO Y TIENES TIPO SELECCIONADO
-                        if (contacto.tipo === tipoSeleccionado) {
-                            return (
-                                <tr key={contacto.id} >
-                                    <td>{contacto.nombre}</td>
-                                    <td>{contacto.telefono}</td>
-                                    <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                                </tr>
-                            );
-                        }
-
-
-
-                    }
-                    )
-                    }
+                            })
+                        )
+                    )}
 
 
                 </tbody>

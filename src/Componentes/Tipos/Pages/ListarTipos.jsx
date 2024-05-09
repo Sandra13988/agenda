@@ -16,9 +16,9 @@ export const ListarTipos = () => {
     const mutationBorrarTipo = useMutation({
         mutationFn: async (id) => {
             const nuevaAgenda = listadoTiposPrueba.record[usuarioLogueado.id].filter(contacto => contacto.id !== id);
-            
 
-            const actualizacion = {...listadoTiposPrueba.record}
+
+            const actualizacion = { ...listadoTiposPrueba.record }
             console.log(actualizacion)
 
             actualizacion[usuarioLogueado.id] = nuevaAgenda
@@ -49,37 +49,40 @@ export const ListarTipos = () => {
 
 
 
-    if (isLoadingListadoTipos) {
+    if (isLoadingListadoTipos || isLoadingListadoTiposPrueba) {
         return <h3>Cargando tipos...</h3>
     }
 
 
-    if (isErrorListadoTipos || !listadoTipos) {
+    if (isErrorListadoTipos || isErrorListadoTiposPrueba || !listadoTipos || !listadoTiposPrueba) {
         return <h3>Ha habido un error .... {errorListado.message}</h3>
     }
 
     return (
         <div className='mainContenido'>
 
-          
+
             <Link to="/tipos/agregar"> <button >AGREGAR</button></Link>
             <h3>LISTA DE TIPOS</h3>
             <table>
 
                 <tbody>
 
-                    {listadoTiposPrueba.record[usuarioLogueado.id].map(tipo => {
-                     
-                            return (
-                                <tr key={tipo.id}>
-                                    <td >{tipo.nombre}</td>
-                                    <td ><Link to={`/tipos/modificar/${tipo.id}`}><button>MODIFICAR</button></Link></td>
-                                    <td >{<button onClick={() => mutationBorrarTipo.mutate(tipo.id)}>BORRAR</button>}</td>
-                                </tr>
-                            )
-                        
-
-                    })}
+                    {listadoTiposPrueba.record[usuarioLogueado.id] && listadoTiposPrueba.record[usuarioLogueado.id].length > 0 ? (
+                        listadoTiposPrueba.record[usuarioLogueado.id].map(tipo => (
+                            <tr key={tipo.id}>
+                                <td>{tipo.nombre}</td>
+                                <td><Link to={`/tipos/modificar/${tipo.id}`}><button>MODIFICAR</button></Link></td>
+                                <td>{<button onClick={() => mutationBorrarTipo.mutate(tipo.id)}>BORRAR</button>}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="3">
+                                <h2>No hay tipos registrados</h2>
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
 

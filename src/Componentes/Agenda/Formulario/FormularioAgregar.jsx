@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { Field, ErrorMessage, Formik, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-
-// import { showToast } from '../../../Utiles/Toast'
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 import { useContext } from 'react'
 import { Autenticacion } from "../../../Contextos/contextLogin";
@@ -19,10 +17,9 @@ export const FormularioAgregar = () => {
     const { usuarioLogueado } = useContext(Autenticacion)
 
     const { isLoading: isLoadingListadoContactos, isError: isErrorListadoContactos, error: errorListadoContactos, data: listado } = useQueryListadoContactosPrueba()
-
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
     const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
-
+    
 
     const queryClient = useQueryClient()
 
@@ -114,11 +111,11 @@ export const FormularioAgregar = () => {
 
     };
 
-    if (isLoadingListadoTipos) {
+    if (isLoadingListadoTipos || isLoadingListadoContactos || isLoadingUsuariosPrueba) {
         return <h3>Cargando...</h3>
     }
 
-    if (isErrorListadoTipos || !listadoTipos) {
+    if (isErrorListadoTipos || isErrorListadoContactos || isErrorUsuariosPrueba || !listadoTipos || !usuariosPrueba || !listado) {
         return <h3>Ha habido unerror ....</h3>
     }
 

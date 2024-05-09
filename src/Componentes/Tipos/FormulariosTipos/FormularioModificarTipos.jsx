@@ -77,6 +77,13 @@ const { id } = useParams()
         },
     });
 
+    if(isLoadingListadoTipos || isLoadingListadoTiposPrueba){
+        return <h3>Cargando...</h3>
+    }
+
+    if(isErrorListadoTipos || !listadoTiposPrueba || isErrorListadoTiposPrueba || !listadoTipos){
+        return <h3>Ha habido unerror ....</h3>
+    }
     
     return(
         

@@ -57,7 +57,7 @@ export const Registro = () => {
         return <h3>Cargando...</h3>
     }
 
-    if(isErrorListadoUsuarios ){
+    if(isErrorListadoUsuarios || !listadoUsuarios ){
         return <h3>Ha habido unerror ....</h3>
     }
 
