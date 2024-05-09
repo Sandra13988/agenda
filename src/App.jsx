@@ -1,7 +1,9 @@
 import { MainNavigation } from './Navigation/MainNavigation'
 import './App.css'
-import { TipoProvider } from './Componentes/context'
-import { AutenticacionUsuario } from './Componentes/contextLogin'
+import { TipoProvider } from './Contextos/contextoTipo'
+import { AutenticacionUsuario } from './Contextos/contextLogin'
+import { Prueba } from './Prueba'
+import { Seleccionado } from './Contextos/contextUsuarioSeleccionad'
 
 
 function App() {
@@ -10,9 +12,12 @@ function App() {
     <>
      
         <AutenticacionUsuario>
+        <Seleccionado>
           <TipoProvider>
+              {/* <Prueba/> */}
             <MainNavigation />
           </TipoProvider>
+          </Seleccionado>
         </AutenticacionUsuario>
 
 

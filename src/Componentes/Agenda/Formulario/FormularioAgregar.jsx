@@ -3,11 +3,12 @@ import { Field, ErrorMessage, Formik, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useQueryListadoContactos } from "../../../Queris/QueryAgenda";
+
 // import { showToast } from '../../../Utiles/Toast'
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 import { useContext } from 'react'
 import { Autenticacion } from "../../../Contextos/contextLogin";
+import { useQueryListadoContactosPrueba } from "../../../Queris/QueryAgenda";
 
 
 export const FormularioAgregar = () => {
@@ -15,10 +16,13 @@ export const FormularioAgregar = () => {
     const navegar = useNavigate()
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
-    const { usuarioLogueado} = useContext(Autenticacion)
+    const { usuarioLogueado } = useContext(Autenticacion)
 
-    const { isLoading: isLoadingListado, isError: isErrorListado, error: errorListado, data: listado } = useQueryListadoContactos()
+    const { isLoading: isLoadingListadoContactos, isError: isErrorListadoContactos, error: errorListadoContactos, data: listado } = useQueryListadoContactosPrueba()
+
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
+    const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
+
 
     const queryClient = useQueryClient()
 
@@ -26,38 +30,45 @@ export const FormularioAgregar = () => {
     //     inputRefAgregar.current.focus()
     // }, [])
 
-    
-  
+
+
     //Funcion que ejecuta la mutacion
     const mutationAgregarContacto = useMutation({
         mutationFn: async (nuevoContacto) => {
-            const nuevosDatos = [...listado.record, nuevoContacto]
-            
-            const response = await fetch('https://api.jsonbin.io/v3/b/6628d405ad19ca34f85f0ccd', {
+            console.log(nuevoContacto)
+            const actualizacion = { ...usuariosPrueba.record };
+
+       
+            if (!actualizacion[usuarioLogueado.id]) {
+                actualizacion[usuarioLogueado.id] = [];
+            }
+            actualizacion[usuarioLogueado.id].push(nuevoContacto);
+
+
+            const response = await fetch('https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Master-Key': `$2a$10$8Ls7wNx8qPs98jugz8slSeaydaYTVGx6/Ctqlk7FhMuYPNKF4nNNu`,
                     // 'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
-                    'X-Collection-Name': 'defaultContactos'
+                    'X-Collection-Name': 'pruebaContactos'
 
                 },
-                body: JSON.stringify(
-                    nuevosDatos
-                )
+                body: JSON.stringify(actualizacion)
             });
 
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en la agregacion de contacto');
             }
             return response.json()
 
         },
         onSuccess: () => {
-            
+
             console.log("Se ha insertado el contacto")
-            queryClient.invalidateQueries({ queryKey: ["contactos", "listado"] })
-            
+            queryClient.invalidateQueries({ queryKey: ["contactosPrueba", "listado"] })
+            navegar("/agenda")
+
         },
     })
 
@@ -103,11 +114,11 @@ export const FormularioAgregar = () => {
 
     };
 
-    if (isLoadingListado || isLoadingListadoTipos) {
+    if (isLoadingListadoTipos) {
         return <h3>Cargando...</h3>
     }
 
-    if (isErrorListado || !listado || isErrorListadoTipos || !listadoTipos) {
+    if (isErrorListadoTipos || !listadoTipos) {
         return <h3>Ha habido unerror ....</h3>
     }
 
@@ -159,13 +170,13 @@ export const FormularioAgregar = () => {
             onSubmit={(values, { }) => {
                 console.log(values)
                 //Asignar ID -> averigua cual es el mas alto que hay en la list ay le suma 1
-                const lastId = listado.record.reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
+                const lastId = listado.record[usuarioLogueado.id].reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
                 values.id = lastId + 1;
                 //Llamada a la funcion de mutacion
                 mutationAgregarContacto.mutate(values)
                 navegar('/agenda') // Esto hay que cambiarlo porque manda a /agregar
                 // showToast("Contacto agregado")
-                
+
             }}
 
 
@@ -179,12 +190,12 @@ export const FormularioAgregar = () => {
                 isValid,
             }) => (
                 <Form>
-                     <div>
+                    <div>
                         <label htmlFor="tipo">Tipo</label>
                         <Field as="select" name="tipo" id="tipo" type="tipo">
                             <option value="">Tipos</option>
-                            {listadoTipos.record.map(tipo => (
-                                <option key={tipo.name} value={tipo.name}>{tipo.name}</option>
+                            {listadoTipos.record[usuarioLogueado.id].map(tipo => (
+                                <option key={tipo.nombre} value={tipo.nombre}>{tipo.nombre}</option>
                             ))}
                         </Field>
                         <ErrorMessage name="tipo" component="div" />

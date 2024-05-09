@@ -4,12 +4,12 @@ export const AgregarUsuarios = () => {
 
 
     return (
-        <>
-            <div>
+      
+            <div className='mainContenido'>
                 <h3>AGREGAR TIPOS</h3>
                 <FormularioAgregarUsuarios />
             </div>
 
-        </>
+      
     )
 } 

@@ -33,13 +33,13 @@ export const FormularioAgregarUsuarios = () => {
             });
     
             if (!response.ok) {
-                throw new Error('Error en la petición');
+                throw new Error('Error en agregar el usuario');
             }
             return response.json()
     
         },
         onSuccess: () => {
-            console.log("Se ha insertado el tipo")
+            console.log("Se ha insertado un usuario nuevo")
             queryClient.invalidateQueries({ queryKey:["usuarios", "listado"]})
         },
     })
@@ -63,7 +63,7 @@ export const FormularioAgregarUsuarios = () => {
 
 
     return(
-        <>
+        
            <Formik
             initialValues={{
                 id: '',
@@ -73,7 +73,8 @@ export const FormularioAgregarUsuarios = () => {
                 pregunta: '',
                 respuesta: '',
                 rol: 'User',
-                token: ''
+                token: '',
+                permiso: false
             }}
 
             validationSchema={Yup.object({
@@ -155,6 +156,6 @@ export const FormularioAgregarUsuarios = () => {
                 </Form>
             )}
         </Formik>
-        </>
+        
     )
 } 
