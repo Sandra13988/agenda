@@ -60,7 +60,7 @@ export const Listado = () => {
         },
     });
 
-    
+
 
     if (isLoadingUsuariosPrueba) {
         return <h3>Cargando contactos...</h3>
@@ -76,7 +76,7 @@ export const Listado = () => {
 
                 <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
                 <Filtro />
-                {usuarioLogueado.rol === "Admin" && <FiltroUsuarioPermiso  />}
+                {usuarioLogueado.rol === "Admin" && <FiltroUsuarioPermiso />}
             </div>
 
 
@@ -95,11 +95,12 @@ export const Listado = () => {
                 <tbody>
                     {console.log(usuarioSeleccionado)}
                     {console.log(usuariosPrueba.record[0])}
-                    {
-                        usuarioLogueado.rol === "Admin" && usuarioSeleccionado &&
+                    {usuarioLogueado.rol === "Admin" && usuarioSeleccionado &&
                         (
                             usuariosPrueba.record[usuarioSeleccionado] === undefined ?
-                                <h2>Este usuario no tiene contactos registrados</h2> :
+                                <td colSpan="3">
+                                    <h2>Este usuario no tiene contactos registrados</h2>
+                                </td> :
                                 usuariosPrueba.record[usuarioSeleccionado].map(contacto => (
                                     (!tipoSeleccionado || contacto.tipo === tipoSeleccionado) && (
                                         <tr key={contacto.id}>
@@ -117,41 +118,41 @@ export const Listado = () => {
 
 
 
-                    {usuarioLogueado.rol === "User" && usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
-                        //VISUALIZAR CONTACOS SI ERES USUARIO Y NO TIENES NINGUN TIPO SELECCIONADO
-                        if (!tipoSeleccionado) {
-                            // Si no hay filtro, muestra todos los contactos
-                            return (
-                                <tr key={contacto.id} >
-                                    <td>{contacto.nombre}</td>
-                                    <td>{contacto.telefono}</td>
-                                    <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                                </tr>
-                            );
-                        }
+                    {usuarioLogueado.rol === "User" && (
+                        usuariosPrueba.record[usuarioLogueado.id] === undefined ? (
+                            <td colSpan="3">
+                                <h2>Este usuario no tiene contactos registrados</h2>
+                            </td>
+                        ) : (
+                            usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
+                                if (!tipoSeleccionado) {
+                                    return (
+                                        <tr key={contacto.id}>
+                                            <td>{contacto.nombre}</td>
+                                            <td>{contacto.telefono}</td>
+                                            <td>{contacto.email}</td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                        </tr>
+                                    );
+                                }
+                                if (contacto.tipo === tipoSeleccionado) {
+                                    return (
+                                        <tr key={contacto.id}>
+                                            <td>{contacto.nombre}</td>
+                                            <td>{contacto.telefono}</td>
+                                            <td>{contacto.email}</td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
+                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                        </tr>
+                                    );
+                                }
 
-                        //VISUALIZAR CONTACTOS SI ERES USUARIO Y TIENES TIPO SELECCIONADO
-                        if (contacto.tipo === tipoSeleccionado) {
-                            return (
-                                <tr key={contacto.id} >
-                                    <td>{contacto.nombre}</td>
-                                    <td>{contacto.telefono}</td>
-                                    <td>{contacto.email}</td>
-                                    <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                    <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                    <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
-                                </tr>
-                            );
-                        }
-
-
-
-                    }
-                    )
-                    }
+                            })
+                        )
+                    )}
 
 
                 </tbody>

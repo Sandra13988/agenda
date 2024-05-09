@@ -71,7 +71,7 @@ export const Filtro = ( {usuarioSeleccionado}) => {
                             <label htmlFor="tipo">Tipo</label>
                             <Field as="select" name="tipo" id="tipo" type="tipo">
                                 <option value=""></option>
-                                {listadoTiposPrueba.record[usuarioLogueado.id].map(tipo => (
+                                {listadoTiposPrueba.record[usuarioLogueado.id] !== undefined &&listadoTiposPrueba.record[usuarioLogueado.id].map(tipo => (
                                     <option key={tipo.nombre} value={tipo.nombre}>{tipo.nombre}</option>
 
                                 ))}
