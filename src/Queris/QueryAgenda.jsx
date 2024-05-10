@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import jsonpath from 'jsonpath';
 import { useContext } from 'react'
 import { Autenticacion } from "../Contextos/contextLogin";
+import { UsuarioSeleccionado } from "../Contextos/contextUsuarioSeleccionad";
 
 
 
@@ -10,6 +11,7 @@ import { Autenticacion } from "../Contextos/contextLogin";
 
 export function useQueryContactoDetalle(iden) {
   const { usuarioLogueado } = useContext(Autenticacion)
+  const { usuarioSeleccionado } = useContext(UsuarioSeleccionado)
   const headers = {
     'X-Access-Key': '$2a$10$AIjaA8Tho0hI8s8uxoMEBOfgSlgXj0TVHwaK0uHEPIIUe8zuDBISe',
     'X-Collection-Name': 'pruebaContactos'
@@ -26,8 +28,12 @@ export function useQueryContactoDetalle(iden) {
         const data = await response.json();
 
         //Filtrar el objeto por ID utilizando JSONPath
-        const objetoConId = jsonpath.query(data.record[usuarioLogueado.id], `$[?(@.id == ${iden})]`)[0];
-
+        let objetoConId;
+        if (usuarioLogueado.rol === "User") {
+          objetoConId = jsonpath.query(data.record[usuarioLogueado.id], `$[?(@.id == ${iden})]`)[0];
+        } else if (usuarioLogueado.rol === "Admin") {
+          objetoConId = jsonpath.query(data.record[usuarioSeleccionado], `$[?(@.id == ${iden})]`)[0];
+        }
         console.log(objetoConId)
         if (!objetoConId || objetoConId.length === 0) {
           throw new Error('No se encontró el objeto con el ID especificado');
