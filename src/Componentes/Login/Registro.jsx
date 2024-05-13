@@ -64,6 +64,7 @@ export const Registro = () => {
 
     return(
         <>
+        <div className="contenedorLogin">
             <h2>REGISTRO</h2>
            <Formik
             initialValues={{
@@ -156,6 +157,7 @@ export const Registro = () => {
                 </Form>
             )}
         </Formik>
+        </div>
         </>
     )
 } 

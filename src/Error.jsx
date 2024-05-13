@@ -9,7 +9,7 @@ export const Error = ({handleLogout}) => {
     return (
         <>
             <h2>SE HA PRODUCIDO UN ERROR</h2>
-            <button onClick={() => navegar("/")}>Volver al login</button>
+            <button type="button" onClick={() => navegar("/")}>Volver al login</button>
 
         </>
     )

@@ -47,8 +47,6 @@ export const MainNavigation = () => {
         }
 
     };
-            console.log(isLoggedIn)
-            console.log(usuarioLogueado)
 
     let bodyClass = "estiloBody"; // Clase base común
 

@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 import { useContext } from 'react'
 import { Autenticacion } from "../../../Contextos/contextLogin";
+import { UsuarioSeleccionado } from "../../../Contextos/contextUsuarioSeleccionad";
 import { useQueryListadoContactosPrueba } from "../../../Queris/QueryAgenda";
 
 
@@ -15,6 +16,7 @@ export const FormularioAgregar = () => {
     const [lugares, setLugares] = useState([])
     const [longitudCp, setLongitudCp] = useState(0)
     const { usuarioLogueado } = useContext(Autenticacion)
+    const { usuarioSeleccionado } = useContext(UsuarioSeleccionado)
 
     const { isLoading: isLoadingListadoContactos, isError: isErrorListadoContactos, error: errorListadoContactos, data: listado } = useQueryListadoContactosPrueba()
     const { isLoading: isLoadingListadoTipos, isError: isErrorListadoTipos, error: errorListadoTipos, data: listadoTipos } = useQueryListadoTipos()
@@ -36,10 +38,21 @@ export const FormularioAgregar = () => {
             const actualizacion = { ...usuariosPrueba.record };
 
        
-            if (!actualizacion[usuarioLogueado.id]) {
-                actualizacion[usuarioLogueado.id] = [];
+            if(usuarioLogueado.rol === "User"){
+                if (!actualizacion[usuarioLogueado.id]) {
+                    actualizacion[usuarioLogueado.id] = [];
+                }
+                actualizacion[usuarioLogueado.id].push(nuevoContacto);
             }
-            actualizacion[usuarioLogueado.id].push(nuevoContacto);
+
+            if(usuarioLogueado.rol === "Admin"){
+                if (!actualizacion[usuarioSeleccionado]) {
+                    actualizacion[usuarioSeleccionado] = [];
+                }
+                actualizacion[usuarioSeleccionado].push(nuevoContacto);
+            }
+           
+           
 
 
             const response = await fetch('https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53', {
@@ -189,12 +202,12 @@ export const FormularioAgregar = () => {
                 <Form>
                     <div>
                         <label htmlFor="tipo">Tipo</label>
-                        <Field as="select" name="tipo" id="tipo" type="tipo">
+                        {listadoTipos && <Field as="select" name="tipo" id="tipo" type="tipo">
                             <option value="">Tipos</option>
                             {listadoTipos.record[usuarioLogueado.id].map(tipo => (
                                 <option key={tipo.nombre} value={tipo.nombre}>{tipo.nombre}</option>
                             ))}
-                        </Field>
+                        </Field>}
                         <ErrorMessage name="tipo" component="div" />
                     </div>
 

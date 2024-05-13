@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 // import { showToast } from '../../../Utiles/Toast';
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 export const Login = ({ handleLogin }) => {
@@ -69,12 +69,12 @@ export const Login = ({ handleLogin }) => {
 
                     <div>
                         <h3>Aun no estas registrado?</h3>
-                        <Link to="/registro"> <button >Registrate</button></Link>
+                        <Link to="/registro"> <button type="button" >Registrate</button></Link>
                     </div>
-                    <div>
+                    {/* <div>
                         <h3>Has olvidado la contraseña?</h3>
-                        <Link to="/OlvidaPassword"> <button >Cambiar contraseña</button></Link>
-                    </div>
+                        <Link to="/comprobarOlvidaPassword"> <button type="button" >Cambiar contraseña</button></Link>
+                    </div> */}
                 </div>
             
         </>

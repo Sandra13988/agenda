@@ -104,7 +104,7 @@ const { id } = useParams()
                     ).required("La respuesta es requerida"),
                 rol: Yup.string()
                     .required("El rol es requerido"),
-                permiso: Yup.boolean()
+                permiso: Yup.string()
                     .required("Especifique el permiso deseado")
             })}
 
@@ -115,6 +115,7 @@ const { id } = useParams()
                 mutationModificarUsuarios.mutate(values)
                 resetForm()
                 navegar("/usuarios")
+
                 
             }}>
 
@@ -163,10 +164,10 @@ const { id } = useParams()
                         <ErrorMessage name="rol" component="div" />
                     </div>
                     <div>
-                        <label htmlFor="permiso">¿Desea darle permiso al admin para que gestione su agenda? </label>
+                        <label htmlFor="permiso">¿Desea darle permiso al administrador para que gestione su agenda? </label>
                         <Field as="select" name="permiso" id="permiso" type="permiso" >
-                            <option value={true} name="Admin">Si</option>
-                            <option value={false} name="User">No</option>
+                            <option value="permisoAdmin" name="Si">Si</option>
+                            <option value="noPermiso" name="No">No</option>
                         </Field>
                         <ErrorMessage name="permiso" component="div" />
                     </div>

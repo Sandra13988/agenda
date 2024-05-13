@@ -49,7 +49,7 @@ export const ListarUsuarios = () => {
     return (
 
         <div className='mainContenido'>
-            <Link to="/usuarios/agregar"> <button >AGREGAR</button></Link>
+            <Link to="/usuarios/agregar"> <button type="button">AGREGAR</button></Link>
             <h3>LISTA DE USUARIOS</h3>
             <table>
                 <thead>
@@ -65,10 +65,10 @@ export const ListarUsuarios = () => {
                             <tr key={usuario.id}>
                                 <td >{usuario.id}</td>
                                 <td >{usuario.name}</td>
-                                <td><Link to={`/usuarios/detalles/${usuario.id}`}><button>DETALLE</button></Link></td>
-                                <td ><Link to={`/usuarios/modificar/${usuario.id}`}><button>MODIFICAR</button></Link></td>
+                                <td><Link to={`/usuarios/detalles/${usuario.id}`}><button type="button">DETALLE</button></Link></td>
+                                <td ><Link to={`/usuarios/modificar/${usuario.id}`}><button type="button">MODIFICAR</button></Link></td>
                                 <td>
-                                    <button onClick={() => mutationBorrarUsuario.mutate(usuario.id)} disabled={usuario.rol === "Admin"}>
+                                    <button type="button" onClick={() => mutationBorrarUsuario.mutate(usuario.id)} disabled={usuario.rol === "Admin"}>
                                         BORRAR
                                     </button>
                                 </td>

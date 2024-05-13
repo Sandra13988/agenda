@@ -10,6 +10,7 @@ import { useQueryListadoTipos } from "../../../Queris/QueryTipo";
 import { useContext } from 'react'
 import { Autenticacion } from "../../../Contextos/contextLogin";
 import { useQueryListadoContactosPrueba } from "../../../Queris/QueryAgenda";
+import { UsuarioSeleccionado } from "../../../Contextos/contextUsuarioSeleccionad";
 
 export const FormularioModificar = () => {
 
@@ -25,6 +26,7 @@ export const FormularioModificar = () => {
     const { isLoading: isLoadingUsuariosPrueba, isError: isErrorUsuariosPrueba, error: errorUsuariosPrueba, data: usuariosPrueba } = useQueryListadoContactosPrueba()
 
     const { usuarioLogueado } = useContext(Autenticacion)
+    const { usuarioSeleccionado } = useContext(UsuarioSeleccionado)
 
     const mutation = useMutation({
         mutationFn: async (valoresNuevos) => {
@@ -34,13 +36,24 @@ export const FormularioModificar = () => {
             console.log(actualizacion)
             console.log(valoresNuevos)
 
+            if (usuarioLogueado.rol === "User") {
             actualizacion[usuarioLogueado.id] = actualizacion[usuarioLogueado.id].map(contacto => {
                 if (contacto.id === valoresNuevos.id) {
                     console.log("Coincide")
                     return valoresNuevos
                 }
                 return contacto
-            });
+            })};
+
+            if (usuarioLogueado.rol === "Admin") {
+                actualizacion[usuarioSeleccionado] = actualizacion[usuarioSeleccionado].map(contacto => {
+                    if (contacto.id === valoresNuevos.id) {
+                        console.log("Coincide")
+                        return valoresNuevos
+                    }
+                    return contacto
+                })};
+
             console.log(actualizacion)
             const response = await fetch('https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53', {
                 method: 'PUT',
@@ -65,9 +78,9 @@ export const FormularioModificar = () => {
     });
 
 
-    useEffect(() => {
-        inputRefModificar.current.focus()
-    }, [])
+    // useEffect(() => {
+    //     inputRefModificar.current.focus()
+    // }, [])
 
     function fetchDataLocalidad(cp) {
         // URL de la API que deseas consultar
@@ -113,6 +126,13 @@ export const FormularioModificar = () => {
     };
 
 
+    let valoresIniciales;
+    if (usuarioLogueado.rol === "User") {
+      valoresIniciales = jsonpath.query(usuariosPrueba.record[usuarioLogueado.id], `$[?(@.id == ${id})]`)[0];
+    } else if (usuarioLogueado.rol === "Admin") {
+      valoresIniciales = jsonpath.query(usuariosPrueba.record[usuarioSeleccionado], `$[?(@.id == ${id})]`)[0];
+    }
+    
     if (isLoadingListadoTipos || isLoadingUsuariosPrueba) {
         return <h3>Cargando...</h3>
     }
@@ -128,10 +148,13 @@ export const FormularioModificar = () => {
     //         }
     //     })
     // }
+
+
+    
     return (
         <Formik
             // enableReinitialize={true} //Reinicia el formulario con los valores nuevos
-            initialValues={jsonpath.query(usuariosPrueba.record[usuarioLogueado.id], `$[?(@.id == ${id})]`)[0]}
+            initialValues={valoresIniciales}
 
             validationSchema={Yup.object({
                 // id: Yup.string()

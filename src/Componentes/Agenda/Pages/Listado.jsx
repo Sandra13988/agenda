@@ -22,15 +22,30 @@ export const Listado = () => {
 
     const mutationBorrar = useMutation({
         mutationFn: async (id) => {
-            const nuevaAgenda = usuariosPrueba.record[usuarioLogueado.id].filter(contacto => contacto.id !== id);
-
-
             const actualizacion = { ...usuariosPrueba.record }
-            console.log(actualizacion)
 
-            actualizacion[usuarioLogueado.id] = nuevaAgenda
-            console.log(actualizacion)
+            if (usuarioLogueado.rol === "User") {
+                const nuevaAgenda =  usuariosPrueba.record[usuarioLogueado.id].filter(contacto => !usuariosBorrado.includes(contacto));
+                actualizacion[usuarioLogueado.id] = nuevaAgenda
 
+            }
+
+
+
+            if (usuarioLogueado.rol === "User") {
+                const nuevaAgenda = usuariosPrueba.record[usuarioLogueado.id].filter(contacto => contacto.id !== id);
+                actualizacion[usuarioLogueado.id] = nuevaAgenda
+
+            }
+
+
+
+
+            if (usuarioLogueado.rol === "Admin") {
+                const nuevaAgenda = usuariosPrueba.record[usuarioSeleccionado].filter(contacto => contacto.id !== id);
+                actualizacion[usuarioSeleccionado] = nuevaAgenda
+
+            }
 
 
             const response = await fetch('https://api.jsonbin.io/v3/b/6639d66bad19ca34f865ad53', {
@@ -70,7 +85,7 @@ export const Listado = () => {
         <div className='mainContenido'>
             <div className='botonesAgenda'>
 
-                <Link to="/agenda/agregar"> <button >AGREGAR</button></Link>
+                <Link to="/agenda/agregar"> <button type="button">AGREGAR</button></Link>
                 <Filtro />
                 {usuarioLogueado.rol === "Admin" && <FiltroUsuarioPermiso />}
             </div>
@@ -89,13 +104,13 @@ export const Listado = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {console.log(usuarioSeleccionado)}
-                    {console.log(usuariosPrueba.record[0])}
+                
                     {usuarioLogueado.rol === "Admin" && usuarioSeleccionado &&
                         (
                             usuariosPrueba.record[usuarioSeleccionado] === undefined ?
                                 <td colSpan="3">
-                                    <h2>Este usuario no tiene contactos registrados</h2>
+                                    <h2>Este usuario no tiene contactos registrados, registre un tipo antes de comenzar</h2>
+                                  
                                 </td> :
                                 usuariosPrueba.record[usuarioSeleccionado].map(contacto => (
                                     (!tipoSeleccionado || contacto.tipo === tipoSeleccionado) && (
@@ -103,9 +118,9 @@ export const Listado = () => {
                                             <td>{contacto.nombre}</td>
                                             <td>{contacto.telefono}</td>
                                             <td>{contacto.email}</td>
-                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button type="button">DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button type="button"> MODIFICAR</button></Link></td>
+                                            <td><button type="button" onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                                         </tr>
                                     )
                                 ))
@@ -117,7 +132,7 @@ export const Listado = () => {
                     {usuarioLogueado.rol === "User" && (
                         usuariosPrueba.record[usuarioLogueado.id] === undefined ? (
                             <td colSpan="3">
-                                <h2>Este usuario no tiene contactos registrados</h2>
+                                <h2>Este usuario no tiene contactos registrados, registre un tipo antes de comenzar</h2>
                             </td>
                         ) : (
                             usuariosPrueba.record[usuarioLogueado.id].map(contacto => {
@@ -127,9 +142,9 @@ export const Listado = () => {
                                             <td>{contacto.nombre}</td>
                                             <td>{contacto.telefono}</td>
                                             <td>{contacto.email}</td>
-                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button type="button">DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button type="button"> MODIFICAR</button></Link></td>
+                                            <td><button type="button" onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                                         </tr>
                                     );
                                 }
@@ -139,9 +154,9 @@ export const Listado = () => {
                                             <td>{contacto.nombre}</td>
                                             <td>{contacto.telefono}</td>
                                             <td>{contacto.email}</td>
-                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button>DETALLE</button></Link></td>
-                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button> MODIFICAR</button></Link></td>
-                                            <td><button onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
+                                            <td><Link to={`/agenda/detalles/${contacto.id}`}><button type="button">DETALLE</button></Link></td>
+                                            <td><Link to={`/agenda/modificar/${contacto.id}`}><button type="button"> MODIFICAR</button></Link></td>
+                                            <td><button type="button" onClick={() => mutationBorrar.mutate(contacto.id)}>BORRAR</button></td>
                                         </tr>
                                     );
                                 }
