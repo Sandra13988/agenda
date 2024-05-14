@@ -44,7 +44,7 @@ export const Filtro = ( ) => {
 
                 onSubmit={(values) => {
                     setTipoSeleccionado(values.tipo)
-
+                    console.log(values)
                     // setTipoSeleccionado(values)
 
                 }}>
@@ -65,7 +65,7 @@ export const Filtro = ( ) => {
                                 ))}
                             </Field>
                             <ErrorMessage name="tipo" component="div" />
-                            <button type="button">FILTRAR</button>
+                            <input type="submit" value="FILTRAR"/>
                         </div>}
 
 
@@ -79,7 +79,8 @@ export const Filtro = ( ) => {
                                 ))}
                             </Field>
                             <ErrorMessage name="tipo" component="div" />
-                            <button type="button">FILTRAR</button>
+                            <input type="submit" value="FILTRAR"/>
+                            
                         </div>}
 
 

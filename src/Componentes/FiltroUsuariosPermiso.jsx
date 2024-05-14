@@ -58,7 +58,7 @@ export const FiltroUsuarioPermiso = () => {
                         })}
                     </Field>
                     <ErrorMessage name="usuarioPermiso" component="div" />
-                    <button type="button">SELECCIONAR</button>
+                    <input type="submit" value="SELECCIONAR"/>
 
 
 
