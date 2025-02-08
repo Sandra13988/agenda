@@ -180,6 +180,8 @@ export const FormularioAgregar = () => {
             onSubmit={(values, { }) => {
                 console.log(values)
                 //Asignar ID -> averigua cual es el mas alto que hay en la list ay le suma 1
+                //TENER EN CUENTA QUE ESTO NO FUNCIONA Y CREO QUE ES PORQUE NO COGE EL USUARIO LOGUEADO
+                //HAY QUE REVISAR COMO HACER EL AUTOINCREMENTO
                 const lastId = listado.record[usuarioLogueado.id].reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
                 values.id = lastId + 1;
                 //Llamada a la funcion de mutacion
