@@ -207,7 +207,7 @@ export const FormularioAgregar = () => {
                 touched,
                 isValid,
             }) => (
-                <Form>
+                <Form className="form-container">
                     <div>
                         <label htmlFor="tipo">Tipo</label>
                         {listadoTipos && <Field as="select" name="tipo" id="tipo" type="tipo">

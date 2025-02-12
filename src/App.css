@@ -265,3 +265,83 @@ li {
 /* https://colorhunt.co/palette/f7e8f6f1c6e7e5b0eabd83ce colores rosas
 https://colorhunt.co/palette/f4eeffdcd6f7a6b1e1424874 colores azules 
 https://colorhunt.co/palette/e1f0dad4e7c5bfd8af99bc85 verdes*/
+
+/* Contenedor principal */
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+  gap: 15px; /* Menor espacio entre los campos */
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px; /* Reducido el padding */
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos de los campos de entrada */
+.form-container label {
+  font-size: 0.85rem; /* Font-size reducido */
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-container input,
+.form-container select {
+  padding: 6px; /* Menor padding */
+  font-size: 0.85rem; /* Font-size reducido */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%; /* Asegurarse de que todos los inputs tengan el mismo ancho */
+  box-sizing: border-box; /* Asegura que padding y border no afecten el ancho */
+}
+
+/* Asegura que el mensaje de error se muestre correctamente */
+.form-container .error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
+/* Estilos para los botones (Agregar y Volver) */
+.form-container .buttons {
+  display: flex;
+  justify-content: space-between;
+  grid-column: span 2; /* Los botones ocupan toda la fila */
+  margin-top: 15px;
+}
+
+.form-container input[type="submit"] {
+  background-color: #007BFF;
+  color: white;
+  font-size: 0.9rem; /* Tamaño de fuente reducido */
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px; /* Reducción en el tamaño del padding */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 48%; /* Asegurar que ambos botones tengan el mismo tamaño */
+}
+
+.form-container input[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.form-container input[type="submit"]:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+/* Estilo para el link */
+.form-container a {
+  text-decoration: none;
+  color: #007BFF;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.form-container a:hover {
+  color: #0056b3;
+}
