@@ -180,8 +180,16 @@ export const FormularioAgregar = () => {
             onSubmit={(values, { }) => {
                 console.log(values)
                 //Asignar ID -> averigua cual es el mas alto que hay en la list ay le suma 1
-                const lastId = listado.record[usuarioLogueado.id].reduce((maxId, contacto) => Math.max(maxId, contacto.id), 0);
-                values.id = lastId + 1;
+
+                // ESTO HAY QUE CORREGIRLO PORQUE SIEMPRE SERÁ 1, TOCARLO PARA QUE SE AUTOINCREMENTE
+                const idsExistentes = Object.values(listado.record)
+                .flat() // Aplanar el array de contactos
+                .map(contacto => contacto.id) // Extraer solo los IDs
+                .filter(id => !isNaN(id)); // Asegurarse de que sean números válidos
+        
+                const nuevoId = idsExistentes.length > 0 ? Math.max(...idsExistentes) + 1 : 1;
+                values.id = nuevoId;
+
                 //Llamada a la funcion de mutacion
                 mutationAgregarContacto.mutate(values)
                 navegar('/agenda') // Esto hay que cambiarlo porque manda a /agregar
