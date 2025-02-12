@@ -31,22 +31,30 @@ export const MainNavigation = () => {
 
 
     const handleLogin = (valores) => {
-        console.log(listadoUsuarios)
-        const user = listadoUsuarios.record.find(u => u.email === valores.email && u.password === valores.password);
-        console.log(user)
-        if (user) {
-            setIsLoggedIn(true);
-            setUsuarioLogueado(user)
-            console.log("Se ha conectado"+user.name)
-            
-            alert('Inicio de sesión correcto');
-            navegar("/agenda")
+        console.log(listadoUsuarios);  // Esto debería mostrar un array de usuarios ahora
+    
+        // Verifica que listadoUsuarios no sea undefined o vacío
+        if (listadoUsuarios && listadoUsuarios.length > 0) {
+            const user = listadoUsuarios.find(u => u.email === valores.email && u.password === valores.password);
+            console.log(user);
+    
+            if (user) {
+                setIsLoggedIn(true);
+                setUsuarioLogueado(user);
+                console.log("Se ha conectado " + user.name);
+                alert('Inicio de sesión correcto');
+                navegar("/agenda");
+            } else {
+                alert('Fallo en el inicio de sesión');
+                navegar("/");
+            }
         } else {
-            alert('Fallo en el inicio de sesion');
-            navegar("/")
+            console.error('Listado de usuarios no disponible');
+            alert('No se pudo obtener la lista de usuarios');
         }
-
     };
+    
+    
 
     let bodyClass = "estiloBody"; // Clase base común
 

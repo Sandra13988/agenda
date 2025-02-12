@@ -9,14 +9,17 @@ export function useQueryListadoUsuarios() {
   };
 
   return useQuery({
-    queryKey: ["usuarios", "listado"], queryFn: async () => await fetch("https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972", { headers })
-      .then(res => {
-        if (!res.ok) throw new Error('Error en la petición de listado de usuarios')
-        const data = res.json()
-        return data
-      })
-  })
+    queryKey: ["usuarios", "listado"],
+    queryFn: async () => {
+      const res = await fetch("https://api.jsonbin.io/v3/b/6630dcd4ad19ca34f8627972", { headers });
+      if (!res.ok) throw new Error('Error en la petición de listado de usuarios');
+      const data = await res.json(); // Ahora esperamos la respuesta json
+      console.log(data.record);
+      return data.record;
+    }
+  });
 }
+
 
 
 export function useQueryUsuariosDetalle({ id }) {
