@@ -345,3 +345,8 @@ https://colorhunt.co/palette/e1f0dad4e7c5bfd8af99bc85 verdes*/
 .form-container a:hover {
   color: #0056b3;
 }
+
+/* Estilo para la palabra "Tipo" con !important para asegurar que se aplique */
+.tipo-label {
+  color: white !important;  /* Forzar el color a blanco */
+}
